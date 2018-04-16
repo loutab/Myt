@@ -229,6 +229,7 @@ public class WebActivity extends AppCompatActivity {
                 //MyApplication.showToast(result, 0);
                     Log.d("1",""+result);
             }
+
                 break;
         }
 //        if (isQR) {

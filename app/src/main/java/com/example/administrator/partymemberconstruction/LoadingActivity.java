@@ -103,8 +103,8 @@ public class LoadingActivity extends AppCompatActivity {
                                             case 1:
                                                 //全局化用户信息
                                                 MyApplication.user=result.getUserInfo();
-                                                gotoActivity(FirstActivity.class);
-                                                //gotoActivity(TestWeb2Activity.class);
+                                                //gotoActivity(FirstActivity.class);
+                                                gotoActivity(TestWeb2Activity.class);
                                                 finish();
                                                 break;
                                             case 2:
