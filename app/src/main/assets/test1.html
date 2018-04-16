@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>css网页布局</title>
+</head>
+ 
+<body>
+<button id="btn" name="btn"  onclick="test()">测试我</button><br/>
+<p></p> 
+<input accept="image/*" capture="camera" id="imgFile" name="imgFile"  type="file"  onchange="previewFile()" > <br/>  
+ <p></p>  
+ <img src="http://101.201.109.90:3333/Upload/Android/drawable-hdpi/tongzhigonggao.png" id="img" width="50" height="50" />
+ <script type="text/javascript">   
+ function test(){
+ alert("test1");
+ }
+    // 2. js供 Native 调用的方法  
+    function toNative(msg) {  
+        alert("Hello, from H5, received msg: " + msg);  
+        var p = document.getElementById("pp");  
+        p.value = msg;  
+    }  
+	function previewFile() {  
+	alert("test");
+        var img = document.getElementById("img");  
+        // 仅限上传单张图片  
+        var file = document.querySelector('input[type=file]').files[0];  
+          
+        var reader  = new FileReader();               
+        reader.addEventListener("load", function () {  
+                img.src = reader.result;  // 存储在本地的图片的base64编码  
+               // alert("result=" + reader.result);  
+        }, false);  
+  
+        if (file) {  
+          reader.readAsDataURL(file);  
+        }  
+     }  
+</script>  
+</body>
+</html>

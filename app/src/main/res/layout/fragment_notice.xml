@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.administrator.partymemberconstruction.fragment.FirstFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="69dp"
+    android:background="#D6504D"
+    android:orientation="horizontal"
+    android:gravity="bottom"
+    >
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="34dp"
+        android:layout_weight="2"
+        />
+    <LinearLayout
+        android:layout_marginTop="4dp"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="3"
+        android:orientation="horizontal"
+        >
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            >
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="通知"
+            android:id="@+id/notice"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/selector_notice_notice"
+            android:button="@null"
+            android:textColor="@drawable/selector_notice_text_color"
+            android:checked="true"
+            android:textSize="16sp"
+            />
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/message"
+            android:text="消息"
+            android:gravity="center"
+            android:textColor="@drawable/selector_notice_text_color"
+            android:background="@drawable/selector_notice_message"
+            android:button="@null"
+            android:textSize="16sp"
+            />
+        </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="2"/>
+
+</LinearLayout>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frame"
+    />
+
+</LinearLayout>

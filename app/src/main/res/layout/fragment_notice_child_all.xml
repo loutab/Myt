@@ -1,0 +1,103 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.partymemberconstruction.fragment.FirstFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:id="@+id/noNotice"
+        android:visibility="invisible"
+        >
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/nonotice"
+            android:id="@+id/imageView2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="最近30天没有新提醒"
+            android:textColor="#CCCCCC"
+            android:id="@+id/textView2"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/textView2"
+            android:layout_marginTop="16dp"
+            android:text="查看历史"
+            android:textColor="#CCCCCC"
+            android:background="@drawable/shape_notice_btn"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:paddingLeft="65dp"
+            android:paddingRight="65dp"
+            />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/action"
+        android:background="#ccc"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全部 （1）"
+            android:lines="1"
+            android:id="@+id/num"
+            android:textSize="15sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="#666"
+
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@id/delet"
+            android:layout_marginRight="4dp"
+            android:src="@mipmap/trash" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="删除"
+            android:textSize="15sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:id="@+id/delet"
+            android:layout_marginRight="15dp"
+            />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="8dp"
+    android:layout_below="@id/num"
+    android:background="#fff">
+    <ListView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list"
+
+        />
+</LinearLayout>
+
+    </RelativeLayout>
+
+
+</FrameLayout>

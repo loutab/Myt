@@ -1,0 +1,251 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.administrator.partymemberconstruction.fragment.FirstFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:background="#E94A4E"
+        android:paddingBottom="10dp"
+        >
+
+        <ImageView
+            android:id="@+id/link"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/link" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#E94A4E"
+            android:text="学习"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/search" />
+
+    </RelativeLayout>
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:image_scale_type="fit_xy"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#fff">
+
+        <ImageView
+            android:id="@+id/noticeImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
+            android:src="@mipmap/notice" />
+
+        <TextView
+            android:id="@+id/noticeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@id/noticeImg"
+            android:gravity="center"
+            android:text="测试测试"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/noticeGo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="9dp"
+            android:src="@mipmap/go" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:text="两学一做"
+        android:textSize="17sp"
+        android:layout_marginLeft="20dp"
+        android:padding="5dp"
+        android:id="@+id/one"
+        />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:background="#fff">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:id="@+id/firstBigImg"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerHorizontal="true"
+                     />
+                <TextView
+                    android:id="@+id/firstBigTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/firstBigImg"
+                    android:gravity="center"
+                    android:text="党章党规"
+                    android:textSize="17sp"
+                    android:lines="1"
+                    android:layout_marginTop="12dp"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="36dp"
+                android:layout_marginRight="36dp"
+                android:layout_marginTop="18dp"
+                android:id="@+id/relativeLayout3">
+
+                <ImageView
+                    android:id="@+id/secondImg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                     />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/secondImg"
+                    android:lines="1"
+                    android:text="系列讲话"
+                    android:id="@+id/secondTxt"
+                    android:textSize="17sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/relativeLayout1"
+                android:layout_alignLeft="@+id/relativeLayout3"
+                android:layout_alignStart="@+id/relativeLayout3"
+                android:id="@+id/relativeLayout2"
+                android:layout_marginBottom="12dp">
+
+                <ImageView
+                    android:id="@+id/thirdImg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                     />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/thirdImg"
+                    android:lines="1"
+                    android:text="学习考试"
+                    android:id="@+id/thirdTxt"
+                    android:textSize="17sp" />
+            </RelativeLayout>
+
+
+
+
+        </RelativeLayout>
+        <com.example.administrator.partymemberconstruction.CustomView.CustomerGridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/firstBigList"
+            android:background="#fff"
+            android:numColumns="3"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="三会一课"
+            android:textSize="17sp"
+            android:layout_marginLeft="20dp"
+            android:padding="5dp"
+            android:id="@+id/two"
+            />
+        <com.example.administrator.partymemberconstruction.CustomView.CustomerGridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/firstBigList1"
+            android:background="#fff"
+            android:numColumns="4"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="组织建设"
+            android:textSize="17sp"
+            android:layout_marginLeft="20dp"
+            android:padding="5dp"
+            android:id="@+id/three"
+            />
+        <com.example.administrator.partymemberconstruction.CustomView.CustomerGridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/firstBigList2"
+            android:background="#fff"
+            android:numColumns="4"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="党建咨询"
+            android:textSize="17sp"
+            android:layout_marginLeft="20dp"
+            android:padding="5dp"
+            android:id="@+id/four"
+            />
+        <com.example.administrator.partymemberconstruction.CustomView.CustomerGridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/firstBigList3"
+            android:background="#fff"
+            android:numColumns="4"
+            />
+
+    </LinearLayout>
+</ScrollView>

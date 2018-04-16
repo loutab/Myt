@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>css网页布局</title>
+</head>
+ 
+<body>
+<button id="btn" name="btn"  onclick="tt()">测试我</button><br/>
+<a href="file:///android_asset/test1.html" onclick="tt()">跳转</a>
+<p></p> 
+<input accept="image/*" capture="camera" id="imgFile" name="imgFile"  type="file"  onchange="previewFile()" > <br/>  
+ <p></p>  
+ <img src="http://101.201.109.90:3333/Upload/Android/drawable-hdpi/tongzhigonggao.png" id="img" width="50" height="50" />
+ <script type="text/javascript">   
+ 
+ function tt(){
+ //alert("test");
+ window.android.GetQR();
+ }
+ 
+ function test(){
+ alert("test1");
+ }
+
+	function previewFile() {  
+	alert("test");
+        var img = document.getElementById("img");  
+        // 仅限上传单张图片  
+        var file = document.querySelector('input[type=file]').files[0];  
+          
+        var reader  = new FileReader();               
+        reader.addEventListener("load", function () {  
+                img.src = reader.result;  // 存储在本地的图片的base64编码  
+               // alert("result=" + reader.result);  
+        }, false);  
+  
+        if (file) {  
+          reader.readAsDataURL(file);  
+        }  
+     }  
+</script>  
+</body>
+</html>
