@@ -102,8 +102,14 @@ public class RegisterActivity extends AppCompatActivity {
                 if (isEmptyDate())
                     MyApplication.showToast("请完善信息", 0);
                 else {
+                    if(passWord.length()<6||passWord.length()>12){
+                        MyApplication.showToast("密码位数超限，请重输", 0);
+                    }
+                    else if(!isContainAll(passWord)){
+                        MyApplication.showToast("密码不符合规则，必须包含数字与字母", 0);
+                    }
                     //判断两次密码是否正确
-                    if (passWord.equals(surePassWord)) {
+                    else if (passWord.equals(surePassWord)) {
                         //判断验证码
                         checkCode(codeNum);
                     } else {
@@ -209,5 +215,22 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    public static boolean isContainAll(String str) {
+        boolean isDigit = false;//定义一个boolean值，用来表示是否包含数字
+        boolean isLowerCase = false;//定义一个boolean值，用来表示是否包含字母
+        boolean isUpperCase = false;
+        for (int i = 0; i < str.length(); i++) {
+            if (Character.isDigit(str.charAt(i))) {   //用char包装类中的判断数字的方法判断每一个字符
+                isDigit = true;
+            } else if (Character.isLowerCase(str.charAt(i))) {  //用char包装类中的判断字母的方法判断每一个字符
+                isLowerCase = true;
+            } else if (Character.isUpperCase(str.charAt(i))) {
+                isUpperCase = true;
+            }
+        }
+        boolean isCase=isLowerCase|isUpperCase;
+        String regex = "^[a-zA-Z0-9]+$";
+        boolean isRight = isDigit &&isCase && str.matches(regex);
+        return isRight;
+    }
 }

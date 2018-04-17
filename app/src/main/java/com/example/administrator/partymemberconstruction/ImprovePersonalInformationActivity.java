@@ -23,6 +23,7 @@ import com.example.administrator.partymemberconstruction.Adapter.ImproveAdapter;
 import com.example.administrator.partymemberconstruction.Bean.CompleteJson;
 import com.example.administrator.partymemberconstruction.Bean.GroupJson;
 import com.example.administrator.partymemberconstruction.Bean.PartJson;
+import com.example.administrator.partymemberconstruction.Bean.PartMJson;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 
@@ -88,6 +89,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
     private String userId;
     private int id1;
     private int id2;
+    private List<PartMJson.DepartListBean> departList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         });
         //获得UserId
         userId = getIntent().getStringExtra("userId");
+       // userId=17+"";
         //获得时间
         getTimeK();
 
@@ -191,9 +194,9 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         params.put("Mail",""+emailDate);
         params.put("Address",""+addressDate);
         params.put("Birthday",""+birthdayString);
-        params.put("ui_Headimg","");
+        params.put("ui_Headimg"," ");
         params.put("ui_Position",""+orgDate);
-        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.CompleteDateUrl, params, CompleteJson.class,
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url. CompleteDateUrl, params, CompleteJson.class,
                 new OkhttpJsonUtil.TextCallBack<CompleteJson>() {
                     @Override
                     public void getResult(CompleteJson result) {
@@ -205,6 +208,8 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 MyApplication.showToast(result.getCode(),0);
                             }else{
+                                Intent intent=new Intent(ImprovePersonalInformationActivity.this,ExamineActivity.class);
+                                startActivity(intent);
                                 MyApplication.showToast(result.getException(),0);
                             }
                         }
@@ -215,14 +220,14 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
 
     private void getPartDate() {
         HashMap<String, String> params = new HashMap<>();
-        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.PartDateUrl, params, PartJson.class,
-                new OkhttpJsonUtil.TextCallBack<PartJson>() {
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.PartDateUrl, params, PartMJson.class,
+                new OkhttpJsonUtil.TextCallBack<PartMJson>() {
                     @Override
-                    public void getResult(PartJson result) {
+                    public void getResult(PartMJson result) {
                         // MyApplication.showToast(result.getCode()+"",0);
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
-                                tissue_tree1 = result.getTissue_tree();
+                                departList = result.getDepartList();
                                 showPopupWindowPart(partDateView);
                             }
                         }
@@ -305,15 +310,15 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
     public void showPopupWindowPart(View v){
         View contentView = LayoutInflater.from(this).inflate(R.layout.popuwindow_layout, null);
         ListView listView = contentView.findViewById(R.id.list);
-        Improve1Adapter group=new Improve1Adapter(this,tissue_tree1);
+        Improve1Adapter group=new Improve1Adapter(this,departList);
         listView.setAdapter(group);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                PartJson.TissueTreeBean tissueTreeBean = tissue_tree1.get(position);
-                String organizationName = tissueTreeBean.getDt_Department_Name();
+                PartMJson.DepartListBean departListBean = departList.get(position);
+                String organizationName = departListBean.getDepartName();
                 ImprovePersonalInformationActivity.this.part.setText(organizationName);
-                id2 = tissueTreeBean.getEntityId();
+                id2 = departListBean.getId();
                 popupWindowGroup.dismiss();
             }
         });

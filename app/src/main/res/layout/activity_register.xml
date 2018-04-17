@@ -141,7 +141,8 @@
             android:background="@drawable/shape_notice_btn"
             android:gravity="center_vertical"
             android:hint="请输入密码"
-            android:maxLength="20"
+            android:maxLength="12"
+            android:password="true"
             android:paddingLeft="13dp"
             android:textColorHint="#ccc"
             android:textSize="14sp" />
@@ -164,8 +165,9 @@
             android:background="@drawable/shape_notice_btn"
             android:gravity="center_vertical"
             android:hint="请再次输入密码"
-            android:maxLength="20"
+            android:maxLength="12"
             android:paddingLeft="13dp"
+            android:password="true"
             android:textColorHint="#ccc"
             android:textSize="14sp" />
 

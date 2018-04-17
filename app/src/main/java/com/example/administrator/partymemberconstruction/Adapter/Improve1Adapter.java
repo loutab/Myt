@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.Bean.GroupJson;
 import com.example.administrator.partymemberconstruction.Bean.PartJson;
+import com.example.administrator.partymemberconstruction.Bean.PartMJson;
 import com.example.administrator.partymemberconstruction.R;
 
 import java.util.List;
@@ -19,9 +20,9 @@ import java.util.List;
 
 public class Improve1Adapter extends BaseAdapter {
     private Context context;
-    private List<PartJson.TissueTreeBean> list;
+    private List<PartMJson.DepartListBean> list;
 
-    public Improve1Adapter(Context context, List<PartJson.TissueTreeBean> list) {
+    public Improve1Adapter(Context context, List<PartMJson.DepartListBean> list) {
         this.context = context;
         this.list = list;
     }
@@ -49,7 +50,7 @@ public class Improve1Adapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView= LayoutInflater.from(context).inflate(R.layout.improve_list_layout, parent, false);
         TextView txt = convertView.findViewById(R.id.txt);
-        txt.setText(list.get(position).getDt_Department_Name());
+        txt.setText(list.get(position).getDepartName());
         return convertView;
     }
 

@@ -32,7 +32,8 @@ public class ExamineActivity extends AppCompatActivity {
         link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent=new Intent(ExamineActivity.this,LoadingActivity.class);
+                startActivity(intent);
             }
         });
         if(MyApplication.user==null){}

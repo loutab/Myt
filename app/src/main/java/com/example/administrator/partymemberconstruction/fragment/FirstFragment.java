@@ -34,7 +34,6 @@ import com.example.administrator.partymemberconstruction.CustomView.CustomerGrid
 import com.example.administrator.partymemberconstruction.CustomView.LoadingDialog;
 import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
-import com.example.administrator.partymemberconstruction.TestActivity;
 import com.example.administrator.partymemberconstruction.WebActivity;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
@@ -108,6 +107,8 @@ public class FirstFragment extends Fragment {
     TextView four;
     @BindView(R.id.link)
     ImageView link;
+    @BindView(R.id.notice_click)
+    RelativeLayout noticeClick;
 
     private List<String> images;
     private List<String[]> listTemp;
@@ -196,9 +197,10 @@ public class FirstFragment extends Fragment {
     private void gotoApp() {
         PackageManager packageManager = getActivity().getPackageManager();
         Intent intent = new Intent();
-        intent =packageManager.getLaunchIntentForPackage("com.dangjian");
+        intent = packageManager.getLaunchIntentForPackage("com.dangjian");
         startActivity(intent);
     }
+
     //检测是否安装app
     public boolean isAppInstalled(Context context, String packageName) {
         try {
@@ -209,8 +211,8 @@ public class FirstFragment extends Fragment {
         }
     }
 
-    void initDialog(){
-        if(sureUpload==null) {
+    void initDialog() {
+        if (sureUpload == null) {
             sureUpload = new AlertDialog.Builder(currentContext);
             sureUpload.setCancelable(false);
             sureUpload.setTitle("是否确认下载？");
@@ -226,13 +228,16 @@ public class FirstFragment extends Fragment {
                     dialog.dismiss();
                 }
             });
-    }}
-//下载
+        }
+    }
+
+    //下载
     private void upload() {
-        MyTask myTask=new MyTask();
+        MyTask myTask = new MyTask();
         myTask.execute(testUrl);
     }
-    public class MyTask extends AsyncTask<String,Integer,String> {
+
+    public class MyTask extends AsyncTask<String, Integer, String> {
         public MyTask() {
             super();
         }
@@ -240,7 +245,7 @@ public class FirstFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.d("1","开始下载");
+            Log.d("1", "开始下载");
             loadingDialog.show();
         }
 
@@ -249,8 +254,8 @@ public class FirstFragment extends Fragment {
             super.onPostExecute(s);
             loadingDialog.cancel();
 //            update(fileName);
-            File file=new File(Environment.getExternalStorageDirectory(), "党建.apk");
-            if(file.exists()){
+            File file = new File(Environment.getExternalStorageDirectory(), "党建.apk");
+            if (file.exists()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setDataAndType(Uri.fromFile(file),
@@ -262,14 +267,14 @@ public class FirstFragment extends Fragment {
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            int i=0;
-            if(values.length>1){
-                Log.d("1","设置进度为"+values[1]);
+            int i = 0;
+            if (values.length > 1) {
+                Log.d("1", "设置进度为" + values[1]);
                 bar.setProgress(values[1]);
                 //textView.setText(values[1]+"/"+values[0]);
                 textView.setText("100");
-            }else {
-                Log.d("1","设置最大尺度为"+values[0]);
+            } else {
+                Log.d("1", "设置最大尺度为" + values[0]);
                 bar.setMax(values[0]);
             }
 
@@ -282,37 +287,37 @@ public class FirstFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            URL url=null;
-            HttpURLConnection urlConn=null;
-            InputStream is=null;
+            URL url = null;
+            HttpURLConnection urlConn = null;
+            InputStream is = null;
             try {
-                url=new URL(params[0]);
-                Log.d("1","开始"+url);
-                urlConn=(HttpURLConnection)url.openConnection();
-                int length =  urlConn.getContentLength();
-                Log.d("1","文件大小为："+length);
-                is=urlConn.getInputStream();
-                Log.d("1","开始zhong"+is);
+                url = new URL(params[0]);
+                Log.d("1", "开始" + url);
+                urlConn = (HttpURLConnection) url.openConnection();
+                int length = urlConn.getContentLength();
+                Log.d("1", "文件大小为：" + length);
+                is = urlConn.getInputStream();
+                Log.d("1", "开始zhong" + is);
                 int read = is.available();
-                Log.d("1","文件长度为："+read);
-                OutputStream os=null;
-                File file=null;
+                Log.d("1", "文件长度为：" + read);
+                OutputStream os = null;
+                File file = null;
                 try {
-                    file=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"党建.apk");
+                    file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "党建.apk");
                     file.createNewFile();
-                    os=new FileOutputStream(file);
-                    byte buffer[]=new byte[1024*4];
-                    int temp=0;
-                    int jd=0;
-                   // publishProgress(length);
-                    while((temp=is.read(buffer))!=-1){
+                    os = new FileOutputStream(file);
+                    byte buffer[] = new byte[1024 * 4];
+                    int temp = 0;
+                    int jd = 0;
+                    // publishProgress(length);
+                    while ((temp = is.read(buffer)) != -1) {
                         os.write(buffer, 0, temp);
                         //发送消息告知主线程当前进度
-                        Log.d("1","4");
-                        jd+=temp;
-                        Integer[] a=new Integer[2];
-                        a[0]=length;
-                        a[1]=jd;
+                        Log.d("1", "4");
+                        jd += temp;
+                        Integer[] a = new Integer[2];
+                        a[0] = length;
+                        a[1] = jd;
                         //publishProgress(a);
                         //textView.setText(a[0]);
                     }
@@ -320,8 +325,8 @@ public class FirstFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                     loadingDialog.cancel();
-                    Log.d("1","获取网络资源失败，请重试！"+e.toString());
-                }finally{
+                    Log.d("1", "获取网络资源失败，请重试！" + e.toString());
+                } finally {
                     try {
                         os.close();
                     } catch (Exception e) {
@@ -353,29 +358,31 @@ public class FirstFragment extends Fragment {
         loadingDialog = new LoadingDialog(currentContext);
         loadingDialog.setCancelable(false);
     }
+
     //获得屏幕分辨率
-    public void getScreenDensity_ByWindowManager(){
+    public void getScreenDensity_ByWindowManager() {
         DisplayMetrics mDisplayMetrics = new DisplayMetrics();//屏幕分辨率容器
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
         int width = mDisplayMetrics.widthPixels;
         int height = mDisplayMetrics.heightPixels;
         float density = mDisplayMetrics.density;
         int densityDpi = mDisplayMetrics.densityDpi;
-        Log.d("p",""+width+"  "+height);
-        if(width<=480){
+        Log.d("p", "" + width + "  " + height);
+        if (width <= 480) {
             typeScreen = 1;
-        }else if(width<=720){
-            typeScreen=2;
-        }else{
-            typeScreen=3;
+        } else if (width <= 720) {
+            typeScreen = 2;
+        } else {
+            typeScreen = 3;
         }
     }
+
     //获得首页主要数据
     private void connect() {
         HashMap<String, String> params = new HashMap<>();
-        params.put("User_ID",MyApplication.user.getUser_ID()+"");
-        params.put("Resol_Type",typeScreen+"");
-        params.put("type",0+"");
+        params.put("User_ID", MyApplication.user.getUser_ID() + "");
+        params.put("Resol_Type", typeScreen + "");
+        params.put("type", 0 + "");
         OkhttpJsonUtil.getInstance().postByEnqueue(this.getActivity(), Url.FirstUrl, params, FirstJson.class,
                 new OkhttpJsonUtil.TextCallBack<FirstJson>() {
                     @Override
@@ -425,7 +432,8 @@ public class FirstFragment extends Fragment {
                     }
                 });
     }
-//获得轮转图地址
+
+    //获得轮转图地址
     private void connect2() {
         HashMap<String, String> params = new HashMap<>();
         OkhttpJsonUtil.getInstance().postByEnqueue(this.getActivity(), Url.FirstUrl2, params, ImgJson.class,
@@ -447,6 +455,7 @@ public class FirstFragment extends Fragment {
                     }
                 });
     }
+
     //获得链接下载地址
     private void getUploadUrl() {
         HashMap<String, String> params = new HashMap<>();
@@ -456,7 +465,7 @@ public class FirstFragment extends Fragment {
                     public void getResult(UploadJson result) {
                         // MyApplication.showToast(result.getCode()+"",0);
                         if (result != null) {
-                            testUrl=result.getAndroid();//设置地址
+                            testUrl = result.getAndroid();//设置地址
                             upload();//下载
                         }
 
@@ -482,14 +491,17 @@ public class FirstFragment extends Fragment {
                             lists.get(i).add(new String[]{allDateList.get(i).get(j).getMenu_Logo_Url(), allDateList.get(i).get(j).getMenu_Name()});
                         } else {
                             if (j == 0) {
+                                String menu_logo_url = allDateList.get(i).get(j).getMenu_Logo_Url();
                                 Picasso.with(currentContext).load(allDateList.get(i).get(j).getMenu_Logo_Url()).into(firstBigImg);
                                 firstBigTxt.setText(allDateList.get(i).get(j).getMenu_Name());
                             }
                             if (j == 1) {
+                                String menu_logo_url = allDateList.get(i).get(j).getMenu_Logo_Url();
                                 Picasso.with(currentContext).load(allDateList.get(i).get(j).getMenu_Logo_Url()).into(secondImg);
                                 secondTxt.setText(allDateList.get(i).get(j).getMenu_Name());
                             }
                             if (j == 2) {
+                                String menu_logo_url = allDateList.get(i).get(j).getMenu_Logo_Url();
                                 Picasso.with(currentContext).load(allDateList.get(i).get(j).getMenu_Logo_Url()).into(thirdImg);
                                 thirdTxt.setText(allDateList.get(i).get(j).getMenu_Name());
                             }
@@ -523,17 +535,17 @@ public class FirstFragment extends Fragment {
     }
 
     private void setNotice(final FirstJson.MenuListBean notice_menu) {
-        if(notice_menu.getMenu_Name().length()>=12){
+        if (notice_menu.getMenu_Name().length() >= 12) {
             String s = notice_menu.getMenu_Name().substring(0, 13) + "...";
             noticeTxt.setText(s);
-        }else
-        noticeTxt.setText(notice_menu.getMenu_Name());
+        } else
+            noticeTxt.setText(notice_menu.getMenu_Name());
         noticeGo.setClickable(true);
         notice_menu1 = notice_menu;
         noticeGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoWebView(notice_menu1.getMenu_Url(),notice_menu.getMenu_Name());
+                gotoWebView(notice_menu1.getMenu_Url(), notice_menu.getMenu_Name());
             }
         });
     }
@@ -545,7 +557,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirstJson.MenuListBean menuListBean = allDateList.get(0).get(0);
-                gotoWebView(menuListBean.getMenu_Url(),menuListBean.getMenu_Name());
+                gotoWebView(menuListBean.getMenu_Url(), menuListBean.getMenu_Name());
             }
         });
 
@@ -554,7 +566,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirstJson.MenuListBean menuListBean = allDateList.get(0).get(2);
-                gotoWebView(menuListBean.getMenu_Url(),menuListBean.getMenu_Name());
+                gotoWebView(menuListBean.getMenu_Url(), menuListBean.getMenu_Name());
             }
         });
 
@@ -563,7 +575,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirstJson.MenuListBean menuListBean = allDateList.get(0).get(1);
-                gotoWebView(menuListBean.getMenu_Url(),menuListBean.getMenu_Name());
+                gotoWebView(menuListBean.getMenu_Url(), menuListBean.getMenu_Name());
             }
         });
 
@@ -573,7 +585,7 @@ public class FirstFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 List<FirstJson.MenuListBean> menuListBeans1 = allDateList.get(0);
                 String menu_url = menuListBeans1.get(position + 3).getMenu_Url();
-                gotoWebView(menu_url,menuListBeans1.get(position + 3).getMenu_Name());
+                gotoWebView(menu_url, menuListBeans1.get(position + 3).getMenu_Name());
             }
         });
         firstBigList1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -581,7 +593,7 @@ public class FirstFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 List<FirstJson.MenuListBean> menuListBeans1 = allDateList.get(1);
                 String menu_url = menuListBeans1.get(position).getMenu_Url();
-                gotoWebView(menu_url,menuListBeans1.get(position).getMenu_Name());
+                gotoWebView(menu_url, menuListBeans1.get(position).getMenu_Name());
             }
         });
         firstBigList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -589,7 +601,7 @@ public class FirstFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 List<FirstJson.MenuListBean> menuListBeans2 = allDateList.get(2);
                 String menu_url = menuListBeans2.get(position).getMenu_Url();
-                gotoWebView(menu_url,menuListBeans2.get(position).getMenu_Name());
+                gotoWebView(menu_url, menuListBeans2.get(position).getMenu_Name());
             }
         });
 
@@ -598,15 +610,15 @@ public class FirstFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 List<FirstJson.MenuListBean> menuListBeans3 = allDateList.get(3);
                 String menu_url = menuListBeans3.get(position).getMenu_Url();
-                gotoWebView(menu_url,menuListBeans3.get(position).getMenu_Name());
+                gotoWebView(menu_url, menuListBeans3.get(position).getMenu_Name());
             }
         });
     }
 
-    private void gotoWebView(String menu_url,String title) {
+    private void gotoWebView(String menu_url, String title) {
         Intent intent = new Intent(currentContext, WebActivity.class);
         intent.putExtra("Url", menu_url);
-        intent.putExtra("title",title);
+        intent.putExtra("title", title);
         startActivity(intent);
     }
 
@@ -615,8 +627,10 @@ public class FirstFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     private ProgressBar bar;
     private TextView textView;
+
     public class UploadDialog extends Dialog {
 
 
@@ -636,8 +650,8 @@ public class FirstFragment extends Fragment {
             setContentView(R.layout.upload_layout);
             setTitle("下载中...");
             setCanceledOnTouchOutside(false);
-            bar =customView.findViewById(R.id.jd);
-            textView =customView.findViewById(R.id.text);
+            bar = customView.findViewById(R.id.jd);
+            textView = customView.findViewById(R.id.text);
         }
 
         @Override
@@ -656,10 +670,10 @@ public class FirstFragment extends Fragment {
 
         public UploadDialog(Context context) {
             super(context);
-            LayoutInflater inflater= LayoutInflater.from(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
             customView = inflater.inflate(R.layout.upload_layout, null);
-            bar =customView.findViewById(R.id.jd);
-            textView =customView.findViewById(R.id.text);
+            bar = customView.findViewById(R.id.jd);
+            textView = customView.findViewById(R.id.text);
         }
     }
 }

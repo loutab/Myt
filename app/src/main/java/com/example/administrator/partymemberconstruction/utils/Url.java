@@ -21,7 +21,7 @@ public  class Url {
     public static String GroupDateUrl="http://101.201.109.90:3333/Local/GetTissue";
     //获得部门
     public static String PartDateUrl="http://101.201.109.90:3333/Local/GetDepartment";
-    //获得部门
+    //完善个人信息
     public static String CompleteDateUrl="http://101.201.109.90:3333/Local/RegUser";
     //修改密码
     public static String ChangePassWordUrl="http://101.201.109.90:3333/Local/ChangePassword";

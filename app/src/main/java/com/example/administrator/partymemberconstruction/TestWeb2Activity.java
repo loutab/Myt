@@ -1,18 +1,12 @@
 package com.example.administrator.partymemberconstruction;
 
-import android.app.Activity;
-import android.content.ClipData;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -27,13 +21,12 @@ import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.CustomView.ActionSheetDialog;
 import com.example.administrator.partymemberconstruction.utils.GetPathFromUri4kitkat;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.support.v4.content.FileProvider.getUriForFile;
 
 public class TestWeb2Activity extends AppCompatActivity {
 
@@ -51,15 +44,20 @@ public class TestWeb2Activity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION = 13;
     public static ValueCallback<Uri> mFilePathCallback;
     public static ValueCallback<Uri[]> mFilePathCallbacks;
+    @BindView(R.id.img)
+    ImageView img;
     private File picturefile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
+        img.setVisibility(View.VISIBLE);
+        Picasso.with(this).load("http://101.201.109.90:3333/Upload/Android/drawable-hdpi/businesscard.png").into(img);
         WebSettings settings = web.getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-       // settings.setUseWideViewPort(true);
+        // settings.setUseWideViewPort(true);
         settings.setJavaScriptEnabled(true); // 设置支持javascript脚本
         //设置可以访问文件
         settings.setAllowFileAccess(true);
@@ -124,8 +122,9 @@ public class TestWeb2Activity extends AppCompatActivity {
         web.addJavascriptInterface(new JsInteration(), "android");
     }
 
-String user_id=MyApplication.user.getUser_ID()+"";
-    String ui_nickName=MyApplication.user.getUi_NickName();
+    String user_id = MyApplication.user.getUser_ID() + "";
+    String ui_nickName = MyApplication.user.getUi_NickName();
+
     public class JsInteration {
         @JavascriptInterface
         public String Id() {
@@ -137,15 +136,17 @@ String user_id=MyApplication.user.getUser_ID()+"";
             //MyApplication.showToast(ui_nickName,0);
             return ui_nickName;
         }
+
         @JavascriptInterface
         public void ShowOrHide() {
-            if(headtitle.getVisibility()==View.VISIBLE){
+            if (headtitle.getVisibility() == View.VISIBLE) {
                 headtitle.setVisibility(View.GONE);
-            }else if(headtitle.getVisibility()==View.GONE){
+            } else if (headtitle.getVisibility() == View.GONE) {
                 headtitle.setVisibility(View.VISIBLE);
             }
         }
     }
+
     private void showDialog() {
         ActionSheetDialog dialog = new ActionSheetDialog(TestWeb2Activity.this).builder().addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
             @Override
@@ -197,8 +198,8 @@ String user_id=MyApplication.user.getUser_ID()+"";
 //            grantUriPermission(getPackageName(),contentUri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //            intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
 //        } else {//7.0以下
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
-       // }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
+        // }
         startActivityForResult(intent, REQUEST_CODE_TAKE_PICETURE);
 
     }
@@ -227,7 +228,7 @@ String user_id=MyApplication.user.getUser_ID()+"";
     }
 
     private void takePhotoResult(int resultCode, Intent data) {
-        if (mFilePathCallback != null){
+        if (mFilePathCallback != null) {
             Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
             if (result != null) {
                 String path = GetPathFromUri4kitkat.getPath(this, result);
@@ -238,7 +239,7 @@ String user_id=MyApplication.user.getUser_ID()+"";
                     mFilePathCallback.onReceiveValue(uri);
                 }
 
-            }else {
+            } else {
                 mFilePathCallback.onReceiveValue(null);
                 mFilePathCallback = null;
             }
