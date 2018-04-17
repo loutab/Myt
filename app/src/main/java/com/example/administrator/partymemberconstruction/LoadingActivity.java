@@ -2,6 +2,7 @@ package com.example.administrator.partymemberconstruction;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,8 @@ public class LoadingActivity extends AppCompatActivity {
     TextView forget;
     @BindView(R.id.line1)
     RelativeLayout line1;
+    private SharedPreferences sp;
+    private String trueName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,9 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         Log.d("w", ComenUtils.ChangeTime("2018-03-13 11:20:36"));
-
+        sp = getPreferences(Context.MODE_PRIVATE);
+        String userName = sp.getString("userName", "");
+        userEdt.setText(userName);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         line1.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -73,65 +78,66 @@ public class LoadingActivity extends AppCompatActivity {
                 return false;
             }
         });
+        passwordEdt.setOnKeyListener(onKey);
         //initState();
         loading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //测试
-                Intent intent=new Intent(LoadingActivity.this,TestActivity.class);
-                startActivity(intent);
-                HashMap<String, String> params = new HashMap<>();
-                params.put("UserName", "13261011499");
-                params.put("Password", "12345678");
-                OkhttpJsonUtil.getInstance().postByEnqueue(LoadingActivity.this, Url.LoadingUrl, params, UserJson.class,
-                        new OkhttpJsonUtil.TextCallBack<UserJson>() {
-                            @Override
-                            public void getResult(UserJson result) {
-                                // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
-                                if (result != null) {
-                                    Log.d("p", result.getCode());
-                                    if (result.getCode().equals("成功")) {
-                                        //根据状态选择进入的页面
-                                        //finish();
-                                        int status = result.getStatus();
-                                        switch (status) {
-                                            case 0:
-                                                Intent intent = new Intent(LoadingActivity.this, ExamineActivity.class);
-                                                intent.putExtra("userId", "" + result.getStatus());
-                                                startActivity(intent);
-                                                break;
-                                            //跳转到首页
-                                            case 1:
-                                                //全局化用户信息
-                                                MyApplication.user = result.getUserInfo();
-                                                gotoActivity(FirstActivity.class);
-                                                //gotoActivity(TestWeb2Activity.class);
-                                                finish();
-                                                break;
-                                            case 2:
-                                                Intent intent1 = new Intent(LoadingActivity.this, ExamineActivity.class);
-                                                intent1.putExtra("userId", "" + result.getStatus());
-                                                startActivity(intent1);
-                                                break;
-                                            case 3:
-                                                //跳转到完善信息页面
-                                                Intent intent3 = new Intent(LoadingActivity.this, ImprovePersonalInformationActivity.class);
-                                                intent3.putExtra("userId", result.getUserInfo().getUser_ID());
-                                                startActivity(intent3);
-                                                break;
-                                        }
-                                        //登录成功进入首页
-                                    } else
-                                        MyApplication.showToast(result.getException(), 0);
-                                }
-
-                            }
-                        });
+//                Intent intent=new Intent(LoadingActivity.this,TestActivity.class);
+//                startActivity(intent);
+//                HashMap<String, String> params = new HashMap<>();
+//                params.put("UserName", "13261011499");
+//                params.put("Password", "12345678");
+//                OkhttpJsonUtil.getInstance().postByEnqueue(LoadingActivity.this, Url.LoadingUrl, params, UserJson.class,
+//                        new OkhttpJsonUtil.TextCallBack<UserJson>() {
+//                            @Override
+//                            public void getResult(UserJson result) {
+//                                // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
+//                                if (result != null) {
+//                                    Log.d("p", result.getCode());
+//                                    if (result.getCode().equals("成功")) {
+//                                        //根据状态选择进入的页面
+//                                        //finish();
+//                                        int status = result.getStatus();
+//                                        switch (status) {
+//                                            case 0:
+//                                                Intent intent = new Intent(LoadingActivity.this, ExamineActivity.class);
+//                                                intent.putExtra("userId", "" + result.getStatus());
+//                                                startActivity(intent);
+//                                                break;
+//                                            //跳转到首页
+//                                            case 1:
+//                                                //全局化用户信息
+//                                                MyApplication.user = result.getUserInfo();
+//                                                gotoActivity(FirstActivity.class);
+//                                                //gotoActivity(TestWeb2Activity.class);
+//                                                finish();
+//                                                break;
+//                                            case 2:
+//                                                Intent intent1 = new Intent(LoadingActivity.this, ExamineActivity.class);
+//                                                intent1.putExtra("userId", "" + result.getStatus());
+//                                                startActivity(intent1);
+//                                                break;
+//                                            case 3:
+//                                                //跳转到完善信息页面
+//                                                Intent intent3 = new Intent(LoadingActivity.this, ImprovePersonalInformationActivity.class);
+//                                                intent3.putExtra("userId", result.getUserInfo().getUser_ID());
+//                                                startActivity(intent3);
+//                                                break;
+//                                        }
+//                                        //登录成功进入首页
+//                                    } else
+//                                        MyApplication.showToast(result.getException(), 0);
+//                                }
+//
+//                            }
+//                        });
                 //登录接口
-                //gotoLoading();
+                gotoLoading();
             }
         });
-        passwordEdt.setOnKeyListener(onKey);
+
         register.setClickable(true);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +158,7 @@ public class LoadingActivity extends AppCompatActivity {
     private void gotoLoading() {
         //验证数据不为空
         String userName = userEdt.getText() + "";
+        trueName = userEdt.getText() + "";
         String passWord = passwordEdt.getText() + "";
         if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(passWord)) {
             MyApplication.showToast("用户名或密码不能为空", 0);
@@ -170,6 +177,10 @@ public class LoadingActivity extends AppCompatActivity {
                             if (result != null) {
                                 Log.d("p", result.getCode());
                                 if (result.getCode().equals("成功")) {
+                                    //记住用户名
+                                    SharedPreferences.Editor edit = sp.edit();
+                                    edit.putString("userName",trueName);
+                                    edit.commit();
                                     //根据状态选择进入的页面
                                     //finish();
                                     int status = result.getStatus();
@@ -199,8 +210,9 @@ public class LoadingActivity extends AppCompatActivity {
                                             break;
                                     }
                                     //登录成功进入首页
-                                } else
-                                    MyApplication.showToast(result.getException(), 0);
+                                } else{
+                                    isOne=true;
+                                    MyApplication.showToast(result.getException(), 0);}
                             }
 
                         }
@@ -220,14 +232,17 @@ public class LoadingActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
-
+boolean isOne=true;
     View.OnKeyListener onKey = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             // TODO Auto-generated method stub
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 //这里写发送信息的方法
+                if(isOne){
                 gotoLoading();
+                isOne=false;
+                }
             }
             return false;
         }
