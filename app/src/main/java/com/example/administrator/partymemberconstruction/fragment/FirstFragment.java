@@ -540,9 +540,9 @@ public class FirstFragment extends Fragment {
             noticeTxt.setText(s);
         } else
             noticeTxt.setText(notice_menu.getMenu_Name());
-        noticeGo.setClickable(true);
+        noticeClick.setClickable(true);
         notice_menu1 = notice_menu;
-        noticeGo.setOnClickListener(new View.OnClickListener() {
+        noticeClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoWebView(notice_menu1.getMenu_Url(), notice_menu.getMenu_Name());
