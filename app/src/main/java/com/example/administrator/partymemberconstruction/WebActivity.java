@@ -101,6 +101,7 @@ public class WebActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 loadingDialog.cancel();
+                //set();
             }
 
             @Override
@@ -138,7 +139,7 @@ public class WebActivity extends AppCompatActivity {
 
         });
         web.loadUrl(url);
-        web.loadUrl("file:///android_asset/test.html");
+       // web.loadUrl("file:///android_asset/test.html");
         web.addJavascriptInterface(new JsInteration(), "android");
     }
 

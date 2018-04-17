@@ -57,6 +57,16 @@ public class NoticeAllListAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return list.get(position).getN_Type();
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 4;
+    }
+
+    @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v;
         NoticeItemJson.NoticeInfoBean noticeInfoBean = list.get(i);
@@ -64,7 +74,7 @@ public class NoticeAllListAdapter extends BaseAdapter {
         ViewHolder0 viewHolder0 = null;
         ViewHolder1 viewHolder1 = null;
         ViewHolder3 viewHolder3 = null;
-        if (true) {
+        if (view==null) {
             switch (noticeInfoBean.getN_Type()) {
                 case 2://请求
                     v = LayoutInflater.from(context).inflate(R.layout.notice_one_list_layout, viewGroup, false);
@@ -104,10 +114,10 @@ public class NoticeAllListAdapter extends BaseAdapter {
                     viewHolder0 = (ViewHolder0) view.getTag();
                     break;
                 case 1:
-                    viewHolder0 = null;
+                    viewHolder1 = (ViewHolder1) view.getTag();;
                     break;
                 case 3:
-                    viewHolder0 = null;
+                    viewHolder3 = (ViewHolder3) view.getTag();;
                     break;
                 default:
                     viewHolder0 = null;
