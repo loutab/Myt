@@ -196,7 +196,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         params.put("Birthday",""+birthdayString);
         params.put("ui_Headimg"," ");
         params.put("ui_Position",""+orgDate);
-        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url. CompleteDateUrl, params, CompleteJson.class,
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.CompleteDateUrl, params, CompleteJson.class,
                 new OkhttpJsonUtil.TextCallBack<CompleteJson>() {
                     @Override
                     public void getResult(CompleteJson result) {

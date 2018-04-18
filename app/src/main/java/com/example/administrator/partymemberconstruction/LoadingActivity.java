@@ -205,7 +205,7 @@ public class LoadingActivity extends AppCompatActivity {
                                         case 3:
                                             //跳转到完善信息页面
                                             Intent intent3 = new Intent(LoadingActivity.this, ImprovePersonalInformationActivity.class);
-                                            intent3.putExtra("userId", result.getUserInfo().getUser_ID());
+                                            intent3.putExtra("userId",result.getUserInfo().getEntityId()+"");
                                             startActivity(intent3);
                                             break;
                                     }
