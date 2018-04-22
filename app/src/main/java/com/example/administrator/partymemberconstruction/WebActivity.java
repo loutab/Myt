@@ -229,6 +229,7 @@ public class WebActivity extends AppCompatActivity {
                 String result = bundle.getString("result");
                 //MyApplication.showToast(result, 0);
                     Log.d("1",""+result);
+                    completeSign();
             }
 
                 break;
@@ -241,6 +242,10 @@ public class WebActivity extends AppCompatActivity {
 //                isQR = false;
 //            }
 //        }
+    }
+
+    private void completeSign() {
+
     }
 
     private void takePhotoResult(int resultCode, Intent data) {
@@ -300,7 +305,7 @@ public class WebActivity extends AppCompatActivity {
             set();
         }
         @JavascriptInterface
-        public void GetQR() {
+        public void GetQR(int meetingID) {
             startActivityForResult(new Intent(WebActivity.this, CaptureActivity.class), 101);
         }
     }

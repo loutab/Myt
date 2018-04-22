@@ -185,6 +185,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void getCode() {
         code.setEnabled(false);
+        code.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_gray));
         timer = new CountDownTimer(60 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -195,6 +196,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onFinish() {
                 code.setEnabled(true);
                 code.setText("获取验证码");
+                code.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_red));
             }
         }.start();
         HashMap<String, String> params = new HashMap<>();
@@ -210,8 +212,13 @@ public class RegisterActivity extends AppCompatActivity {
                             if (!result.getCode().equals("成功")) {
                                 MyApplication.showToast(result.getException(), 0);
                             }
+                        }else{
+                            MyApplication.showToast("获取验证码失败", 0);
+                            timer.onFinish();
+                            timer.cancel();
                         }
 
+                        //code.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_red));
                     }
                 });
     }

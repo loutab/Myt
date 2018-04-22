@@ -53,25 +53,35 @@
         android:text="1.填写账号 >"
         android:textColor="@color/black"
         android:id="@+id/one"
-        android:textSize="12sp" />
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:text="2.验证身份 >"
-        android:textColor="@color/gray"
         android:textSize="12sp"
-        android:id="@+id/two"
+        android:visibility="gone"
         />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:text="3.设置新密码 "
+        android:gravity="bottom|right"
+        android:text="1. 验证身份 "
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        android:id="@+id/two"
+        />
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom|center_horizontal"
+            android:text=">"
+            android:textColor="@color/gray"
+            android:textSize="12sp"
+            />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="bottom|left"
+        android:text="2. 设置新密码 "
         android:textColor="@color/gray"
         android:textSize="12sp"
         android:id="@+id/three"

@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import com.example.administrator.partymemberconstruction.Bean.CheckCodeJson;
 import com.example.administrator.partymemberconstruction.Bean.CodeJson;
 import com.example.administrator.partymemberconstruction.Bean.ImgCodeJson;
+import com.example.administrator.partymemberconstruction.CustomView.ForgetCodeDialog;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 import com.squareup.picasso.Picasso;
@@ -67,9 +70,10 @@ public class ForgetPswActivity extends AppCompatActivity {
     LinearLayout line1;
 
 
-    private int step = 1;
+    private int step = 2;
     private CountDownTimer timer;
     private int judge;
+    private ForgetCodeDialog forgetCodeDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,18 +95,12 @@ public class ForgetPswActivity extends AppCompatActivity {
                 finish();
             }
         });
-        one.setTextColor(getResources().getColor(R.color.black));
-        //获得图片验证码
-        getImgCode();
+        two.setTextColor(getResources().getColor(R.color.black));
+
         //第一步
         register.setOnClickListener(nextListener);
-//验证码点击刷新
-        code.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getImgCode();
-            }
-        });
+
+        secondStep();
 
     }
 
@@ -115,7 +113,17 @@ public class ForgetPswActivity extends AppCompatActivity {
                         // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
                         if (result != null) {
                             String imgCodeUrl = result.getImgCode();
-                            Picasso.with(ForgetPswActivity.this).load(imgCodeUrl).into(code);
+                            Picasso.with(ForgetPswActivity.this).load(imgCodeUrl).into(forgetCodeDialog.getCode(),
+                                    new com.squareup.picasso.Callback() {
+                                        @Override
+                                        public void onSuccess() {
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            MyApplication.showToast("验证码加载失败",0);
+                                        }
+                                    });
                             judge = result.getJudge();
                         } else {
                             MyApplication.showToast("获取验证码失败", 0);
@@ -250,7 +258,36 @@ public class ForgetPswActivity extends AppCompatActivity {
                 //验证手机号码
                 if (phoneNum != null & phoneNum.length() == 11) {
                     //请求验证码接口
-                    getCodeTwo(phoneNum);
+                    forgetCodeDialog = new ForgetCodeDialog(ForgetPswActivity.this);
+                    forgetCodeDialog.show();
+                    forgetCodeDialog.getSure().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String s = forgetCodeDialog.getCodeNum().getText() + "";
+                            if(TextUtils.isEmpty(s)){
+                                MyApplication.showToast("请输入验证码",0);
+                            }else{
+                                //测试
+                                getCodeTwo(phone.getText() + "");
+                                if (s.equals(judge + "")) {
+                                    //验证码正确
+                                    getCodeTwo(phone.getText() + "");
+                                    forgetCodeDialog.cancel();
+                                } else {
+                                    MyApplication.showToast("验证码错误", 0);
+                                }
+                            }
+                        }
+                    });
+                    //验证码点击刷新
+                    forgetCodeDialog.getCode().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getImgCode();
+                        }
+                    });
+                    //获得图片验证码
+                    getImgCode();
                 } else {
                     MyApplication.showToast("请输入正确手机号码", 0);
                 }
@@ -263,6 +300,7 @@ public class ForgetPswActivity extends AppCompatActivity {
     //获得第二部验证码
     private void getCodeTwo(String phoneNum) {
         code2.setEnabled(false);
+        code.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_gray));
         //设置60秒验证码时效
         timer = new CountDownTimer(60 * 1000, 1000) {
             @Override
@@ -274,6 +312,7 @@ public class ForgetPswActivity extends AppCompatActivity {
             public void onFinish() {
                 code.setEnabled(true);
                 code2.setText("获取验证码");
+                code.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_red));
             }
         }.start();
         //调用验证码接口
@@ -294,6 +333,10 @@ public class ForgetPswActivity extends AppCompatActivity {
                             if (!result.getCode().equals("成功")) {
                                 MyApplication.showToast(result.getException(), 0);
                             }
+                        }else{
+                            MyApplication.showToast("获取验证码失败", 0);
+                            timer.onFinish();
+                            timer.cancel();
                         }
 
                     }
