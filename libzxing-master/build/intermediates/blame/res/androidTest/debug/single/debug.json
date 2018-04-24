@@ -16,6 +16,10 @@
         "source": "C:\\Users\\Administrator\\Desktop\\partyConstruction\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\shadow.png"
     },
     {
+        "merged": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_shadow.png.flat",
+        "source": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\shadow.png"
+    },
+    {
         "merged": "C:\\Users\\Administrator\\Desktop\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\raw_beep.ogg.flat",
         "source": "C:\\Users\\Administrator\\Desktop\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\raw\\beep.ogg"
     },
@@ -28,12 +32,12 @@
         "source": "C:\\Users\\Administrator\\Desktop\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\shadow.png"
     },
     {
-        "merged": "C:\\Users\\Administrator\\Desktop\\partyConstruction\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_qr_code_bg.9.png.flat",
-        "source": "C:\\Users\\Administrator\\Desktop\\partyConstruction\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\qr_code_bg.9.png"
-    },
-    {
         "merged": "C:\\Users\\Administrator\\Desktop\\Myt\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_shadow.png.flat",
         "source": "C:\\Users\\Administrator\\Desktop\\Myt\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\shadow.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\partyConstruction\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_qr_code_bg.9.png.flat",
+        "source": "C:\\Users\\Administrator\\Desktop\\partyConstruction\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\qr_code_bg.9.png"
     },
     {
         "merged": "C:\\Users\\Administrator\\Desktop\\Myt\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_qr_code_bg.9.png.flat",
@@ -44,12 +48,20 @@
         "source": "D:\\beijin\\My\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\scan_line.png"
     },
     {
+        "merged": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout_activity_capture.xml.flat",
+        "source": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\layout\\activity_capture.xml"
+    },
+    {
         "merged": "D:\\beijin\\My\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout_activity_capture.xml.flat",
         "source": "D:\\beijin\\My\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\layout\\activity_capture.xml"
     },
     {
         "merged": "D:\\beijin\\My\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_qr_code_bg.9.png.flat",
         "source": "D:\\beijin\\My\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\qr_code_bg.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_qr_code_bg.9.png.flat",
+        "source": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\qr_code_bg.9.png"
     },
     {
         "merged": "D:\\beijin\\newMyOne\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\raw_beep.ogg.flat",
@@ -64,12 +76,20 @@
         "source": "D:\\beijin\\My\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\raw\\beep.ogg"
     },
     {
+        "merged": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_scan_line.png.flat",
+        "source": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\scan_line.png"
+    },
+    {
         "merged": "D:\\beijin\\newMyOne\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_scan_line.png.flat",
         "source": "D:\\beijin\\newMyOne\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\scan_line.png"
     },
     {
         "merged": "D:\\beijin\\newMyOne\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_qr_code_bg.9.png.flat",
         "source": "D:\\beijin\\newMyOne\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\qr_code_bg.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\raw_beep.ogg.flat",
+        "source": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\raw\\beep.ogg"
     },
     {
         "merged": "C:\\Users\\Administrator\\Desktop\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout_activity_capture.xml.flat",
