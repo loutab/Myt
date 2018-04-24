@@ -1,9 +1,11 @@
 package com.example.administrator.partymemberconstruction;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -48,6 +50,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class FirstActivity extends AppCompatActivity {
 
@@ -68,14 +71,16 @@ public class FirstActivity extends AppCompatActivity {
     private List<Fragment> fragments;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private Unbinder bind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        ButterKnife.bind(this);
+        bind = ButterKnife.bind(this);
         //initTab();
         initNewTab();
+
 
 //        int w = View.MeasureSpec.makeMeasureSpec(0,
 //                View.MeasureSpec.UNSPECIFIED);
@@ -368,4 +373,26 @@ public class FirstActivity extends AppCompatActivity {
             return null;
         }
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bind.unbind();
+    }
+    private static final String TAG_EXIT = "exit";
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) {
+            boolean isExit = intent.getBooleanExtra(TAG_EXIT, false);
+            if (isExit) {
+                this.finish();
+                System.exit(0);
+                Intent intent1=new Intent(this,LoadingActivity.class);
+                startActivity(intent1);
+            }
+        }
+    }
+
+
 }

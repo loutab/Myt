@@ -11,5 +11,6 @@
     <color name="actionsheet_red">#FD4A2E</color>
     <color name="actionsheet_gray">#8F8F8F</color>
     <color name="code_gray">#ccc</color>
+    <color name="select">#4ADB63</color>
 </resources>
 

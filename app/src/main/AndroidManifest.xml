@@ -52,8 +52,11 @@
                 android:resource="@xml/file_provider" />
         </provider>
 
+        <receiver android:name=".FirstActivity$ExitReceiver" />
+
         <activity android:name=".ContactsActivity" />
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".ChangePSWActivity"></activity>
     </application>
 
 </manifest>
