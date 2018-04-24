@@ -37,4 +37,6 @@ public  class Url {
     public static String GetNoticeUrl="http://101.201.109.90:3333/Local/GetNoticeByType";
     //获得所有通知
     public static String GetAllNoticeUrl="http://101.201.109.90:3333/Local/GetNotice";
+    //扫码签到
+    public static String Sign="http://101.201.109.90:3333/Local/Sign";
 }

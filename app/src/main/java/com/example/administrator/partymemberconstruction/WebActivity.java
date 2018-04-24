@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -22,13 +23,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.partymemberconstruction.Bean.CodeJson;
+import com.example.administrator.partymemberconstruction.Bean.SignJson;
 import com.example.administrator.partymemberconstruction.CustomView.ActionSheetDialog;
 import com.example.administrator.partymemberconstruction.CustomView.LoadingDialog;
 import com.example.administrator.partymemberconstruction.utils.GetPathFromUri4kitkat;
+import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
+import com.example.administrator.partymemberconstruction.utils.Url;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -139,7 +145,7 @@ public class WebActivity extends AppCompatActivity {
 
         });
         web.loadUrl(url);
-       // web.loadUrl("file:///android_asset/test.html");
+        web.loadUrl("file:///android_asset/test1.html");
         web.addJavascriptInterface(new JsInteration(), "android");
     }
 
@@ -198,7 +204,7 @@ public class WebActivity extends AppCompatActivity {
 //            grantUriPermission(getPackageName(), contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //            intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
 //        } else {//7.0以下
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
         //}
         startActivityForResult(intent, REQUEST_CODE_TAKE_PICETURE);
 
@@ -225,12 +231,15 @@ public class WebActivity extends AppCompatActivity {
                 break;
             case 101:
                 if (resultCode == RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                String result = bundle.getString("result");
-                //MyApplication.showToast(result, 0);
-                    Log.d("1",""+result);
-                    completeSign();
-            }
+                    Bundle bundle = data.getExtras();
+                    String result = bundle.getString("result");
+                    //MyApplication.showToast(result, 0);
+                    Log.d("1", "" + result);
+                    if (!TextUtils.isEmpty(result))
+                        completeSign(result);
+                    else
+                        MyApplication.showToast("扫码失败", 0);
+                }
 
                 break;
         }
@@ -244,12 +253,29 @@ public class WebActivity extends AppCompatActivity {
 //        }
     }
 
-    private void completeSign() {
-
+    private void completeSign(String s) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("User_ID", MyApplication.user.getUser_ID() + "");
+        params.put("MeetingID", meetID + "");
+        params.put("MD5", s);
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.Sign, params, SignJson.class,
+                new OkhttpJsonUtil.TextCallBack<SignJson>() {
+                    @Override
+                    public void getResult(SignJson result) {
+                        if (result != null) {
+                            if (result.getCode().equals("成功")) {
+                                web.loadUrl(result.getUrl());
+                            }
+                            MyApplication.showToast(result.getError(), 0);
+                        } else {
+                            MyApplication.showToast("签到失败", 0);
+                        }
+                    }
+                });
     }
 
     private void takePhotoResult(int resultCode, Intent data) {
-        if (mFilePathCallback != null||mFilePathCallbacks!=null) {
+        if (mFilePathCallback != null || mFilePathCallbacks != null) {
             Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
             if (result != null) {
                 String path = GetPathFromUri4kitkat.getPath(this, result);
@@ -268,9 +294,9 @@ public class WebActivity extends AppCompatActivity {
     }
 
     private void takePictureResult(int resultCode) {
-        if (mFilePathCallback != null||mFilePathCallbacks!=null) {
+        if (mFilePathCallback != null || mFilePathCallbacks != null) {
             if (resultCode == RESULT_OK) {
-               Uri uri = Uri.fromFile(picturefile);
+                Uri uri = Uri.fromFile(picturefile);
                 if (Build.VERSION.SDK_INT > 19) {
                     mFilePathCallbacks.onReceiveValue(new Uri[]{uri});
                 } else {
@@ -304,12 +330,15 @@ public class WebActivity extends AppCompatActivity {
         public void ShowOrHide() {
             set();
         }
+
         @JavascriptInterface
         public void GetQR(int meetingID) {
+            meetID = meetingID;
             startActivityForResult(new Intent(WebActivity.this, CaptureActivity.class), 101);
         }
     }
 
+    int meetID;
     boolean isQR;
 
     public void set() {

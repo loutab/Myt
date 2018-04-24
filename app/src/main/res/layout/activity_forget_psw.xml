@@ -100,6 +100,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/first"
+            android:visibility="gone"
             >
 
             <TextView
@@ -260,24 +261,36 @@
                 android:layout_marginTop="26dp"
                 android:text="密码"
                 android:textSize="16sp" />
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="14dp">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="13dp"
                 android:layout_marginRight="13dp"
-                android:layout_marginTop="14dp"
                 android:background="@drawable/shape_notice_btn"
                 android:gravity="center_vertical"
                 android:hint="请输入密码"
-                android:maxLength="20"
+                android:maxLength="12"
                 android:paddingLeft="13dp"
                 android:textColorHint="#ccc"
                 android:textSize="14sp"
                 android:id="@+id/psw"
                 android:password="true"
                 />
-
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+android:layout_marginRight="40dp"
+        android:id="@+id/see"
+        android:clickable="true"
+        android:src="@mipmap/see"
+        />
+</RelativeLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

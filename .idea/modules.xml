@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Myt.iml" filepath="$PROJECT_DIR$/Myt.iml" />
       <module fileurl="file://D:\beijin\newMyOne\Myt.iml" filepath="D:\beijin\newMyOne\Myt.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://D:\beijin\newMyOne\app\app.iml" filepath="D:\beijin\newMyOne\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/libzxing-master/libzxing-master.iml" filepath="$PROJECT_DIR$/libzxing-master/libzxing-master.iml" />
       <module fileurl="file://D:\beijin\newMyOne\libzxing-master\libzxing-master.iml" filepath="D:\beijin\newMyOne\libzxing-master\libzxing-master.iml" />
-      <module fileurl="file://$PROJECT_DIR$/newMyOne.iml" filepath="$PROJECT_DIR$/newMyOne.iml" />
+      <module fileurl="file://C:\Users\Administrator\Desktop\Myt\newMyOne.iml" filepath="C:\Users\Administrator\Desktop\Myt\newMyOne.iml" />
     </modules>
   </component>
 </project>

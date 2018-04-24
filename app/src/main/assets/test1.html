@@ -8,14 +8,14 @@
 <body>
 <button id="btn" name="btn"  onclick="test()">测试我</button><br/>
 <p></p> 
-<input accept="image/*" capture="camera" id="imgFile" name="imgFile"  type="file"  onchange="previewFile()" > <br/>  
- <p></p>  
+<input accept="image/*"  id="imgFile" name="imgFile"  type="file"  onchange="previewFile()" > <br/>
+<p></p>
  <img src="http://101.201.109.90:3333/Upload/Android/drawable-hdpi/tongzhigonggao.png" id="img" width="50" height="50" />
  <script type="text/javascript">   
  function test(){
  alert("test1");
  }
-    // 2. js供 Native 调用的方法  
+    // 2. js供 Native 调用的方法
     function toNative(msg) {  
         alert("Hello, from H5, received msg: " + msg);  
         var p = document.getElementById("pp");  

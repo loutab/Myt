@@ -28,12 +28,12 @@
         "source": "C:\\Users\\Administrator\\Desktop\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\shadow.png"
     },
     {
-        "merged": "C:\\Users\\Administrator\\Desktop\\Myt\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_shadow.png.flat",
-        "source": "C:\\Users\\Administrator\\Desktop\\Myt\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\shadow.png"
-    },
-    {
         "merged": "C:\\Users\\Administrator\\Desktop\\partyConstruction\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_qr_code_bg.9.png.flat",
         "source": "C:\\Users\\Administrator\\Desktop\\partyConstruction\\PartyMemberConstruction\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\qr_code_bg.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\Myt\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_shadow.png.flat",
+        "source": "C:\\Users\\Administrator\\Desktop\\Myt\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\shadow.png"
     },
     {
         "merged": "C:\\Users\\Administrator\\Desktop\\Myt\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_qr_code_bg.9.png.flat",

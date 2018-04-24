@@ -69,6 +69,7 @@ public class TestWeb2Activity extends AppCompatActivity {
             }
         });
 
+
         web.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

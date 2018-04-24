@@ -4,12 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -23,6 +22,7 @@ import com.example.administrator.partymemberconstruction.Bean.ImgCodeJson;
 import com.example.administrator.partymemberconstruction.CustomView.ForgetCodeDialog;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -68,6 +68,8 @@ public class ForgetPswActivity extends AppCompatActivity {
     TextView three;
     @BindView(R.id.line1)
     LinearLayout line1;
+    @BindView(R.id.see)
+    ImageView see;
 
 
     private int step = 2;
@@ -101,6 +103,16 @@ public class ForgetPswActivity extends AppCompatActivity {
         register.setOnClickListener(nextListener);
 
         secondStep();
+        see.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(psw.getInputType()!= (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)){//隐藏密码
+                    psw.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }else{//显示密码
+                    psw.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                }
+            }
+        });
 
     }
 
@@ -114,14 +126,14 @@ public class ForgetPswActivity extends AppCompatActivity {
                         if (result != null) {
                             String imgCodeUrl = result.getImgCode();
                             Picasso.with(ForgetPswActivity.this).load(imgCodeUrl).into(forgetCodeDialog.getCode(),
-                                    new com.squareup.picasso.Callback() {
+                                    new Callback() {
                                         @Override
                                         public void onSuccess() {
                                         }
 
                                         @Override
                                         public void onError() {
-                                            MyApplication.showToast("验证码加载失败",0);
+                                            MyApplication.showToast("验证码加载失败", 0);
                                         }
                                     });
                             judge = result.getJudge();
@@ -218,6 +230,11 @@ public class ForgetPswActivity extends AppCompatActivity {
                                 thirdStep();
                             } else
                                 MyApplication.showToast(result.getException(), 0);
+
+                            //测试
+                            //进入第三步
+//                            step = 3;
+//                            thirdStep();
                         }
 
                     }
@@ -264,11 +281,11 @@ public class ForgetPswActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             String s = forgetCodeDialog.getCodeNum().getText() + "";
-                            if(TextUtils.isEmpty(s)){
-                                MyApplication.showToast("请输入验证码",0);
-                            }else{
+                            if (TextUtils.isEmpty(s)) {
+                                MyApplication.showToast("请输入验证码", 0);
+                            } else {
                                 //测试
-                                getCodeTwo(phone.getText() + "");
+                                //getCodeTwo(phone.getText() + "");
                                 if (s.equals(judge + "")) {
                                     //验证码正确
                                     getCodeTwo(phone.getText() + "");
@@ -300,7 +317,7 @@ public class ForgetPswActivity extends AppCompatActivity {
     //获得第二部验证码
     private void getCodeTwo(String phoneNum) {
         code2.setEnabled(false);
-        code.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_gray));
+        code2.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_gray));
         //设置60秒验证码时效
         timer = new CountDownTimer(60 * 1000, 1000) {
             @Override
@@ -310,9 +327,9 @@ public class ForgetPswActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                code.setEnabled(true);
+                code2.setEnabled(true);
                 code2.setText("获取验证码");
-                code.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_red));
+                code2.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_red));
             }
         }.start();
         //调用验证码接口
@@ -330,10 +347,11 @@ public class ForgetPswActivity extends AppCompatActivity {
                         // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
                         if (result != null) {
                             Log.d("p", result.getCode());
+
                             if (!result.getCode().equals("成功")) {
                                 MyApplication.showToast(result.getException(), 0);
                             }
-                        }else{
+                        } else {
                             MyApplication.showToast("获取验证码失败", 0);
                             timer.onFinish();
                             timer.cancel();

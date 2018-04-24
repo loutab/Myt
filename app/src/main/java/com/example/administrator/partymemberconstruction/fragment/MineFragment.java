@@ -1,6 +1,7 @@
 package com.example.administrator.partymemberconstruction.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.Adapter.MineListAdapter;
+import com.example.administrator.partymemberconstruction.ContactsActivity;
 import com.example.administrator.partymemberconstruction.CustomView.CircleImageView;
 import com.example.administrator.partymemberconstruction.R;
+import com.example.administrator.partymemberconstruction.SettingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +79,26 @@ public class MineFragment extends Fragment {
         initDate();
         MineListAdapter mineListAdapter=new MineListAdapter(getContext(),lists);
         list.setAdapter(mineListAdapter);
+        //设置联系人点击事件
+        contacts.setClickable(true);
+        contacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               gotoActivity(ContactsActivity.class);
+            }
+        });
+        //设置设置点击事件
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoActivity(SettingActivity.class);
+            }
+        });
+    }
+
+    private void gotoActivity(Class c) {
+        Intent intent=new Intent(getContext(),c);
+        startActivity(intent);
     }
 
     private void initDate() {
@@ -89,4 +112,5 @@ public class MineFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 }
