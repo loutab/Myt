@@ -16,8 +16,11 @@ import android.widget.TextView;
 import com.example.administrator.partymemberconstruction.Adapter.MineListAdapter;
 import com.example.administrator.partymemberconstruction.ContactsActivity;
 import com.example.administrator.partymemberconstruction.CustomView.CircleImageView;
+import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
 import com.example.administrator.partymemberconstruction.SettingActivity;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +108,23 @@ public class MineFragment extends Fragment {
         lists = new ArrayList<>();
         lists.add(new String[]{"我发的消息",R.mipmap.mymessage+""});
         lists.add(new String[]{"我的收藏",R.mipmap.mycollect+""});
+        String userName=MyApplication.user.getUi_NickName()==null?"":MyApplication.user.getUi_NickName();
+        name.setText(userName);
+        String url=MyApplication.user.getUi_Headimg()==null|MyApplication.user.getUi_Headimg()==""?"wwww":MyApplication.user.getUi_Headimg();
+        Picasso.with(this.getContext()).load(url).into(headImg, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError() {
+                headImg.setImageResource(R.mipmap.default_head);
+MyApplication.showToast("头像加载失败",0);
+            }
+        });
+        String introduce=MyApplication.user.getUi_Introduction()==null?"":MyApplication.user.getUi_Introduction();
+        introduction.setText(introduce);
     }
 
     @Override
