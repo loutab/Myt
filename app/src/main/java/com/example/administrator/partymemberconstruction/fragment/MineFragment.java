@@ -8,21 +8,28 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.Adapter.MineListAdapter;
+import com.example.administrator.partymemberconstruction.Bean.SelfInfo;
+import com.example.administrator.partymemberconstruction.Bean.SignJson;
 import com.example.administrator.partymemberconstruction.ContactsActivity;
 import com.example.administrator.partymemberconstruction.CustomView.CircleImageView;
 import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
 import com.example.administrator.partymemberconstruction.SettingActivity;
+import com.example.administrator.partymemberconstruction.WebActivity;
+import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
+import com.example.administrator.partymemberconstruction.utils.Url;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +68,10 @@ public class MineFragment extends Fragment {
     ListView list;
     Unbinder unbinder;
     private List<String[]> lists;
+    private SelfInfo.MenuListBean menuListBean;
+    private SelfInfo.MenuListBean collect;
+    private SelfInfo.MenuListBean inter;
+    private SelfInfo.MenuListBean selfInfo;
 
     public MineFragment() {
         // Required empty public constructor
@@ -97,6 +108,77 @@ public class MineFragment extends Fragment {
                 gotoActivity(SettingActivity.class);
             }
         });
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position==1){
+                    if (collect!=null)
+                    gotoNewActivity(collect.getMenu_Url(),collect.getMenu_Name());
+                }
+            }
+        });
+        integral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (inter!=null)
+                gotoNewActivity(inter.getMenu_Url(),inter.getMenu_Name());
+            }
+        });
+        personalData.setClickable(true);
+        personalData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selfInfo!=null)
+                gotoNewActivity(MineFragment.this.selfInfo.getMenu_Url(), MineFragment.this.selfInfo.getMenu_Name());
+            }
+        });
+        getSelf();
+    }
+
+    private void getSelf() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("User_ID", MyApplication.user.getUser_ID() + "");
+        params.put("Resol_Type", "1");
+        params.put("type", "3");
+        OkhttpJsonUtil.getInstance().postByEnqueue(this.getActivity(), Url.FirstUrl, params, SelfInfo.class,
+                new OkhttpJsonUtil.TextCallBack<SelfInfo>() {
+                    @Override
+                    public void getResult(SelfInfo result) {
+                        if (result != null) {
+                            if (result.getCode().equals("成功")) {
+                                final List<SelfInfo.MenuListBean> menu_list = result.getMenu_List();
+                                for (SelfInfo.MenuListBean bean:menu_list) {
+                                    menuListBean = bean;
+                                    switch (menuListBean.getMenu_Name()){
+                                        case "个人资料":
+                                            selfInfo = MineFragment.this.menuListBean;
+
+                                            break;
+                                        case  "积分":
+                                            inter = MineFragment.this.menuListBean;
+
+                                            break;
+                                        case "我的收藏":
+                                            collect = MineFragment.this.menuListBean;
+                                            break;
+
+                                    }
+                                }
+
+                            }
+                        }
+                            else
+                                MyApplication.showToast("获取个人信息失败",0);
+                    }
+        }
+                    );
+    }
+
+    private void gotoNewActivity(String currentmenu_url,String title) {
+        Intent intent=new Intent(getContext(), WebActivity.class);
+        intent.putExtra("Url",currentmenu_url);
+        intent.putExtra("title",title);
+        startActivity(intent);
     }
 
     private void gotoActivity(Class c) {
@@ -127,10 +209,10 @@ MyApplication.showToast("头像加载失败",0);
         introduction.setText(introduce);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        unbinder.unbind();
+//    }
 
 }

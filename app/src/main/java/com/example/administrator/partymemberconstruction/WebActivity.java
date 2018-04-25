@@ -149,7 +149,7 @@ public class WebActivity extends AppCompatActivity {
 //
 //        });
         web.loadUrl(url);
-        web.loadUrl("file:///android_asset/test1.html");
+       // web.loadUrl("file:///android_asset/test1.html");
         web.addJavascriptInterface(new JsInteration(), "android");
     }
 
