@@ -39,4 +39,6 @@ public  class Url {
     public static String GetAllNoticeUrl="http://101.201.109.90:3333/Local/GetNotice";
     //扫码签到
     public static String Sign="http://101.201.109.90:3333/Local/Sign";
+    //扫码签到
+    public static String GetContact="http://101.201.109.90:3333/Local/GetContactPerson";
 }
