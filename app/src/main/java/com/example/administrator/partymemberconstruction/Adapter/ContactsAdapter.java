@@ -1,5 +1,6 @@
 package com.example.administrator.partymemberconstruction.Adapter;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,7 +13,7 @@ public class ContactsAdapter extends BaseAdapter {
     public ContactsAdapter() {
         super();
     }
-
+Context context;
     @Override
     public int getCount() {
         return 0;
