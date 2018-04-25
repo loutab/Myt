@@ -6,7 +6,7 @@
 </head>
  
 <body>
-<button id="btn" name="btn"  onclick="test()">测试我</button><br/>
+<button id="btn" name="btn"  onclick="getPic()">测试我</button><br/>
 <p></p> 
 <input accept="image/*"  id="imgFile" name="imgFile"  type="file"  onchange="previewFile()" > <br/>
 <p></p>
@@ -20,9 +20,15 @@
         alert("Hello, from H5, received msg: " + msg);  
         var p = document.getElementById("pp");  
         p.value = msg;  
-    }  
-	function previewFile() {  
-	alert("test");
+    }
+    function getimg(s){
+    alert("ccc");
+    img.src="data:image/jpg;base64,"+s;
+    }
+    function getPic(){
+ window.android.GetPic();
+ }
+	function previewFile() {
         var img = document.getElementById("img");  
         // 仅限上传单张图片  
         var file = document.querySelector('input[type=file]').files[0];  

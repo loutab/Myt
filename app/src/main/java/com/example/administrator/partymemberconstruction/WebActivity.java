@@ -1,6 +1,8 @@
 package com.example.administrator.partymemberconstruction;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -32,6 +35,7 @@ import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -117,33 +121,33 @@ public class WebActivity extends AppCompatActivity {
             }
         });
         //设置辅助Webview
-        web.setWebChromeClient(new WebChromeClient() {
-            //不同版本系统打开本地资源
-            @Override
-            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {//5.0+
-                showDialog();
-                mFilePathCallbacks = filePathCallback;
-                return true;
-            }
-
-            //openFileChooser 方法是隐藏方法
-            public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {// android 系统版本>4.1.1
-                showDialog();
-                mFilePathCallback = uploadMsg;
-            }
-
-            public void openFileChooser(ValueCallback<Uri> uploadMsg) {//android 系统版本<3.0
-                showDialog();
-                mFilePathCallback = uploadMsg;
-            }
-
-            public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {//android 系统版本3.0+
-                showDialog();
-                mFilePathCallback = uploadMsg;
-
-            }
-
-        });
+//        web.setWebChromeClient(new WebChromeClient() {
+//            //不同版本系统打开本地资源
+//            @Override
+//            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {//5.0+
+//                showDialog();
+//                mFilePathCallbacks = filePathCallback;
+//                return true;
+//            }
+//
+//            //openFileChooser 方法是隐藏方法
+//            public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {// android 系统版本>4.1.1
+//                showDialog();
+//                mFilePathCallback = uploadMsg;
+//            }
+//
+//            public void openFileChooser(ValueCallback<Uri> uploadMsg) {//android 系统版本<3.0
+//                showDialog();
+//                mFilePathCallback = uploadMsg;
+//            }
+//
+//            public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {//android 系统版本3.0+
+//                showDialog();
+//                mFilePathCallback = uploadMsg;
+//
+//            }
+//
+//        });
         web.loadUrl(url);
         web.loadUrl("file:///android_asset/test1.html");
         web.addJavascriptInterface(new JsInteration(), "android");
@@ -275,10 +279,25 @@ public class WebActivity extends AppCompatActivity {
     }
 
     private void takePhotoResult(int resultCode, Intent data) {
+        Uri newResult = data == null? null : data.getData();
+        if (newResult != null) {
+            String path = GetPathFromUri4kitkat.getPath(this, newResult);
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            String s = Bitmap2StrByBase64(bitmap);
+            Log.e("sssss",s);
+            web.loadUrl("javascript:getimg('" + s + "')");
+        }
+            else{
+            MyApplication.showToast("获取照片失败",0);
+        }
         if (mFilePathCallback != null || mFilePathCallbacks != null) {
             Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
             if (result != null) {
                 String path = GetPathFromUri4kitkat.getPath(this, result);
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                String s = Bitmap2StrByBase64(bitmap);
+                Log.e("sssss",s);
+                web.loadUrl("javascript:getimg('" + s + "')");
                 Uri uri = Uri.fromFile(new File(path));
                 if (Build.VERSION.SDK_INT > 19) {
                     mFilePathCallbacks.onReceiveValue(new Uri[]{uri});
@@ -291,9 +310,27 @@ public class WebActivity extends AppCompatActivity {
                 mFilePathCallback = null;
             }
         }
+
+    }
+    public String Bitmap2StrByBase64(Bitmap bit){
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        bit.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩
+        byte[] bytes=bos.toByteArray();
+        return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
 
     private void takePictureResult(int resultCode) {
+        if (resultCode == RESULT_OK) {
+            String path = GetPathFromUri4kitkat.getPath(this,Uri.fromFile(picturefile));
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            String s = Bitmap2StrByBase64(bitmap);
+            Log.e("sssss",s);
+            web.loadUrl("javascript:getimg('" + s + "')");
+        }else{
+            MyApplication.showToast("获取照片失败",0);
+        }
+
+
         if (mFilePathCallback != null || mFilePathCallbacks != null) {
             if (resultCode == RESULT_OK) {
                 Uri uri = Uri.fromFile(picturefile);
@@ -330,7 +367,10 @@ public class WebActivity extends AppCompatActivity {
         public void ShowOrHide() {
             set();
         }
-
+        @JavascriptInterface
+        public void GetPic() {
+            showDialog();
+        }
         @JavascriptInterface
         public void GetQR(int meetingID) {
             meetID = meetingID;
