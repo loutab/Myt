@@ -2,9 +2,16 @@ package com.example.administrator.partymemberconstruction.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,19 +22,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.Adapter.MineListAdapter;
+import com.example.administrator.partymemberconstruction.Bean.PostImgJson;
 import com.example.administrator.partymemberconstruction.Bean.SelfInfo;
 import com.example.administrator.partymemberconstruction.Bean.SignJson;
 import com.example.administrator.partymemberconstruction.ContactsActivity;
+import com.example.administrator.partymemberconstruction.CustomView.ChangeHeadImgDialog;
 import com.example.administrator.partymemberconstruction.CustomView.CircleImageView;
 import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
 import com.example.administrator.partymemberconstruction.SettingActivity;
 import com.example.administrator.partymemberconstruction.WebActivity;
+import com.example.administrator.partymemberconstruction.utils.GetPathFromUri4kitkat;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +47,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A fragment with a Google +1 button.
@@ -72,6 +86,8 @@ public class MineFragment extends Fragment {
     private SelfInfo.MenuListBean collect;
     private SelfInfo.MenuListBean inter;
     private SelfInfo.MenuListBean selfInfo;
+    private ChangeHeadImgDialog changeHeadImgDialog;
+    private File picturefile;
 
     public MineFragment() {
         // Required empty public constructor
@@ -133,7 +149,107 @@ public class MineFragment extends Fragment {
             }
         });
         getSelf();
+        //设置头像点击事件
+        changeHeadImgDialog = new ChangeHeadImgDialog(this.getContext());
+        headImg.setClickable(true);
+        headImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeHeadImgDialog.show();
+            }
+        });
+        changeHeadImgDialog.getPhone().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //相册
+                takePhoto();
+            }
+        });
+        changeHeadImgDialog.getTake().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //照相
+                pickPhoto();
+            }
+        });
     }
+    private static final int REQUEST_CODE_TAKE_PICETURE = 11;
+    private static final int REQUEST_CODE_PICK_PHOTO = 12;
+    private void takePhoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_CODE_PICK_PHOTO);
+    }
+
+    private void pickPhoto() {
+        File pFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyPictures");//图片位置
+        if (!pFile.exists()) {
+            pFile.mkdirs();
+        }
+        //拍照所存路径
+        picturefile = new File(pFile + File.separator + "IvMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
+       String testPath = new String(picturefile.getAbsolutePath());
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
+        startActivityForResult(intent, REQUEST_CODE_TAKE_PICETURE);
+    }
+    private void takePhotoResult(int resultCode, Intent data) {
+        Uri newResult = data == null? null : data.getData();
+        if (newResult != null) {
+            String path = GetPathFromUri4kitkat.getPath(this.getContext(), newResult);
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            headImg.setImageBitmap(bitmap);
+            String s = Bitmap2StrByBase64(bitmap);
+            postImg(s);
+        }
+        else{
+            MyApplication.showToast("获取照片失败",0);
+        }}
+
+    private void postImg(String s) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("headImg",s);
+        OkhttpJsonUtil.getInstance().postByEnqueue(this.getActivity(), Url.PostImg, params, PostImgJson.class,
+                new OkhttpJsonUtil.TextCallBack<PostImgJson>() {
+                    @Override
+                    public void getResult(PostImgJson result) {
+                        if (result != null) {
+    }
+                    }
+        });
+    }
+
+    private void takePictureResult(int resultCode) {
+        if (resultCode == RESULT_OK) {
+            String path = GetPathFromUri4kitkat.getPath(this.getContext(),Uri.fromFile(picturefile));
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            headImg.setImageBitmap(bitmap);
+            String s = Bitmap2StrByBase64(bitmap);
+            postImg(s);
+        }else{
+            MyApplication.showToast("获取照片失败",0);
+        }}
+    public String Bitmap2StrByBase64(Bitmap bit){
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        bit.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩
+        byte[] bytes=bos.toByteArray();
+        return Base64.encodeToString(bytes, Base64.NO_WRAP);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE_TAKE_PICETURE:
+                takePictureResult(resultCode);
+                changeHeadImgDialog.cancel();
+                break;
+
+            case REQUEST_CODE_PICK_PHOTO:
+                takePhotoResult(resultCode, data);
+                changeHeadImgDialog.cancel();
+                break;
+        }
+    }
+
 
     private void getSelf() {
         HashMap<String, String> params = new HashMap<>();

@@ -41,4 +41,6 @@ public  class Url {
     public static String Sign="http://101.201.109.90:3333/Local/Sign";
     //获得联系人
     public static String GetContact="http://101.201.109.90:3333/Local/GetContactPerson";
+    //上传图片
+    public static String PostImg="http://101.201.109.90:3333/Local/UploadImg";
 }
