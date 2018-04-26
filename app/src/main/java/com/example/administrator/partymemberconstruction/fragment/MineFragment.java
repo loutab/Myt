@@ -203,7 +203,7 @@ public class MineFragment extends Fragment {
             @Override
             public void onError() {
                 headImg.setImageResource(R.mipmap.default_head);
-MyApplication.showToast("头像加载失败",0);
+//MyApplication.showToast("头像加载失败",0);
             }
         });
         String introduce=MyApplication.user.getUi_Introduction()==null?"":MyApplication.user.getUi_Introduction();

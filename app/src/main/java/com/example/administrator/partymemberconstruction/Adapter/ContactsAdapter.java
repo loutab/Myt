@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.Bean.ContactsJson;
+import com.example.administrator.partymemberconstruction.Bean.ContactsSort;
 import com.example.administrator.partymemberconstruction.ContactsActivity;
 import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
@@ -28,9 +29,7 @@ import butterknife.ButterKnife;
  */
 
 public class ContactsAdapter extends BaseAdapter {
-    List<ContactsJson.UserInfoListBean> list;
-    List<ContactsActivity.targe> targes;
-
+    List<ContactsSort> list;
 
     public ContactsAdapter() {
         super();
@@ -38,9 +37,8 @@ public class ContactsAdapter extends BaseAdapter {
 
     Context context;
 
-    public ContactsAdapter(List<ContactsJson.UserInfoListBean> list, List<ContactsActivity.targe> targes, Context context) {
+    public ContactsAdapter(List<ContactsSort> list, Context context) {
         this.list = list;
-        this.targes = targes;
         this.context = context;
     }
 
@@ -74,29 +72,14 @@ public class ContactsAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
         Log.e("a",position+"位置");
-        if(position==0||targes.get(j).getPosition()==position){
-            if(targes.get(j).getPosition()==position){
-                if(targes.size()-1>j)
-                j++;
-            }
+        if(list.get(position).isShow()){
             viewHolder.letter.setVisibility(View.VISIBLE);
-            viewHolder.letter.setText(ChineseToEnglish.getPinYinHeadChar(list.get(position).getName()).charAt(0)+"");
+            viewHolder.letter.setText(ChineseToEnglish.getPinYinHeadChar(list.get(position).getBean().getName()).charAt(0)+"");
         }
 
-        viewHolder.name.setText(list.get(position).getName()==null?"":list.get(position).getName());
-        String ss = TextUtils.isEmpty(list.get(position).getHeadImg()) ? "www" : list.get(position).getHeadImg();
-        Picasso.with(context).load(ss).into(viewHolder.head, new Callback() {
-            @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
-            public void onError() {
-               // viewHolder.head.setImageResource(R.mipmap.head_img);
-                //MyApplication.showToast("头像加载失败",0);
-            }
-        });
+        viewHolder.name.setText(list.get(position).getBean().getName()==null?"":list.get(position).getBean().getName());
+        String ss = TextUtils.isEmpty(list.get(position).getBean().getHeadImg()) ? "www" : list.get(position).getBean().getHeadImg();
+        Picasso.with(context).load(ss).error(R.mipmap.search_p).into(viewHolder.head);
 
         return view;
     }
