@@ -178,6 +178,7 @@ public class MineFragment extends Fragment {
         Intent intent=new Intent(getContext(), WebActivity.class);
         intent.putExtra("Url",currentmenu_url);
         intent.putExtra("title",title);
+        intent.putExtra("headTitle","s");
         startActivity(intent);
     }
 

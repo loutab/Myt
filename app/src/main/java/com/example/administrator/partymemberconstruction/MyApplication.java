@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.example.administrator.partymemberconstruction.Bean.UserJson;
+import com.example.administrator.partymemberconstruction.utils.CrashHandler;
 
 /**
  * Created by Administrator on 2018/3/19/019.
@@ -18,6 +19,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context=getApplicationContext();
+        //CrashHandler.getInstance().initCrashHandler(this);
     }
     public static void showToast(String msg, int length) {
         if (toast == null) {

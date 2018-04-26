@@ -89,6 +89,10 @@ public class WebActivity extends AppCompatActivity {
             }
         });
 
+        String headTitle = intent.getStringExtra("headTitle");
+        if(!TextUtils.isEmpty(headTitle)){
+            headtitle.setVisibility(View.GONE);
+        }
 
         //设置webview
         WebSettings settings = web.getSettings();
