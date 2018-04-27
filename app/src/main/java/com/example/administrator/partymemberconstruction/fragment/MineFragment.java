@@ -213,6 +213,11 @@ public class MineFragment extends Fragment {
                     @Override
                     public void getResult(PostImgJson result) {
                         if (result != null) {
+                            if(result.getCode().equals("成功")){
+
+                            }else{
+                                MyApplication.showToast(result.getError(),0);
+                            }
     }
                     }
         });
