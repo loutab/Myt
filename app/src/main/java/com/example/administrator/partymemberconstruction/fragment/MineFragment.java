@@ -199,7 +199,7 @@ public class MineFragment extends Fragment {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             headImg.setImageBitmap(bitmap);
             String s = Bitmap2StrByBase64(bitmap);
-            postImg(s);
+            postImg("data:image/jpeg;base64,"+s);
         }
         else{
             MyApplication.showToast("获取照片失败",0);
@@ -214,11 +214,15 @@ public class MineFragment extends Fragment {
                     public void getResult(PostImgJson result) {
                         if (result != null) {
                             if(result.getCode().equals("成功")){
-
+                                String url = result.getSuccess();
+                                MyApplication.user.setUi_Headimg(url);
+                                Picasso.with(MineFragment.this.getContext()).load(url).error(R.mipmap.default_head).into(headImg);
                             }else{
                                 MyApplication.showToast(result.getError(),0);
                             }
-    }
+    }else{
+                            MyApplication.showToast("上传照片失败",0);
+                        }
                     }
         });
     }
@@ -229,7 +233,7 @@ public class MineFragment extends Fragment {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             headImg.setImageBitmap(bitmap);
             String s = Bitmap2StrByBase64(bitmap);
-            postImg(s);
+            postImg("data:image/jpeg;base64,"+s);
         }else{
             MyApplication.showToast("获取照片失败",0);
         }}
