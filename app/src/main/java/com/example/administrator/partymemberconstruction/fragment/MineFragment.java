@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.Adapter.MineListAdapter;
+import com.example.administrator.partymemberconstruction.Bean.ChangeJson;
 import com.example.administrator.partymemberconstruction.Bean.PostImgJson;
 import com.example.administrator.partymemberconstruction.Bean.SelfInfo;
 import com.example.administrator.partymemberconstruction.Bean.SignJson;
@@ -88,6 +89,8 @@ public class MineFragment extends Fragment {
     private SelfInfo.MenuListBean selfInfo;
     private ChangeHeadImgDialog changeHeadImgDialog;
     private File picturefile;
+    private String aboutPart;
+    private String tempUrl;
 
     public MineFragment() {
         // Required empty public constructor
@@ -197,7 +200,7 @@ public class MineFragment extends Fragment {
         if (newResult != null) {
             String path = GetPathFromUri4kitkat.getPath(this.getContext(), newResult);
             Bitmap bitmap = BitmapFactory.decodeFile(path);
-            headImg.setImageBitmap(bitmap);
+            //headImg.setImageBitmap(bitmap);
             String s = Bitmap2StrByBase64(bitmap);
             postImg("data:image/jpeg;base64,"+s);
         }
@@ -214,9 +217,9 @@ public class MineFragment extends Fragment {
                     public void getResult(PostImgJson result) {
                         if (result != null) {
                             if(result.getCode().equals("成功")){
-                                String url = result.getSuccess();
-                                MyApplication.user.setUi_Headimg(url);
-                                Picasso.with(MineFragment.this.getContext()).load(url).error(R.mipmap.default_head).into(headImg);
+                                tempUrl = result.getSuccess();
+
+                                changeImg(tempUrl);
                             }else{
                                 MyApplication.showToast(result.getError(),0);
                             }
@@ -227,11 +230,33 @@ public class MineFragment extends Fragment {
         });
     }
 
+    private void changeImg(String url) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("User_ID",MyApplication.phone+"");
+        params.put("ui_Headimg",url);
+        OkhttpJsonUtil.getInstance().postByEnqueue(this.getActivity(), Url.ChangeImg, params, ChangeJson.class,
+                new OkhttpJsonUtil.TextCallBack<ChangeJson>() {
+                    @Override
+                    public void getResult(ChangeJson result) {
+                        if (result != null) {
+                            if(result.getCode().equals("成功")){
+                                MyApplication.user.setUi_Headimg(tempUrl);
+                                Picasso.with(MineFragment.this.getContext()).load(tempUrl).error(R.mipmap.default_head).into(headImg);
+                            }else{
+                                MyApplication.showToast(result.getException(),0);
+                            }
+                        }else{
+                            MyApplication.showToast("更改头像失败",0);
+                        }
+                    }
+                });
+    }
+
     private void takePictureResult(int resultCode) {
         if (resultCode == RESULT_OK) {
             String path = GetPathFromUri4kitkat.getPath(this.getContext(),Uri.fromFile(picturefile));
             Bitmap bitmap = BitmapFactory.decodeFile(path);
-            headImg.setImageBitmap(bitmap);
+            //headImg.setImageBitmap(bitmap);
             String s = Bitmap2StrByBase64(bitmap);
             postImg("data:image/jpeg;base64,"+s);
         }else{
@@ -286,6 +311,9 @@ public class MineFragment extends Fragment {
                                         case "我的收藏":
                                             collect = MineFragment.this.menuListBean;
                                             break;
+                                        case "关于党建":
+                                            aboutPart = MineFragment.this.menuListBean.getMenu_Url();
+                                            break;
 
                                     }
                                 }
@@ -309,6 +337,7 @@ public class MineFragment extends Fragment {
 
     private void gotoActivity(Class c) {
         Intent intent=new Intent(getContext(),c);
+        intent.putExtra("about",aboutPart);
         startActivity(intent);
     }
 

@@ -15,6 +15,8 @@ public class MyApplication extends Application {
     public static Context context;
     private static Toast toast;
     public static UserJson.UserInfoBean user;
+    public static String psw;
+    public static String phone;
     @Override
     public void onCreate() {
         super.onCreate();

@@ -35,14 +35,20 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     RelativeLayout about;
     @BindView(R.id.out)
     TextView out;
+    private String about1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
+        Intent intent = getIntent();
+        about1 = intent.getStringExtra("about");
         back.setOnClickListener(this);
         out.setOnClickListener(this);
+        changePsw.setOnClickListener(this);
+        bindAccount.setOnClickListener(this);
+        about.setOnClickListener(this);
     }
 
     @Override
@@ -56,6 +62,20 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 Intent intent=new Intent(this,FirstActivity.class);
                 intent.putExtra("exit", true);
                 startActivity(intent);
+                break;
+                case R.id.change_psw:
+                    Intent intent1=new Intent(this,ChangeMyPwsActivity.class);
+                    startActivity(intent1);
+                    break;
+            case R.id.bind_account:
+                Intent intent2=new Intent(this,ChangePhoneActivity.class);
+                startActivity(intent2);
+                break;
+            case R.id.about:
+                Intent intent3=new Intent(this,WebActivity.class);
+                intent3.putExtra("Url",about1);
+                intent3.putExtra("title","关于党建");
+                startActivity(intent3);
                 break;
         }
     }

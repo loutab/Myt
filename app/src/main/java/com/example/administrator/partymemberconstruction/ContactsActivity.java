@@ -58,8 +58,8 @@ public class ContactsActivity extends AppCompatActivity {
         });
         contactsSorts = new ArrayList<>();
         getContacts();
-        newList=new ArrayList<>();
-        user_infoList=new ArrayList<>();
+        newList = new ArrayList<>();
+        user_infoList = new ArrayList<>();
         contactsAdapter = new ContactsAdapter(contactsSorts, this);
         list.setAdapter(contactsAdapter);
         //testPin();
@@ -75,11 +75,11 @@ public class ContactsActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                List<ContactsJson.UserInfoListBean> temp=new ArrayList<>();
-                for (ContactsJson.UserInfoListBean contactsSort:user_infoList) {
+                List<ContactsJson.UserInfoListBean> temp = new ArrayList<>();
+                for (ContactsJson.UserInfoListBean contactsSort : user_infoList) {
                     boolean contains = contactsSort.getName().contains(s);
-                    if(contains)
-                    temp.add(contactsSort);
+                    if (contains)
+                        temp.add(contactsSort);
                 }
                 contactsSorts.clear();
                 contactsSorts.addAll(getContactsSort(temp));
@@ -88,39 +88,38 @@ public class ContactsActivity extends AppCompatActivity {
         });
     }
 
-    private void testPin() {
-        List<test> list = new ArrayList();
-        list.add(new test("刘军", 1));
-        list.add(new test("刘先生", 2));
-        list.add(new test("刘额", 2));
-        list.add(new test("刘他", 2));
-        list.add(new test("刘军", 2));
-        list.add(new test("胡啊", 2));
-        list.add(new test("胡是", 2));
-        list.add(new test("胡了", 2));
-        list.add(new test("胡人", 2));
-        list.add(new test("湖说", 2));
-        list.add(new test("雨是", 2));
-        list.add(new test("与他", 2));
-        List<targe> newList = new ArrayList<>();
-        Collections.sort(list, new Comparator<test>() {
-            @Override
-            public int compare(test test, test t1) {
-                return ChineseToEnglish.getPinYinHeadChar(test.getName()).compareTo(ChineseToEnglish.getPinYinHeadChar(t1.getName()));
-            }
-        });
-        String letters = "" + ChineseToEnglish.getPinYinHeadChar(list.get(0).getName()).charAt(0);
-        for (int i = 0; i < list.size(); i++) {
-            String name = list.get(i).getName();
+    private List<ContactsJson.UserInfoListBean> testPin() {
+        List<ContactsJson.UserInfoListBean> list = new ArrayList();
+        list.add(new ContactsJson.UserInfoListBean("刘军"));
+        list.add(new ContactsJson.UserInfoListBean("刘先生"));
+        list.add(new ContactsJson.UserInfoListBean("刘额"));
+        list.add(new ContactsJson.UserInfoListBean("刘他"));
+        list.add(new ContactsJson.UserInfoListBean("刘军"));
+        list.add(new ContactsJson.UserInfoListBean("胡啊"));
+        list.add(new ContactsJson.UserInfoListBean("胡是"));
+        list.add(new ContactsJson.UserInfoListBean("胡了"));
+        list.add(new ContactsJson.UserInfoListBean("胡人"));
+        list.add(new ContactsJson.UserInfoListBean("湖说"));
+        list.add(new ContactsJson.UserInfoListBean("雨是"));
+        list.add(new ContactsJson.UserInfoListBean("与他"));
+        list.add(new ContactsJson.UserInfoListBean("雨是"));
+        list.add(new ContactsJson.UserInfoListBean("与他"));
+        list.add(new ContactsJson.UserInfoListBean("雨是"));
+        list.add(new ContactsJson.UserInfoListBean("与他"));
+        list.add(new ContactsJson.UserInfoListBean("雨是"));
+        list.add(new ContactsJson.UserInfoListBean("与他"));
+        list.add(new ContactsJson.UserInfoListBean("雨是"));
+        list.add(new ContactsJson.UserInfoListBean("与他"));
+        list.add(new ContactsJson.UserInfoListBean("雨是"));
+        list.add(new ContactsJson.UserInfoListBean("与他"));
+        list.add(new ContactsJson.UserInfoListBean("雨是"));
+        list.add(new ContactsJson.UserInfoListBean("与他"));
+        list.add(new ContactsJson.UserInfoListBean("雨是"));
+        list.add(new ContactsJson.UserInfoListBean("与他"));
+        list.add(new ContactsJson.UserInfoListBean("雨是"));
+        list.add(new ContactsJson.UserInfoListBean("与他"));
+        return list;
 
-            Log.e("1", name + "名字" + ChineseToEnglish.getCnASCII(name));
-            String pinYinHeadChar = ChineseToEnglish.getPinYinHeadChar(name);
-            if (!letters.equals(pinYinHeadChar.charAt(0) + "")) {
-                newList.add(new targe(i, pinYinHeadChar.charAt(0) + ""));
-                Log.e("2", i + "位置" + pinYinHeadChar.charAt(0) + "");
-            }
-            letters = pinYinHeadChar.charAt(0) + "";
-        }
     }
 
     public class targe {
@@ -174,16 +173,24 @@ public class ContactsActivity extends AppCompatActivity {
                 new OkhttpJsonUtil.TextCallBack<ContactsJson>() {
                     @Override
                     public void getResult(ContactsJson result) {
-                        if (result.getCode().equals("成功")) {
-                            user_infoList = result.getUser_InfoList();
-                            contactsSorts.clear();
-                            contactsSorts.addAll(getContactsSort(result.getUser_InfoList()));
-                            contactsAdapter.notifyDataSetChanged();
-                            title.setText("联系人("+result.getUserCount()+")");
-                        }else {
-                            MyApplication.showToast("暂无联系人",0);
-                            title.setText("联系人("+0+")");
-                    }
+                        if (result != null) {
+                            if (result.getCode().equals("成功")) {
+                                user_infoList = result.getUser_InfoList();
+                                contactsSorts.clear();
+                                contactsSorts.addAll(getContactsSort(result.getUser_InfoList()));
+                                contactsAdapter.notifyDataSetChanged();
+                                title.setText("联系人(" + result.getUserCount() + ")");
+                            } else {
+                                MyApplication.showToast("暂无联系人", 0);
+                                title.setText("联系人(" + 0 + ")");
+                            }
+                        } else {
+                            MyApplication.showToast("获取联系人失败", 0);
+                            title.setText("联系人(" + 0 + ")");
+//                            contactsSorts.clear();
+//                            contactsSorts.addAll(getContactsSort(testPin()));
+//                            contactsAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
     }
@@ -196,7 +203,7 @@ public class ContactsActivity extends AppCompatActivity {
             }
 
         });
-        List<ContactsSort> contactsSortList=new ArrayList<>();
+        List<ContactsSort> contactsSortList = new ArrayList<>();
         String letters = "";
         for (int i = 0; i < list.size(); i++) {
             ContactsSort contactsSort;
@@ -204,17 +211,16 @@ public class ContactsActivity extends AppCompatActivity {
             Log.e("1", name + "名字" + ChineseToEnglish.getCnASCII(name));
             String pinYinHeadChar = ChineseToEnglish.getPinYinHeadChar(name);
             if (!letters.equals(pinYinHeadChar.charAt(0) + "")) {
-                contactsSort=new ContactsSort(list.get(i),true);
+                contactsSort = new ContactsSort(list.get(i), true);
                 Log.e("2", i + "位置" + pinYinHeadChar.charAt(0) + "");
-            }else{
-                contactsSort=new ContactsSort(list.get(i),false);
+            } else {
+                contactsSort = new ContactsSort(list.get(i), false);
             }
             contactsSortList.add(contactsSort);
             letters = pinYinHeadChar.charAt(0) + "";
         }
         return contactsSortList;
     }
-
 
 
 }

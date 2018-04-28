@@ -75,9 +75,12 @@ public class ContactsAdapter extends BaseAdapter {
         if(list.get(position).isShow()){
             viewHolder.letter.setVisibility(View.VISIBLE);
             viewHolder.letter.setText(ChineseToEnglish.getPinYinHeadChar(list.get(position).getBean().getName()).charAt(0)+"");
+        }else{
+            viewHolder.letter.setVisibility(View.GONE);
         }
 
         viewHolder.name.setText(list.get(position).getBean().getName()==null?"":list.get(position).getBean().getName());
+        Log.e("a",list.get(position).getBean().getName()+"名字");
         String ss = TextUtils.isEmpty(list.get(position).getBean().getHeadImg()) ? "www" : list.get(position).getBean().getHeadImg();
         Picasso.with(context).load(ss).error(R.mipmap.search_p).into(viewHolder.head);
 

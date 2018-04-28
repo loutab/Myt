@@ -545,7 +545,7 @@ public class FirstFragment extends Fragment {
         noticeClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoWebView(notice_menu1.getMenu_Url(), notice_menu.getMenu_Name());
+                gotoWebView(notice_menu1.getMenu_Url(), "通知公告");
             }
         });
     }

@@ -67,6 +67,10 @@ public class ContactsJson {
         private String HeadImg;
         private String Mail;
 
+        public UserInfoListBean(String name) {
+            Name = name;
+        }
+
         public String getName() {
             return Name;
         }

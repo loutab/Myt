@@ -91,4 +91,5 @@ public class ForgetCodeDialog extends Dialog {
         super(context, R.style.MyDialog);
         this.context = context;
     }
+
 }

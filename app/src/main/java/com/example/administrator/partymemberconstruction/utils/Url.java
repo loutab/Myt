@@ -43,4 +43,10 @@ public  class Url {
     public static String GetContact="http://101.201.109.90:3333/Local/GetContactPerson";
     //上传图片
     public static String PostImg="http://101.201.109.90:3333/Local/UploadImg";
+    //更换头像
+    public static String ChangeImg="http://101.201.109.90:3333/Local/UpdateImg";
+    //更换密码
+    public static String ChangePassW="http://101.201.109.90:3333/Local/Change";
+    //更换绑定手机号
+    public static String ChangePhone="http://101.201.109.90:3333/Local/Local/UpdatePhone";
 }

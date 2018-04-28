@@ -56,7 +56,9 @@
 
         <activity android:name=".ContactsActivity" />
         <activity android:name=".SettingActivity" />
-        <activity android:name=".ChangePSWActivity"></activity>
+        <activity android:name=".ChangePSWActivity" />
+        <activity android:name=".ChangeMyPwsActivity" />
+        <activity android:name=".ChangePhoneActivity"></activity>
     </application>
 
 </manifest>

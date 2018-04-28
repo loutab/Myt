@@ -177,6 +177,8 @@ public class LoadingActivity extends AppCompatActivity {
                             if (result != null) {
                                 Log.d("p", result.getCode());
                                 if (result.getCode().equals("成功")) {
+                                    MyApplication.psw=passwordEdt.getText() + "";
+                                    MyApplication.phone=userEdt.getText() + "";
                                     //记住用户名
                                     SharedPreferences.Editor edit = sp.edit();
                                     edit.putString("userName",trueName);
