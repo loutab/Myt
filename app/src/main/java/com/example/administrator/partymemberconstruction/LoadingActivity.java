@@ -214,7 +214,9 @@ public class LoadingActivity extends AppCompatActivity {
                                     //登录成功进入首页
                                 } else{
                                     isOne=true;
-                                    MyApplication.showToast(result.getException(), 0);}
+                                    MyApplication.showToast(result.getException(), 0);
+
+                                }
                             }
 
                         }
