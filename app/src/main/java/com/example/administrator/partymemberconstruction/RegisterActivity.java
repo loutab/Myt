@@ -21,6 +21,7 @@ import com.example.administrator.partymemberconstruction.Bean.CodeJson;
 import com.example.administrator.partymemberconstruction.Bean.RegisterJson;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
+import com.example.administrator.partymemberconstruction.utils.Validate;
 
 import java.util.HashMap;
 
@@ -86,10 +87,11 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //验证手机号码
                 phoneNum = phone.getText() + "";
-                if (phoneNum != null & phoneNum.length() == 11) {
+                if (phoneNum != null & phoneNum.length() == 11& Validate.isTrue(phoneNum)) {
                     //调用验证码接口
                     getCode();
                 } else {
+                    phone.setText("");
                     MyApplication.showToast("请输入正确手机号码", 0);
                 }
             }

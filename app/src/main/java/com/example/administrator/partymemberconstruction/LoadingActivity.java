@@ -24,6 +24,7 @@ import com.example.administrator.partymemberconstruction.Bean.UserJson;
 import com.example.administrator.partymemberconstruction.utils.ComenUtils;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
+import com.example.administrator.partymemberconstruction.utils.Validate;
 
 import java.util.HashMap;
 
@@ -162,7 +163,11 @@ public class LoadingActivity extends AppCompatActivity {
         String passWord = passwordEdt.getText() + "";
         if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(passWord)) {
             MyApplication.showToast("用户名或密码不能为空", 0);
-        } else if (passWord.length() < 6 || passWord.length() > 12) {
+        }else if(!Validate.isTrue(userName)){
+            userEdt.setText("");
+            MyApplication.showToast("请输入正确手机号码", 0);
+        }
+        else if (passWord.length() < 6 || passWord.length() > 12) {
             //限制密码位数
             MyApplication.showToast("密码位数为6-12位", 0);
         } else {

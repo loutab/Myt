@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -398,6 +399,16 @@ public class WebActivity extends AppCompatActivity {
         });
         isQR = true;
         //startActivityForResult(new Intent(WebActivity.this, CaptureActivity.class), 0);
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (web.canGoBack()) {
+                web.goBack();//返回上一页面
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

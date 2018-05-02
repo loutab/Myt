@@ -22,6 +22,7 @@ import com.example.administrator.partymemberconstruction.Bean.ImgCodeJson;
 import com.example.administrator.partymemberconstruction.CustomView.ForgetCodeDialog;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
+import com.example.administrator.partymemberconstruction.utils.Validate;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -273,7 +274,7 @@ public class ForgetPswActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String phoneNum = phone.getText() + "";
                 //验证手机号码
-                if (phoneNum != null & phoneNum.length() == 11) {
+                if (phoneNum != null & phoneNum.length() == 11& Validate.isTrue(phoneNum)) {
                     //请求验证码接口
                     forgetCodeDialog = new ForgetCodeDialog(ForgetPswActivity.this);
                     forgetCodeDialog.show();

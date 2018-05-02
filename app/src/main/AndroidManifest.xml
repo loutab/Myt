@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoadingActivity"
-            android:launchMode="singleTask">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,7 +52,7 @@
                 android:resource="@xml/file_provider" />
         </provider>
 
-        <receiver android:name=".FirstActivity$ExitReceiver" />
+
 
         <activity android:name=".ContactsActivity" />
         <activity android:name=".SettingActivity" />
