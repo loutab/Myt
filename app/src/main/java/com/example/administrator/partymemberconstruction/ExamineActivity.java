@@ -3,6 +3,7 @@ package com.example.administrator.partymemberconstruction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,9 +38,9 @@ public class ExamineActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        if(MyApplication.user==null){}
-        else{
         String state = getIntent().getStringExtra("state");
+        if(TextUtils.isEmpty(state)){}
+        else{
         if(state.equals("2")){
             //需要传入用户ID
             userId = getIntent().getStringExtra("userId");
@@ -59,5 +60,6 @@ public class ExamineActivity extends AppCompatActivity {
             intent.putExtra("userId",userId);
             startActivity(intent);
         }
-    }}
+    }
+    }
 }

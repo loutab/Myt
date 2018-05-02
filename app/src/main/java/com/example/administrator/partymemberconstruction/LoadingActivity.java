@@ -194,7 +194,7 @@ public class LoadingActivity extends AppCompatActivity {
                                     switch (status) {
                                         case 0:
                                             Intent intent = new Intent(LoadingActivity.this, ExamineActivity.class);
-                                            intent.putExtra("userId", "" + result.getStatus());
+                                            intent.putExtra("state", "" + result.getStatus());
                                             startActivity(intent);
                                             break;
                                         //跳转到首页
@@ -206,7 +206,8 @@ public class LoadingActivity extends AppCompatActivity {
                                             break;
                                         case 2:
                                             Intent intent1 = new Intent(LoadingActivity.this, ExamineActivity.class);
-                                            intent1.putExtra("userId", "" + result.getStatus());
+                                            intent1.putExtra("state", "" + result.getStatus());
+                                            intent1.putExtra("userId",result.getUserInfo().getEntityId()+"");
                                             startActivity(intent1);
                                             break;
                                         case 3:
