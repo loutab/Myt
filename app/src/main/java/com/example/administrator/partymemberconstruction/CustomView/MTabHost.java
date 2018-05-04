@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.example.administrator.partymemberconstruction.R;
+
 import java.util.List;
 
 /**
@@ -67,10 +69,11 @@ public class MTabHost extends RadioGroup {
      * @param selectedImageRid
      * @param text
      */
-    public void addTab(int norImageRid, int selectedImageRid, String text,int weight,int type) {
+    public void addTab(int norImageRid, int selectedImageRid, String text,int weight,int type,int id) {
 
         //创建单选按钮
         RadioButton rb = new RadioButton(getContext());
+        rb.setId(id);
         //取消圆点
         rb.setButtonDrawable(android.R.color.transparent);
        //rb.setButtonDrawable(null);

@@ -29,7 +29,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="#E94A4E"
-            android:text="学习"
+            android:text="正通智慧党建"
             android:textColor="#fff"
             android:textSize="16sp" />
 

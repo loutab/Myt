@@ -348,7 +348,7 @@
                 android:layout_marginTop="14dp"
                 android:background="@drawable/shape_notice_btn"
                 android:hint="请输入简介"
-                android:maxLength="20"
+                android:maxLength="225"
                 android:paddingLeft="13dp"
                 android:textColorHint="#ccc"
                 android:textSize="14sp" />

@@ -1,7 +1,9 @@
 package com.example.administrator.partymemberconstruction;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,6 +38,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.out)
     TextView out;
     private String about1;
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,34 +52,55 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         changePsw.setOnClickListener(this);
         bindAccount.setOnClickListener(this);
         about.setOnClickListener(this);
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("是否退出登录？");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SignOut();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.out:
-                finish();
-                Intent intent=new Intent(this,FirstActivity.class);
-                intent.putExtra("exit", true);
-                startActivity(intent);
+                builder.create().show();
                 break;
-                case R.id.change_psw:
-                    Intent intent1=new Intent(this,ChangeMyPwsActivity.class);
-                    startActivity(intent1);
-                    break;
+            case R.id.change_psw:
+                Intent intent1 = new Intent(this, ChangeMyPwsActivity.class);
+                startActivity(intent1);
+                break;
             case R.id.bind_account:
-                Intent intent2=new Intent(this,ChangePhoneActivity.class);
+                Intent intent2 = new Intent(this, ChangePhoneActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.about:
-                Intent intent3=new Intent(this,WebActivity.class);
-                intent3.putExtra("Url",about1);
-                intent3.putExtra("title","关于党建");
+                Intent intent3 = new Intent(this, WebActivity.class);
+                intent3.putExtra("Url", about1);
+                intent3.putExtra("title", "关于党建");
                 startActivity(intent3);
                 break;
         }
+    }
+
+    private void SignOut() {
+        finish();
+        Intent intent = new Intent(this, FirstActivity.class);
+        intent.putExtra("exit", true);
+        startActivity(intent);
     }
 }
