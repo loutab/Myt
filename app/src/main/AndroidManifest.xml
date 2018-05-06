@@ -17,9 +17,7 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".LoadingActivity"
-            >
+        <activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,13 +50,12 @@
                 android:resource="@xml/file_provider" />
         </provider>
 
-
-
         <activity android:name=".ContactsActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".ChangePSWActivity" />
         <activity android:name=".ChangeMyPwsActivity" />
-        <activity android:name=".ChangePhoneActivity"></activity>
+        <activity android:name=".ChangePhoneActivity" />
+        <activity android:name=".OldWebActivity"></activity>
     </application>
 
 </manifest>

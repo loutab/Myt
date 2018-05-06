@@ -33,6 +33,7 @@ import com.example.administrator.partymemberconstruction.Bean.UploadJson;
 import com.example.administrator.partymemberconstruction.CustomView.CustomerGridView;
 import com.example.administrator.partymemberconstruction.CustomView.LoadingDialog;
 import com.example.administrator.partymemberconstruction.MyApplication;
+import com.example.administrator.partymemberconstruction.OldWebActivity;
 import com.example.administrator.partymemberconstruction.R;
 import com.example.administrator.partymemberconstruction.WebActivity;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
@@ -616,7 +617,7 @@ public class FirstFragment extends Fragment {
     }
 
     private void gotoWebView(String menu_url, String title) {
-        Intent intent = new Intent(currentContext, WebActivity.class);
+        Intent intent = new Intent(currentContext, OldWebActivity.class);
         intent.putExtra("Url", menu_url);
         intent.putExtra("title", title);
         startActivity(intent);

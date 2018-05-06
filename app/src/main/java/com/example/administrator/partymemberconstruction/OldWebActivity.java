@@ -1,19 +1,13 @@
 package com.example.administrator.partymemberconstruction;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -27,19 +21,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.partymemberconstruction.Bean.CodeJson;
-import com.example.administrator.partymemberconstruction.Bean.SignJson;
 import com.example.administrator.partymemberconstruction.CustomView.ActionSheetDialog;
 import com.example.administrator.partymemberconstruction.CustomView.LoadingDialog;
 import com.example.administrator.partymemberconstruction.utils.GetPathFromUri4kitkat;
-import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
-import com.example.administrator.partymemberconstruction.utils.Url;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -47,7 +35,7 @@ import butterknife.ButterKnife;
 
 import static android.support.v4.content.FileProvider.getUriForFile;
 
-public class WebActivity extends AppCompatActivity {
+public class OldWebActivity extends AppCompatActivity {
 
     @BindView(R.id.web)
     WebView web;
@@ -90,10 +78,6 @@ public class WebActivity extends AppCompatActivity {
             }
         });
 
-//        String headTitle = intent.getStringExtra("headTitle");
-//        if(!TextUtils.isEmpty(headTitle)){
-//            headtitle.setVisibility(View.GONE);
-//        }
 
         //设置webview
         WebSettings settings = web.getSettings();
@@ -154,12 +138,12 @@ public class WebActivity extends AppCompatActivity {
 
         });
         web.loadUrl(url);
-        web.loadUrl("file:///android_asset/test.html");
+         web.loadUrl("file:///android_asset/test.html");
         web.addJavascriptInterface(new JsInteration(), "android");
     }
 
     private void showDialog() {
-        ActionSheetDialog dialog = new ActionSheetDialog(WebActivity.this).builder().addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+        ActionSheetDialog dialog = new ActionSheetDialog(OldWebActivity.this).builder().addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
             @Override
             public void onClick(int which) {
                 //打开相册
@@ -243,11 +227,7 @@ public class WebActivity extends AppCompatActivity {
                     Bundle bundle = data.getExtras();
                     String result = bundle.getString("result");
                     //MyApplication.showToast(result, 0);
-                    Log.d("1", "" + result);
-                    if (!TextUtils.isEmpty(result))
-                        completeSign(result);
-                    else
-                        MyApplication.showToast("扫码失败", 0);
+                    Log.d("1",""+result);
                 }
 
                 break;
@@ -262,47 +242,11 @@ public class WebActivity extends AppCompatActivity {
 //        }
     }
 
-    private void completeSign(String s) {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("User_ID", MyApplication.user.getUser_ID() + "");
-        params.put("MeetingID", meetID + "");
-        params.put("MD5", s);
-        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.Sign, params, SignJson.class,
-                new OkhttpJsonUtil.TextCallBack<SignJson>() {
-                    @Override
-                    public void getResult(SignJson result) {
-                        if (result != null) {
-                            if (result.getCode().equals("成功")) {
-                                web.loadUrl(result.getUrl());
-                            }
-                            MyApplication.showToast(result.getError(), 0);
-                        } else {
-                            MyApplication.showToast("签到失败", 0);
-                        }
-                    }
-                });
-    }
-
     private void takePhotoResult(int resultCode, Intent data) {
-        Uri newResult = data == null? null : data.getData();
-        if (newResult != null) {
-            String path = GetPathFromUri4kitkat.getPath(this, newResult);
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
-            String s = Bitmap2StrByBase64(bitmap);
-            Log.e("sssss",s);
-            web.loadUrl("javascript:getimg('" + s + "')");
-        }
-            else{
-            MyApplication.showToast("获取照片失败",0);
-        }
-        if (mFilePathCallback != null || mFilePathCallbacks != null) {
+        if (mFilePathCallback != null||mFilePathCallbacks!=null) {
             Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
             if (result != null) {
                 String path = GetPathFromUri4kitkat.getPath(this, result);
-                Bitmap bitmap = BitmapFactory.decodeFile(path);
-                String s = Bitmap2StrByBase64(bitmap);
-                Log.e("sssss",s);
-                web.loadUrl("javascript:getimg('" + s + "')");
                 Uri uri = Uri.fromFile(new File(path));
                 if (Build.VERSION.SDK_INT > 19) {
                     mFilePathCallbacks.onReceiveValue(new Uri[]{uri});
@@ -315,28 +259,10 @@ public class WebActivity extends AppCompatActivity {
                 mFilePathCallback = null;
             }
         }
-
-    }
-    public String Bitmap2StrByBase64(Bitmap bit){
-        ByteArrayOutputStream bos=new ByteArrayOutputStream();
-        bit.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩
-        byte[] bytes=bos.toByteArray();
-        return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
 
     private void takePictureResult(int resultCode) {
-        if (resultCode == RESULT_OK) {
-            String path = GetPathFromUri4kitkat.getPath(this,Uri.fromFile(picturefile));
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
-            String s = Bitmap2StrByBase64(bitmap);
-            Log.e("sssss",s);
-            web.loadUrl("javascript:getimg('" + s + "')");
-        }else{
-            MyApplication.showToast("获取照片失败",0);
-        }
-
-
-        if (mFilePathCallback != null || mFilePathCallbacks != null) {
+        if (mFilePathCallback != null||mFilePathCallbacks!=null) {
             if (resultCode == RESULT_OK) {
                 Uri uri = Uri.fromFile(picturefile);
                 if (Build.VERSION.SDK_INT > 19) {
@@ -369,35 +295,15 @@ public class WebActivity extends AppCompatActivity {
         }
 
         @JavascriptInterface
-        public void Show() {
-            headtitle.post(new Runnable() {
-                @Override
-                public void run() {
-                        headtitle.setVisibility(View.VISIBLE);
-                }
-            });
+        public void ShowOrHide() {
+            set();
         }
         @JavascriptInterface
-        public void Hide() {
-            headtitle.post(new Runnable() {
-                @Override
-                public void run() {
-                        headtitle.setVisibility(View.GONE);
-                }
-            });
-        }
-        @JavascriptInterface
-        public void GetPic() {
-            showDialog();
-        }
-        @JavascriptInterface
-        public void GetQR(int meetingID) {
-            meetID = meetingID;
-            startActivityForResult(new Intent(WebActivity.this, CaptureActivity.class), 101);
+        public void GetQR() {
+            startActivityForResult(new Intent(OldWebActivity.this, CaptureActivity.class), 101);
         }
     }
 
-    int meetID;
     boolean isQR;
 
     public void set() {
@@ -413,16 +319,6 @@ public class WebActivity extends AppCompatActivity {
         });
         isQR = true;
         //startActivityForResult(new Intent(WebActivity.this, CaptureActivity.class), 0);
-    }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (web.canGoBack()) {
-                web.goBack();//返回上一页面
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
 }
