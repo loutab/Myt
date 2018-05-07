@@ -108,6 +108,7 @@ public class WebActivity extends AppCompatActivity {
         web.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                isTheOne=false;
                 view.loadUrl(url);
                 return true;
             }
@@ -154,7 +155,7 @@ public class WebActivity extends AppCompatActivity {
 
         });
         web.loadUrl(url);
-        web.loadUrl("file:///android_asset/test.html");
+        //web.loadUrl("file:///android_asset/test.html");
         web.addJavascriptInterface(new JsInteration(), "android");
     }
 
@@ -284,16 +285,15 @@ public class WebActivity extends AppCompatActivity {
     }
 
     private void takePhotoResult(int resultCode, Intent data) {
-        Uri newResult = data == null? null : data.getData();
+        Uri newResult = data == null ? null : data.getData();
         if (newResult != null) {
             String path = GetPathFromUri4kitkat.getPath(this, newResult);
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             String s = Bitmap2StrByBase64(bitmap);
-            Log.e("sssss",s);
+            Log.e("sssss", s);
             web.loadUrl("javascript:getimg('" + s + "')");
-        }
-            else{
-            MyApplication.showToast("获取照片失败",0);
+        } else {
+            MyApplication.showToast("获取照片失败", 0);
         }
         if (mFilePathCallback != null || mFilePathCallbacks != null) {
             Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
@@ -301,7 +301,7 @@ public class WebActivity extends AppCompatActivity {
                 String path = GetPathFromUri4kitkat.getPath(this, result);
                 Bitmap bitmap = BitmapFactory.decodeFile(path);
                 String s = Bitmap2StrByBase64(bitmap);
-                Log.e("sssss",s);
+                Log.e("sssss", s);
                 web.loadUrl("javascript:getimg('" + s + "')");
                 Uri uri = Uri.fromFile(new File(path));
                 if (Build.VERSION.SDK_INT > 19) {
@@ -317,22 +317,23 @@ public class WebActivity extends AppCompatActivity {
         }
 
     }
-    public String Bitmap2StrByBase64(Bitmap bit){
-        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+
+    public String Bitmap2StrByBase64(Bitmap bit) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bit.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩
-        byte[] bytes=bos.toByteArray();
+        byte[] bytes = bos.toByteArray();
         return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
 
     private void takePictureResult(int resultCode) {
         if (resultCode == RESULT_OK) {
-            String path = GetPathFromUri4kitkat.getPath(this,Uri.fromFile(picturefile));
+            String path = GetPathFromUri4kitkat.getPath(this, Uri.fromFile(picturefile));
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             String s = Bitmap2StrByBase64(bitmap);
-            Log.e("sssss",s);
+            Log.e("sssss", s);
             web.loadUrl("javascript:getimg('" + s + "')");
-        }else{
-            MyApplication.showToast("获取照片失败",0);
+        } else {
+            MyApplication.showToast("获取照片失败", 0);
         }
 
 
@@ -355,6 +356,7 @@ public class WebActivity extends AppCompatActivity {
 //        String s = exists + "";
     }
 
+    boolean isTheOne;
 
     public class JsInteration {
         @JavascriptInterface
@@ -373,23 +375,31 @@ public class WebActivity extends AppCompatActivity {
             headtitle.post(new Runnable() {
                 @Override
                 public void run() {
-                        headtitle.setVisibility(View.VISIBLE);
+                    headtitle.setVisibility(View.VISIBLE);
                 }
             });
         }
+
+        @JavascriptInterface
+        public void isFirst() {
+            isTheOne = true;
+        }
+
         @JavascriptInterface
         public void Hide() {
             headtitle.post(new Runnable() {
                 @Override
                 public void run() {
-                        headtitle.setVisibility(View.GONE);
+                    headtitle.setVisibility(View.GONE);
                 }
             });
         }
+
         @JavascriptInterface
         public void GetPic() {
             showDialog();
         }
+
         @JavascriptInterface
         public void GetQR(int meetingID) {
             meetID = meetingID;
@@ -414,10 +424,11 @@ public class WebActivity extends AppCompatActivity {
         isQR = true;
         //startActivityForResult(new Intent(WebActivity.this, CaptureActivity.class), 0);
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (web.canGoBack()) {
+            if (web.canGoBack()&&!isTheOne) {
                 web.goBack();//返回上一页面
                 return true;
             }

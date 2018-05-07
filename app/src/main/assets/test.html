@@ -8,8 +8,7 @@
 <body>
 <button id="btn" name="btn"  onclick="tt()">测试我</button><br/>
 <a href="file:///android_asset/test1.html" onclick="tt()">跳转</a>
-<p></p> 
-<input accept="image/*"  id="imgFile1" name="imgFile"  type="file"  onchange="previewFile()" > <br/>
+<p></p>
 <input accept="image/*" capture="camera" id="imgFile" name="imgFile"  type="file"  onchange="previewFile()" > <br/>
 <p></p>
  <img src="http://101.201.109.90:3333/Upload/Android/drawable-hdpi/tongzhigonggao.png" id="img" width="50" height="50" />
@@ -30,8 +29,7 @@
         // 仅限上传单张图片  
         var file = document.querySelector('input[type=file]').files[0];  
           
-        var reader  = new FileReader(); 
-           reader.readAsDataURL(path);  		
+        var reader  = new FileReader();
         reader.addEventListener("load", function () {
         alert("result=");
                 img.src = reader.result;  // 存储在本地的图片的base64编码  

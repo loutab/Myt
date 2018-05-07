@@ -617,7 +617,7 @@ public class FirstFragment extends Fragment {
     }
 
     private void gotoWebView(String menu_url, String title) {
-        Intent intent = new Intent(currentContext, OldWebActivity.class);
+        Intent intent = new Intent(currentContext, WebActivity.class);
         intent.putExtra("Url", menu_url);
         intent.putExtra("title", title);
         startActivity(intent);
