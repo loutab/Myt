@@ -33,6 +33,7 @@ import com.example.administrator.partymemberconstruction.CustomView.ActionSheetD
 import com.example.administrator.partymemberconstruction.CustomView.LoadingDialog;
 import com.example.administrator.partymemberconstruction.utils.GetPathFromUri4kitkat;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
+import com.example.administrator.partymemberconstruction.utils.ScreenListener;
 import com.example.administrator.partymemberconstruction.utils.Url;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 
@@ -67,6 +68,7 @@ public class WebActivity extends AppCompatActivity {
     private File picturefile;
     private LoadingDialog loadingDialog;
     private String testPath;
+    private ScreenListener screenListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,29 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        //注册广播监听锁屏
+        screenListener = new ScreenListener(this);
+        screenListener.begin(new ScreenListener.ScreenStateListener() {
+            @Override
+            public void onScreenOn() {
+                web.loadUrl("javascript:start()");
+                MyApplication.showToast("亮",0);
+                Log.e("screen","亮");
+            }
+
+            @Override
+            public void onScreenOff() {
+                web.loadUrl("javascript:pause()");
+                MyApplication.showToast("暗",0);
+                Log.e("screen","an");
+            }
+
+            @Override
+            public void onUserPresent() {
+                MyApplication.showToast("解",0);
+                Log.e("screen","jie");
             }
         });
 
@@ -436,4 +461,9 @@ public class WebActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        screenListener.unregisterListener();
+    }
 }
