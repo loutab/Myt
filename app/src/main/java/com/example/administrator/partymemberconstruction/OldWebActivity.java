@@ -138,7 +138,7 @@ public class OldWebActivity extends AppCompatActivity {
 
         });
         web.loadUrl(url);
-         web.loadUrl("file:///android_asset/test.html");
+        // web.loadUrl("file:///android_asset/test.html");
         web.addJavascriptInterface(new JsInteration(), "android");
     }
 

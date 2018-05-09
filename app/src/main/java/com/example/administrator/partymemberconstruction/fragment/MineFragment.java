@@ -343,7 +343,7 @@ public class MineFragment extends Fragment {
 
     private void initDate() {
         lists = new ArrayList<>();
-        lists.add(new String[]{"我发的消息",R.mipmap.mymessage+""});
+        //lists.add(new String[]{"我发的消息",R.mipmap.mymessage+""});
         lists.add(new String[]{"我的收藏",R.mipmap.mycollect+""});
         String userName=MyApplication.user.getUi_NickName()==null?"":MyApplication.user.getUi_NickName();
         name.setText(userName);

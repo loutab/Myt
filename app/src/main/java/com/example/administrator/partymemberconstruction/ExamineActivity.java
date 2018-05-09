@@ -43,19 +43,22 @@ public class ExamineActivity extends AppCompatActivity {
         else{
         if(state.equals("2")){
             //需要传入用户ID
-            userId = getIntent().getStringExtra("userId");
+
             newbtn.setVisibility(View.VISIBLE);
             newbtn.setClickable(true);
             newbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent=new Intent(ExamineActivity.this,LoadingActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
                 }
             });
             img.setImageDrawable(getResources().getDrawable(R.mipmap.cross));
             txt.setText("审核失败");
             txt.setTextColor(getResources().getColor(R.color.black));
         }else if(state.equals("3")){
+            userId = getIntent().getStringExtra("userId");
             Intent  intent=new Intent(ExamineActivity.this,ImprovePersonalInformationActivity.class);
             intent.putExtra("userId",userId);
             startActivity(intent);

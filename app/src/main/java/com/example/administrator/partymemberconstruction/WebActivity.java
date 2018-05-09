@@ -84,6 +84,9 @@ public class WebActivity extends AppCompatActivity {
         user_id = MyApplication.user.getUser_ID() + "";
         ui_nickName = MyApplication.user.getUi_NickName();
         title.setText(titleTxt);
+        //全部隐藏
+        headtitle.setVisibility(View.GONE);
+
         link.setClickable(true);
         link.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,20 +100,20 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public void onScreenOn() {
                 web.loadUrl("javascript:start()");
-                MyApplication.showToast("亮",0);
+               // MyApplication.showToast("亮",0);
                 Log.e("screen","亮");
             }
 
             @Override
             public void onScreenOff() {
                 web.loadUrl("javascript:pause()");
-                MyApplication.showToast("暗",0);
+               // MyApplication.showToast("暗",0);
                 Log.e("screen","an");
             }
 
             @Override
             public void onUserPresent() {
-                MyApplication.showToast("解",0);
+               // MyApplication.showToast("解",0);
                 Log.e("screen","jie");
             }
         });
@@ -409,7 +412,10 @@ public class WebActivity extends AppCompatActivity {
         public void isFirst() {
             isTheOne = true;
         }
-
+        @JavascriptInterface
+        public void backToHome() {
+            finish();
+        }
         @JavascriptInterface
         public void Hide() {
             headtitle.post(new Runnable() {
@@ -455,6 +461,7 @@ public class WebActivity extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (web.canGoBack()&&!isTheOne) {
                 web.goBack();//返回上一页面
+                Log.e("back","返回");
                 return true;
             }
         }
