@@ -44,7 +44,9 @@
             android:clickable="true"
             android:text="返回"
             android:textColor="#fff"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="invisible"
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -89,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000"
-            android:text="账号绑定"
+            android:text="改绑手机"
             android:textSize="16sp"
             android:layout_marginLeft="11dp"
             android:layout_marginTop="11dp"
@@ -175,6 +177,7 @@
             android:layout_marginLeft="11dp"
             android:layout_marginTop="11dp"
             android:layout_marginBottom="11dp"
+            android:id="@+id/cach"
             />
         <ImageView
             android:layout_width="20dp"

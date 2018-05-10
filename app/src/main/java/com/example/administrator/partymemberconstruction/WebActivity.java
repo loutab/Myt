@@ -398,15 +398,15 @@ public class WebActivity extends AppCompatActivity {
             return ui_nickName;
         }
 
-        @JavascriptInterface
-        public void Show() {
-            headtitle.post(new Runnable() {
-                @Override
-                public void run() {
-                    headtitle.setVisibility(View.VISIBLE);
-                }
-            });
-        }
+//        @JavascriptInterface
+//        public void Show() {
+//            headtitle.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    headtitle.setVisibility(View.VISIBLE);
+//                }
+//            });
+//        }
 
         @JavascriptInterface
         public void isFirst() {
@@ -416,15 +416,15 @@ public class WebActivity extends AppCompatActivity {
         public void backToHome() {
             finish();
         }
-        @JavascriptInterface
-        public void Hide() {
-            headtitle.post(new Runnable() {
-                @Override
-                public void run() {
-                    headtitle.setVisibility(View.GONE);
-                }
-            });
-        }
+//        @JavascriptInterface
+//        public void Hide() {
+//            headtitle.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    headtitle.setVisibility(View.GONE);
+//                }
+//            });
+//        }
 
         @JavascriptInterface
         public void GetPic() {
