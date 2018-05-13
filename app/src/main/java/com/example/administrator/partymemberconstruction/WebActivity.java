@@ -1,6 +1,9 @@
 package com.example.administrator.partymemberconstruction;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -8,6 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -100,21 +105,21 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public void onScreenOn() {
                 web.loadUrl("javascript:start()");
-               // MyApplication.showToast("亮",0);
-                Log.e("screen","亮");
+                // MyApplication.showToast("亮",0);
+                Log.e("screen", "亮");
             }
 
             @Override
             public void onScreenOff() {
                 web.loadUrl("javascript:pause()");
-               // MyApplication.showToast("暗",0);
-                Log.e("screen","an");
+                // MyApplication.showToast("暗",0);
+                Log.e("screen", "an");
             }
 
             @Override
             public void onUserPresent() {
-               // MyApplication.showToast("解",0);
-                Log.e("screen","jie");
+                // MyApplication.showToast("解",0);
+                Log.e("screen", "jie");
             }
         });
 
@@ -136,7 +141,7 @@ public class WebActivity extends AppCompatActivity {
         web.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                isTheOne=false;
+                isTheOne = false;
                 view.loadUrl(url);
                 return true;
             }
@@ -216,10 +221,20 @@ public class WebActivity extends AppCompatActivity {
      * 调用相册
      */
     private void takeForPhoto() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    REQUEST_CODE_PICK_PHOTO);
+
+        }else{
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, REQUEST_CODE_PICK_PHOTO);
+        startActivityForResult(intent, REQUEST_CODE_PICK_PHOTO);}
 
     }
+//权限处理
 
     /**
      * 调用相机
@@ -242,9 +257,19 @@ public class WebActivity extends AppCompatActivity {
 //            grantUriPermission(getPackageName(), contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //            intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
 //        } else {//7.0以下
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    REQUEST_CODE_TAKE_PICETURE);
+
+        }else{
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
         //}
-        startActivityForResult(intent, REQUEST_CODE_TAKE_PICETURE);
+        startActivityForResult(intent, REQUEST_CODE_TAKE_PICETURE);}
 
     }
 
@@ -254,9 +279,43 @@ public class WebActivity extends AppCompatActivity {
             mFilePathCallback = null;
         }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
 
+        if (requestCode == REQUEST_CODE_TAKE_PICETURE)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
+                //}
+                startActivityForResult(intent, REQUEST_CODE_TAKE_PICETURE);
+            } else
+            {
+                // Permission Denied
+              //  Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+        if (requestCode == REQUEST_CODE_PICK_PHOTO)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_CODE_PICK_PHOTO);
+            } else
+            {
+                // Permission Denied
+                //Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
     @Override
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -280,6 +339,11 @@ public class WebActivity extends AppCompatActivity {
                 }
 
                 break;
+            case Activity.RESULT_CANCELED:
+                Intent intent = new Intent(this, WebActivity.class);
+//startActivity(intent);
+                finish();
+                break;
         }
 //        if (isQR) {
 //            if (resultCode == RESULT_OK) {
@@ -290,6 +354,7 @@ public class WebActivity extends AppCompatActivity {
 //            }
 //        }
     }
+
 
     private void completeSign(String s) {
         HashMap<String, String> params = new HashMap<>();
@@ -339,8 +404,8 @@ public class WebActivity extends AppCompatActivity {
                 }
 
             } else {
-                mFilePathCallback.onReceiveValue(null);
-                mFilePathCallback = null;
+                mFilePathCallbacks.onReceiveValue(null);
+                mFilePathCallbacks = null;
             }
         }
 
@@ -375,8 +440,8 @@ public class WebActivity extends AppCompatActivity {
                 }
             } else {
                 //点击了file按钮，必须有一个返回值，否则会卡死
-                mFilePathCallback.onReceiveValue(null);
-                mFilePathCallback = null;
+                mFilePathCallbacks.onReceiveValue(null);
+                mFilePathCallbacks = null;
             }
         }
         //picturefile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ File.separator + "IvMG_" + "s"+ ".jpg");
@@ -412,6 +477,7 @@ public class WebActivity extends AppCompatActivity {
         public void isFirst() {
             isTheOne = true;
         }
+
         @JavascriptInterface
         public void backToHome() {
             finish();
@@ -459,9 +525,9 @@ public class WebActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (web.canGoBack()&&!isTheOne) {
+            if (web.canGoBack() && !isTheOne) {
                 web.goBack();//返回上一页面
-                Log.e("back","返回");
+                Log.e("back", "返回");
                 return true;
             }
         }

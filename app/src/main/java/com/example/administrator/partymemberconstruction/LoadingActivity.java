@@ -66,6 +66,12 @@ public class LoadingActivity extends AppCompatActivity {
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        if((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0){
+            finish();
+            return;
+        }
+
         Log.d("w", ComenUtils.ChangeTime("2018-03-13 11:20:36"));
         sp = getPreferences(Context.MODE_PRIVATE);
         String userName = sp.getString("userName", "");
@@ -135,6 +141,7 @@ public class LoadingActivity extends AppCompatActivity {
 //                            }
 //                        });
                 //登录接口
+                //MyApplication.showToast("登录",0);
                 gotoLoading();
             }
         });
@@ -223,6 +230,8 @@ public class LoadingActivity extends AppCompatActivity {
                                     MyApplication.showToast(result.getException(), 0);
 
                                 }
+                            }else{
+                                MyApplication.showToast("连接服务器失败", 0);
                             }
 
                         }

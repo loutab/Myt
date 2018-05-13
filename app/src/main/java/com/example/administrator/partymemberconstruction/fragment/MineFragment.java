@@ -130,7 +130,7 @@ public class MineFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==1){
+                if(position==0){
                     if (collect!=null)
                     gotoNewActivity(collect.getMenu_Url(),collect.getMenu_Name());
                 }

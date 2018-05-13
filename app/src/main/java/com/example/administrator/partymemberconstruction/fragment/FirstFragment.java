@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -151,6 +152,17 @@ public class FirstFragment extends Fragment {
         currentContext = this.getContext();
         initDate();
         loadingDialog.show();
+
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) banner.getLayoutParams();
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        params.width =  width;
+        params.height = (int)(width/2.5);
+        // params.setMargins(dip2px(MainActivity.this, 1), 0, 0, 0); // 可以实现设置位置信息，如居左距离，其它类推
+        // params.leftMargin = dip2px(MainActivity.this, 1);
+        banner.setLayoutParams(params);
+
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
