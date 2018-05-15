@@ -2,6 +2,7 @@ package com.example.administrator.partymemberconstruction;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,7 +20,10 @@ import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -28,7 +32,9 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -130,6 +136,10 @@ public class WebActivity extends AppCompatActivity {
 
         //设置webview
         WebSettings settings = web.getSettings();
+
+        settings.setUseWideViewPort(true); // 关键点
+        settings.setLoadWithOverviewMode(true);
+
         //设置自适应网页
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         settings.setUseWideViewPort(true);
@@ -186,11 +196,92 @@ public class WebActivity extends AppCompatActivity {
 
             }
 
+
+//视频全屏
+            @Override
+            public View getVideoLoadingProgressView() {
+                Log.e("ss","getVideoLoadingProgressView");
+                FrameLayout frameLayout = new FrameLayout(WebActivity.this);
+                frameLayout.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+                return frameLayout;
+            }
+
+            @Override
+            public void onShowCustomView(View view, CustomViewCallback callback) {
+                showCustomView(view, callback);
+                Log.e("ss","onShowCustomView");
+            }
+
+            @Override
+            public void onHideCustomView() {
+                Log.e("ss","onHideCustomView");
+                hideCustomView();
+            }
+
         });
         web.loadUrl(url);
-        //web.loadUrl("file:///android_asset/test.html");
+        web.loadUrl("http://v.qq.com/iframe/player.html?vid=o0318tp1ddw&tiny=0&auto=0");
         web.addJavascriptInterface(new JsInteration(), "android");
     }
+    /** 视频全屏参数 */
+    protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    private View customView;
+    private FrameLayout fullscreenContainer;
+    private WebChromeClient.CustomViewCallback customViewCallback;
+    /** 视频播放全屏 **/
+    private void showCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+        // if a view already exists then immediately terminate the new one
+        if (customView != null) {
+            callback.onCustomViewHidden();
+            return;
+        }
+
+        WebActivity.this.getWindow().getDecorView();
+
+        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
+        fullscreenContainer = new FullscreenHolder(WebActivity.this);
+        fullscreenContainer.addView(view, COVER_SCREEN_PARAMS);
+        decor.addView(fullscreenContainer, COVER_SCREEN_PARAMS);
+        customView = view;
+        setStatusBarVisibility(false);
+        customViewCallback = callback;
+    }
+
+    /** 隐藏视频全屏 */
+    private void hideCustomView() {
+        if (customView == null) {
+            return;
+        }
+
+        setStatusBarVisibility(true);
+        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
+        decor.removeView(fullscreenContainer);
+        fullscreenContainer = null;
+        customView = null;
+        customViewCallback.onCustomViewHidden();
+        web.setVisibility(View.VISIBLE);
+    }
+
+    /** 全屏容器界面 */
+    static class FullscreenHolder extends FrameLayout {
+
+        public FullscreenHolder(Context ctx) {
+            super(ctx);
+            setBackgroundColor(ctx.getResources().getColor(android.R.color.black));
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent evt) {
+            return true;
+        }
+    }
+
+    private void setStatusBarVisibility(boolean visible) {
+        int flag = visible ? 0 : WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        getWindow().setFlags(flag, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+
 
     private void showDialog() {
         ActionSheetDialog dialog = new ActionSheetDialog(WebActivity.this).builder().addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {

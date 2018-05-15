@@ -232,7 +232,7 @@ public class MineFragment extends Fragment {
 
     private void changeImg(String url) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("User_ID",MyApplication.phone+"");
+        params.put("User_ID",MyApplication.user.getUser_ID()+"");
         params.put("ui_Headimg",url);
         OkhttpJsonUtil.getInstance().postByEnqueue(this.getActivity(), Url.ChangeImg, params, ChangeJson.class,
                 new OkhttpJsonUtil.TextCallBack<ChangeJson>() {

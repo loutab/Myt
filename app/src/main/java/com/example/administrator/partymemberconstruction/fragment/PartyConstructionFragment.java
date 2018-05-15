@@ -17,6 +17,7 @@ import com.example.administrator.partymemberconstruction.Adapter.PartyListAdapte
 import com.example.administrator.partymemberconstruction.Bean.FirstJson;
 import com.example.administrator.partymemberconstruction.CustomView.CustomerGridView;
 import com.example.administrator.partymemberconstruction.MyApplication;
+import com.example.administrator.partymemberconstruction.OldWebActivity;
 import com.example.administrator.partymemberconstruction.R;
 import com.example.administrator.partymemberconstruction.WebActivity;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;

@@ -30,6 +30,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".WebActivity"
+            android:hardwareAccelerated="true"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity android:name=".TestActivity" />
         <activity
@@ -56,7 +57,10 @@
         <activity android:name=".ChangePSWActivity" />
         <activity android:name=".ChangeMyPwsActivity" />
         <activity android:name=".ChangePhoneActivity" />
-        <activity android:name=".OldWebActivity"></activity>
+        <activity android:name=".OldWebActivity"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            ></activity>
     </application>
 
 </manifest>
