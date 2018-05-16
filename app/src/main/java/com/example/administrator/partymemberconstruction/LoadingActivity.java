@@ -167,7 +167,7 @@ public class LoadingActivity extends AppCompatActivity {
         //验证数据不为空
         String userName = userEdt.getText() + "";
         trueName = userEdt.getText() + "";
-        String passWord = passwordEdt.getText() + "";
+        final String passWord = passwordEdt.getText() + "";
         if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(passWord)) {
             MyApplication.showToast("用户名或密码不能为空", 0);
         }else if(!Validate.isTrue(userName)){
@@ -181,6 +181,7 @@ public class LoadingActivity extends AppCompatActivity {
             HashMap<String, String> params = new HashMap<>();
             params.put("UserName", userName);
             params.put("Password", passWord);
+            MyApplication.psw=passWord;
             OkhttpJsonUtil.getInstance().postByEnqueue(LoadingActivity.this, Url.LoadingUrl, params, UserJson.class,
                     new OkhttpJsonUtil.TextCallBack<UserJson>() {
                         @Override
@@ -189,7 +190,9 @@ public class LoadingActivity extends AppCompatActivity {
                             if (result != null) {
                                 Log.d("p", result.getCode());
                                 if (result.getCode().equals("成功")) {
-                                    MyApplication.psw=passwordEdt.getText() + "";
+
+                                            String pwd=passwordEdt.getText() + "";
+
                                     MyApplication.phone=userEdt.getText() + "";
                                     //记住用户名
                                     SharedPreferences.Editor edit = sp.edit();
@@ -214,7 +217,7 @@ public class LoadingActivity extends AppCompatActivity {
                                         case 2:
                                             Intent intent1 = new Intent(LoadingActivity.this, ExamineActivity.class);
                                             intent1.putExtra("state", "" + result.getStatus());
-                                            //intent1.putExtra("userId",result.getUserInfo().getEntityId()+"");
+                                            intent1.putExtra("userId",result.getUser_id());
                                             startActivity(intent1);
                                             break;
                                         case 3:

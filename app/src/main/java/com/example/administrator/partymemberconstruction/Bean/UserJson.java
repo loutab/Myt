@@ -20,6 +20,16 @@ public class UserJson {
     private int status;
     private UserInfoBean userInfo;
 
+    public int getUser_id() {
+        return User_id;
+    }
+
+    public void setUser_id(int user_id) {
+        User_id = user_id;
+    }
+
+    private int User_id;
+
     public String getCode() {
         return Code;
     }

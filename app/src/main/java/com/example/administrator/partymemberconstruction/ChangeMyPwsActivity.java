@@ -94,7 +94,7 @@ public class ChangeMyPwsActivity extends AppCompatActivity {
 
     private void changeDate(String passWord) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("UserName", MyApplication.user.getUser_ID() + "");
+        params.put("UserName", MyApplication.phone+ "");
         params.put("Password", MyApplication.psw);
         params.put("NewPassword", passWord);
         OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.ChangePassW, params, ChangePwdJson.class,

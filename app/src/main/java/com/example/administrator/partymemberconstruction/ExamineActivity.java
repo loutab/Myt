@@ -24,6 +24,7 @@ public class ExamineActivity extends AppCompatActivity {
     @BindView(R.id.newbtn)
     TextView newbtn;
     private String userId;
+    private int userIdtwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +44,14 @@ public class ExamineActivity extends AppCompatActivity {
         else{
         if(state.equals("2")){
             //需要传入用户ID
-
+            userIdtwo = getIntent().getIntExtra("userId",0);
             newbtn.setVisibility(View.VISIBLE);
             newbtn.setClickable(true);
             newbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(ExamineActivity.this,LoadingActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    Intent intent=new Intent(ExamineActivity.this,ImprovePersonalInformationActivity.class);
+                    intent.putExtra("userId",userIdtwo+"");
                     startActivity(intent);
                 }
             });

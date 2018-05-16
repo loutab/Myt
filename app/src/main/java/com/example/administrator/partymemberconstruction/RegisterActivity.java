@@ -161,7 +161,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if (result.getCode().equals("成功")) {
                                 //注册成功跳入完善页面
                                 Intent intent = new Intent(RegisterActivity.this, ImprovePersonalInformationActivity.class);
-                                intent.putExtra("userId",result.getUserId());
+                                intent.putExtra("userId",result.getUserId()+"");
                                 startActivity(intent);
                                 finish();
                             } else

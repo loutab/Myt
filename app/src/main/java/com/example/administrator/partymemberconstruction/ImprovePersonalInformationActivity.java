@@ -90,6 +90,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
     private int id1;
     private int id2;
     private List<PartMJson.DepartListBean> departList;
+    private String standerTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +166,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
              public void onClick(View v) {
                  //获取所有信息
                  String userName = name.getText() + "";
-                 String birthdayString = birthday.getText() + "";
+                 String birthdayString = standerTime;
                  String groupDate = group.getText() + "";
                  String partDate = part.getText() + "";
                  String emailDate = email.getText() + "";
@@ -212,6 +213,8 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 MyApplication.showToast(result.getException(),0);
                             }
+                        }else{
+                            MyApplication.showToast("服务器处理失败",0);
                         }
 
                     }
@@ -361,6 +364,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                 int dayOfMonth = 20;
                 //  birthday.setText(date.getYear()+1900+"-"+(date.getMonth()+1)+"-"+ day);
                 str = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                standerTime = year + "-" + (monthOfYear + 1) + "-" + day;
                 birthday.setText(year + "      " + (monthOfYear + 1) + "      " + day);
 
             }
