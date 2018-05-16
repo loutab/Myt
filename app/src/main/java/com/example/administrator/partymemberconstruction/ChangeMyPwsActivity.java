@@ -1,5 +1,6 @@
 package com.example.administrator.partymemberconstruction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -103,7 +104,12 @@ public class ChangeMyPwsActivity extends AppCompatActivity {
                     public void getResult(ChangePwdJson result) {
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
-                                MyApplication.showToast("修改成功", 0);
+                                MyApplication.showToast("修改成功,请重新登录", 0);
+                                MyApplication.psw=surePass;
+                                finish();
+                                Intent intent = new Intent(ChangeMyPwsActivity.this, FirstActivity.class);
+                                intent.putExtra("exit", true);
+                                startActivity(intent);
                                 finish();
                             } else {
                                 MyApplication.showToast(result.getException(), 0);
