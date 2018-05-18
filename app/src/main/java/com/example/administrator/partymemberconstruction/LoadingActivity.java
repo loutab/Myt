@@ -191,7 +191,7 @@ public class LoadingActivity extends AppCompatActivity {
                                 Log.d("p", result.getCode());
                                 if (result.getCode().equals("成功")) {
 
-                                            String pwd=passwordEdt.getText() + "";
+                                            String pwd=passwordEdt.getText() + "";    
 
                                     MyApplication.phone=userEdt.getText() + "";
                                     //记住用户名

@@ -207,6 +207,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                                 //跳转页面
                                 Intent intent=new Intent(ImprovePersonalInformationActivity.this,ExamineActivity.class);
                                 startActivity(intent);
+
                                 MyApplication.showToast(result.getCode(),0);
                             }else{
                                 Intent intent=new Intent(ImprovePersonalInformationActivity.this,ExamineActivity.class);

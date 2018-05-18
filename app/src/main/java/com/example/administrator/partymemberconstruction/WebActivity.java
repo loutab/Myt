@@ -220,7 +220,7 @@ public class WebActivity extends AppCompatActivity {
 
         });
         web.loadUrl(url);
-        web.loadUrl("http://v.qq.com/iframe/player.html?vid=o0318tp1ddw&tiny=0&auto=0");
+        //web.loadUrl("http://v.qq.com/iframe/player.html?vid=o0318tp1ddw&tiny=0&auto=0");
         web.addJavascriptInterface(new JsInteration(), "android");
     }
     /** 视频全屏参数 */

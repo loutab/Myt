@@ -26,9 +26,11 @@ import com.example.administrator.partymemberconstruction.Bean.ChangeJson;
 import com.example.administrator.partymemberconstruction.Bean.PostImgJson;
 import com.example.administrator.partymemberconstruction.Bean.SelfInfo;
 import com.example.administrator.partymemberconstruction.Bean.SignJson;
+import com.example.administrator.partymemberconstruction.Bean.UserJson;
 import com.example.administrator.partymemberconstruction.ContactsActivity;
 import com.example.administrator.partymemberconstruction.CustomView.ChangeHeadImgDialog;
 import com.example.administrator.partymemberconstruction.CustomView.CircleImageView;
+import com.example.administrator.partymemberconstruction.LoadingActivity;
 import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
 import com.example.administrator.partymemberconstruction.SettingActivity;
@@ -347,19 +349,7 @@ public class MineFragment extends Fragment {
         lists.add(new String[]{"我的收藏",R.mipmap.mycollect+""});
         String userName=MyApplication.user.getUi_NickName()==null?"":MyApplication.user.getUi_NickName();
         name.setText(userName);
-        String url=MyApplication.user.getUi_Headimg()==null|MyApplication.user.getUi_Headimg()==""?"wwww":MyApplication.user.getUi_Headimg();
-        Picasso.with(this.getContext()).load(url).into(headImg, new Callback() {
-            @Override
-            public void onSuccess() {
 
-            }
-
-            @Override
-            public void onError() {
-                headImg.setImageResource(R.mipmap.default_head);
-//MyApplication.showToast("头像加载失败",0);
-            }
-        });
         String introduce=MyApplication.user.getUi_Introduction()==null?"":MyApplication.user.getUi_Introduction();
         introduction.setText(introduce);
     }
@@ -370,4 +360,35 @@ public class MineFragment extends Fragment {
 //        unbinder.unbind();
 //    }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        HashMap<String, String> params = new HashMap<>();
+        params.put("UserName", MyApplication.phone);
+        params.put("Password", MyApplication.psw);
+        OkhttpJsonUtil.getInstance().postByEnqueue(MineFragment.this.getActivity(), Url.LoadingUrl, params, UserJson.class,
+                new OkhttpJsonUtil.TextCallBack<UserJson>() {
+                    @Override
+                    public void getResult(UserJson result) {
+                        // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
+                        if (result != null) {
+                            MyApplication.user = result.getUserInfo();
+                            String url=MyApplication.user.getUi_Headimg()==null|MyApplication.user.getUi_Headimg()==""?"wwww":MyApplication.user.getUi_Headimg();
+                            Picasso.with(MineFragment.this.getContext()).load(url).into(headImg, new Callback() {
+                                @Override
+                                public void onSuccess() {
+
+                                }
+                                @Override
+                                public void onError() {
+                                    headImg.setImageResource(R.mipmap.default_head);
+//MyApplication.showToast("头像加载失败",0);
+                                }
+                            });
+                        }
+                    }
+        }
+        );
+    }
 }
