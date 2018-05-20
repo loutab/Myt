@@ -49,4 +49,7 @@ public  class Url {
     public static String ChangePassW="http://101.201.109.90:3333/Local/Change";
     //更换绑定手机号
     public static String ChangePhone="http://101.201.109.90:3333/Local/Local/UpdatePhone";
+    //更改通知状态
+    public static String ChangeNotice="http://101.201.109.90:3333/Local/UpdateNotice_IsNew";
+
 }

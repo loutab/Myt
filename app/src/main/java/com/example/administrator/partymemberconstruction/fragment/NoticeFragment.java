@@ -90,7 +90,9 @@ public class NoticeFragment extends Fragment {
         //noticeMessageFragment = new NoticeMessageFragment();
         transaction.add(R.id.frame, noticeNoticeFragment);
         transaction.show(noticeNoticeFragment).commit();
+
     }
+
 
     @Override
     public void onDestroyView() {

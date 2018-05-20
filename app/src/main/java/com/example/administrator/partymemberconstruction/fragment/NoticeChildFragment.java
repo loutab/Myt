@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -53,6 +54,8 @@ public class NoticeChildFragment extends Fragment {
     private List<NoticeItemJson.NoticeInfoBean> noticeInfo;
     private NoticeAllListAdapter noticeOneListAdapter;
     private boolean isFirst=true;
+    private List<Integer> delteAll;
+
     public NoticeChildFragment() {
         // Required empty public constructor
     }
@@ -73,15 +76,82 @@ public class NoticeChildFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.e("w","onViewCreated");
         noNotice.setVisibility(View.VISIBLE);
-        list.setVisibility(View.GONE);
+        action.setVisibility(View.GONE);
         noticeInfo = new ArrayList<>();
         noticeOneListAdapter = new NoticeAllListAdapter(getContext(), noticeInfo, 2);
         if(isFirst){
             getListDate();
         }
         isFirst=false;
+        delet.setClickable(true);
+        delet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(delteAll.size()>0)
+                changeAllNotice();
+            }
+        });
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //changeNotice(position);
+            }
+        });
     }
 
+    private void changeNotice(int position) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("ids", noticeInfo.get(position).getEntityId()+"");
+        OkhttpJsonUtil.getInstance().postByEnqueue(getActivity(), Url.ChangeNotice, params, NoticeItemJson.class,
+                new OkhttpJsonUtil.TextCallBack<NoticeItemJson>() {
+                    @Override
+                    public void getResult(NoticeItemJson result) {
+                        if(result!=null){
+                            if(result.getCode().equals("成功")){
+                               // MyApplication.showToast("删除成功",0);
+
+                            }else{
+                                MyApplication.showToast("查看失败",0);
+                            }
+
+                        }else{
+                            MyApplication.showToast("连接服务器失败",0);
+                        }
+                    }
+                });
+    }
+
+    //更改所有通知状态
+    private void changeAllNotice() {
+        StringBuffer param=new StringBuffer("");
+        for(int i=0;i<delteAll.size();i++){
+            if (i==delteAll.size()-1){
+                param.append(delteAll.get(i));
+            }else{
+                param.append(delteAll.get(i)+",");
+            }
+        }
+        HashMap<String, String> params = new HashMap<>();
+        params.put("ids", param+"");
+        OkhttpJsonUtil.getInstance().postByEnqueue(getActivity(), Url.ChangeNotice, params, NoticeItemJson.class,
+                new OkhttpJsonUtil.TextCallBack<NoticeItemJson>() {
+                    @Override
+                    public void getResult(NoticeItemJson result) {
+                                   if(result!=null){
+                                   if(result.getCode().equals("成功")){
+                                       MyApplication.showToast("删除成功",0);
+                                       noNotice.setVisibility(View.VISIBLE);
+                                       action.setVisibility(View.GONE);
+                                   }else{
+                                       MyApplication.showToast("删除失败",0);
+                                   }
+
+                                   }else{
+                                       MyApplication.showToast("连接服务器失败",0);
+                                   }
+                    }
+        });
+    }
     private void getListDate() {
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", "" + MyApplication.user.getUser_ID());
@@ -92,23 +162,40 @@ public class NoticeChildFragment extends Fragment {
                         // MyApplication.showToast(result.getCode()+"",0);
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
-                                noNotice.setVisibility(View.GONE);
-                                list.setVisibility(View.VISIBLE);
-                                noticeInfo.clear();
-                                noticeInfo.addAll(result.getNoticeInfo());
-                                noticeOneListAdapter.notifyDataSetChanged();
-                                num.setText("全部（"+noticeInfo.size()+"）");
-                               // MyApplication.showToast("宽度" + list.getHeight(), 0);
-                               // clearList(noticeInfo);
-                                noticeOneListAdapter = new NoticeAllListAdapter(getContext(), noticeInfo,2);
-                                list.setAdapter(noticeOneListAdapter);
+                                List<NoticeItemJson.NoticeInfoBean> trueList=new ArrayList<>();
+                                for(NoticeItemJson.NoticeInfoBean a:result.getNoticeInfo()){
+                                    if(a.getN_IsNew()==1){
+                                        trueList.add(a);
+                                    }
+                                }
+                                if(trueList.size()>0) {
+                                    noNotice.setVisibility(View.GONE);
+                                    action.setVisibility(View.VISIBLE);
+                                    noticeInfo.clear();
+                                    noticeInfo.addAll(trueList);
+                                    noticeOneListAdapter.notifyDataSetChanged();
+                                    num.setText("全部（" + trueList.size() + "）");
+                                    // MyApplication.showToast("宽度" + list.getHeight(), 0);
+                                    // clearList(noticeInfo);
+                                    noticeOneListAdapter = new NoticeAllListAdapter(getContext(), noticeInfo, 2);
+                                    list.setAdapter(noticeOneListAdapter);
+                                    delteAll = new ArrayList<>();
+                                    for (NoticeItemJson.NoticeInfoBean a : noticeInfo) {
+                                        if (a.getN_IsNew() == 1) {
+                                            delteAll.add(a.getEntityId());
+                                        }
+                                    }
+                                }else{
+                                    noNotice.setVisibility(View.VISIBLE);
+                                    action.setVisibility(View.GONE);
+                                }
                             } else {
                                 noNotice.setVisibility(View.VISIBLE);
-                                list.setVisibility(View.GONE);
+                                action.setVisibility(View.GONE);
                             }
                         } else {
                             noNotice.setVisibility(View.VISIBLE);
-                            list.setVisibility(View.GONE);
+                            action.setVisibility(View.GONE);
                         }
 
                     }
