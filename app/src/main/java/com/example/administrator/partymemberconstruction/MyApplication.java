@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.example.administrator.partymemberconstruction.Bean.UserJson;
+import com.example.administrator.partymemberconstruction.utils.APIWebviewTBS;
 import com.example.administrator.partymemberconstruction.utils.CrashHandler;
 
 /**
@@ -17,11 +18,20 @@ public class MyApplication extends Application {
     public static UserJson.UserInfoBean user;
     public static String psw;
     public static String phone;
+
+    APIWebviewTBS mAPIWebviewTBS;
+
     @Override
     public void onCreate() {
         super.onCreate();
         context=getApplicationContext();
         //CrashHandler.getInstance().initCrashHandler(this);
+
+        //个人封装，针对升级----开始
+        mAPIWebviewTBS=APIWebviewTBS.getAPIWebview();
+        mAPIWebviewTBS.initTbs(getApplicationContext());
+        //个人封装，针对升级----结束
+
     }
     public static void showToast(String msg, int length) {
         if (toast == null) {

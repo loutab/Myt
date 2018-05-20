@@ -25,13 +25,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
+
+import com.example.administrator.partymemberconstruction.utils.APIWebviewTBS;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -86,6 +88,7 @@ public class WebActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
+        APIWebviewTBS.getAPIWebview().initTBSActivity(this);
         loadingDialog = new LoadingDialog(this);
         loadingDialog.show();//加载动画
         //获取传过来的值
@@ -162,12 +165,11 @@ public class WebActivity extends AppCompatActivity {
                 loadingDialog.cancel();
                 //set();
             }
-
             @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                super.onReceivedError(view, request, error);
+            public void onReceivedError(WebView var1, int var2, String var3, String var4) {
                 loadingDialog.cancel();
             }
+
         });
         //设置辅助Webview
         web.setWebChromeClient(new WebChromeClient() {
@@ -197,26 +199,26 @@ public class WebActivity extends AppCompatActivity {
             }
 
 
-//视频全屏
-            @Override
-            public View getVideoLoadingProgressView() {
-                Log.e("ss","getVideoLoadingProgressView");
-                FrameLayout frameLayout = new FrameLayout(WebActivity.this);
-                frameLayout.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-                return frameLayout;
-            }
-
-            @Override
-            public void onShowCustomView(View view, CustomViewCallback callback) {
-                showCustomView(view, callback);
-                Log.e("ss","onShowCustomView");
-            }
-
-            @Override
-            public void onHideCustomView() {
-                Log.e("ss","onHideCustomView");
-                hideCustomView();
-            }
+////视频全屏
+//            @Override
+//            public View getVideoLoadingProgressView() {
+//                Log.e("ss","getVideoLoadingProgressView");
+//                FrameLayout frameLayout = new FrameLayout(WebActivity.this);
+//                frameLayout.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+//                return frameLayout;
+//            }
+//
+//            @Override
+//            public void onShowCustomView(View view, CustomViewCallback callback) {
+//                showCustomView(view, callback);
+//                Log.e("ss","onShowCustomView");
+//            }
+//
+//            @Override
+//            public void onHideCustomView() {
+//                Log.e("ss","onHideCustomView");
+//                hideCustomView();
+//            }
 
         });
         web.loadUrl(url);
@@ -224,62 +226,62 @@ public class WebActivity extends AppCompatActivity {
         web.addJavascriptInterface(new JsInteration(), "android");
     }
     /** 视频全屏参数 */
-    protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-    private View customView;
-    private FrameLayout fullscreenContainer;
-    private WebChromeClient.CustomViewCallback customViewCallback;
-    /** 视频播放全屏 **/
-    private void showCustomView(View view, WebChromeClient.CustomViewCallback callback) {
-        // if a view already exists then immediately terminate the new one
-        if (customView != null) {
-            callback.onCustomViewHidden();
-            return;
-        }
-
-        WebActivity.this.getWindow().getDecorView();
-
-        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
-        fullscreenContainer = new FullscreenHolder(WebActivity.this);
-        fullscreenContainer.addView(view, COVER_SCREEN_PARAMS);
-        decor.addView(fullscreenContainer, COVER_SCREEN_PARAMS);
-        customView = view;
-        setStatusBarVisibility(false);
-        customViewCallback = callback;
-    }
-
-    /** 隐藏视频全屏 */
-    private void hideCustomView() {
-        if (customView == null) {
-            return;
-        }
-
-        setStatusBarVisibility(true);
-        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
-        decor.removeView(fullscreenContainer);
-        fullscreenContainer = null;
-        customView = null;
-        customViewCallback.onCustomViewHidden();
-        web.setVisibility(View.VISIBLE);
-    }
-
-    /** 全屏容器界面 */
-    static class FullscreenHolder extends FrameLayout {
-
-        public FullscreenHolder(Context ctx) {
-            super(ctx);
-            setBackgroundColor(ctx.getResources().getColor(android.R.color.black));
-        }
-
-        @Override
-        public boolean onTouchEvent(MotionEvent evt) {
-            return true;
-        }
-    }
-
-    private void setStatusBarVisibility(boolean visible) {
-        int flag = visible ? 0 : WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        getWindow().setFlags(flag, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
+//    protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//    private View customView;
+//    private FrameLayout fullscreenContainer;
+//    private WebChromeClient.CustomViewCallback customViewCallback;
+//    /** 视频播放全屏 **/
+//    private void showCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+//        // if a view already exists then immediately terminate the new one
+//        if (customView != null) {
+//            callback.onCustomViewHidden();
+//            return;
+//        }
+//
+//        WebActivity.this.getWindow().getDecorView();
+//
+//        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
+//        fullscreenContainer = new FullscreenHolder(WebActivity.this);
+//        fullscreenContainer.addView(view, COVER_SCREEN_PARAMS);
+//        decor.addView(fullscreenContainer, COVER_SCREEN_PARAMS);
+//        customView = view;
+//        setStatusBarVisibility(false);
+//        customViewCallback = callback;
+//    }
+//
+//    /** 隐藏视频全屏 */
+//    private void hideCustomView() {
+//        if (customView == null) {
+//            return;
+//        }
+//
+//        setStatusBarVisibility(true);
+//        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
+//        decor.removeView(fullscreenContainer);
+//        fullscreenContainer = null;
+//        customView = null;
+//        customViewCallback.onCustomViewHidden();
+//        web.setVisibility(View.VISIBLE);
+//    }
+//
+//    /** 全屏容器界面 */
+//    static class FullscreenHolder extends FrameLayout {
+//
+//        public FullscreenHolder(Context ctx) {
+//            super(ctx);
+//            setBackgroundColor(ctx.getResources().getColor(android.R.color.black));
+//        }
+//
+//        @Override
+//        public boolean onTouchEvent(MotionEvent evt) {
+//            return true;
+//        }
+//    }
+//
+//    private void setStatusBarVisibility(boolean visible) {
+//        int flag = visible ? 0 : WindowManager.LayoutParams.FLAG_FULLSCREEN;
+//        getWindow().setFlags(flag, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//    }
 
 
 

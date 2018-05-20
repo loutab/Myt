@@ -10,6 +10,10 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -60,7 +64,7 @@
         <activity android:name=".OldWebActivity"
             android:hardwareAccelerated="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            ></activity>
+            />
     </application>
 
 </manifest>

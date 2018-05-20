@@ -37,4 +37,5 @@ dependencies {
     compile 'com.contrarywind:Android-PickerView:3.2.5'
     implementation project(':libzxing-master')
     implementation files('libs/pinyin4j-2.5.0.jar')
+    implementation files('libs/tbs_sdk_thirdapp_v3.0.jar')
 }
