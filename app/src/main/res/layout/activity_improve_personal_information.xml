@@ -350,6 +350,8 @@
                 android:hint="请输入简介"
                 android:maxLength="225"
                 android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+                android:paddingTop="5dp"
                 android:textColorHint="#ccc"
                 android:textSize="14sp" />
 

@@ -118,6 +118,8 @@
             android:layout_marginRight="12dp"
             android:layout_marginTop="12dp"
             android:password="true"
+            android:maxLines="1"
+            android:maxLength="12"
             />
         <TextView
             android:layout_width="match_parent"

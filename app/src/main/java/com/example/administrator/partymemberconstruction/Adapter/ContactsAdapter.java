@@ -82,6 +82,10 @@ public class ContactsAdapter extends BaseAdapter {
         viewHolder.name.setText(list.get(position).getBean().getName()==null?"":list.get(position).getBean().getName());
         Log.e("a",list.get(position).getBean().getName()+"名字");
         String ss = TextUtils.isEmpty(list.get(position).getBean().getHeadImg()) ? "www" : list.get(position).getBean().getHeadImg();
+        ss=ss.replace(" ","");
+        if(TextUtils.isEmpty(ss)){
+            ss="www";
+        }
         Picasso.with(context).load(ss).error(R.mipmap.search_p).into(viewHolder.head);
 
         return view;

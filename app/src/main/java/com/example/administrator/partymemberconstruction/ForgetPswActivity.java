@@ -195,7 +195,7 @@ public class ForgetPswActivity extends AppCompatActivity {
                                                 if (result.getCode().equals("成功")) {
                                                     //修改成功返回登录页
                                                     finish();
-
+                                                    MyApplication.showToast("修改成功", 0);
                                                 } else
                                                     MyApplication.showToast(result.getException(), 0);
                                             }
