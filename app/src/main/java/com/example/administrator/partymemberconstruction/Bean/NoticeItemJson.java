@@ -59,6 +59,16 @@ public class NoticeItemJson {
         private int n_Reply_Result;
         private String userName;
 
+        public String getN_Link() {
+            return n_Link;
+        }
+
+        public void setN_Link(String n_Link) {
+            this.n_Link = n_Link;
+        }
+
+        private String n_Link;
+
         public int getEntityId() {
             return EntityId;
         }

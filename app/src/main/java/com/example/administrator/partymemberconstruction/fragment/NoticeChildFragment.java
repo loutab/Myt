@@ -1,6 +1,7 @@
 package com.example.administrator.partymemberconstruction.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import com.example.administrator.partymemberconstruction.Adapter.NoticeOneListAd
 import com.example.administrator.partymemberconstruction.Bean.NoticeItemJson;
 import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
+import com.example.administrator.partymemberconstruction.WebActivity;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 
@@ -95,6 +97,11 @@ public class NoticeChildFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //changeNotice(position);
+                String n_link = noticeInfo.get(position).getN_Link();
+                Intent intent=new Intent(NoticeChildFragment.this.getContext(), WebActivity.class);
+                intent.putExtra("Url",n_link);
+                intent.putExtra("title","");
+                startActivity(intent);
             }
         });
     }

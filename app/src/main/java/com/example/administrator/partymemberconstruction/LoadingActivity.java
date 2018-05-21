@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.Bean.UserJson;
 import com.example.administrator.partymemberconstruction.utils.ComenUtils;
+import com.example.administrator.partymemberconstruction.utils.MobileInfoUtil;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 import com.example.administrator.partymemberconstruction.utils.Validate;
@@ -30,6 +31,8 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
+
 
 public class LoadingActivity extends AppCompatActivity {
 
@@ -66,7 +69,7 @@ public class LoadingActivity extends AppCompatActivity {
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        JPushInterface.setAlias(this,101,MobileInfoUtil.getIMEI(this));
         if((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0){
             finish();
             return;

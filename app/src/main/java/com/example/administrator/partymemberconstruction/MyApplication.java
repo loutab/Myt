@@ -8,6 +8,8 @@ import com.example.administrator.partymemberconstruction.Bean.UserJson;
 import com.example.administrator.partymemberconstruction.utils.APIWebviewTBS;
 import com.example.administrator.partymemberconstruction.utils.CrashHandler;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by Administrator on 2018/3/19/019.
  */
@@ -31,6 +33,8 @@ public class MyApplication extends Application {
         mAPIWebviewTBS=APIWebviewTBS.getAPIWebview();
         mAPIWebviewTBS.initTbs(getApplicationContext());
         //个人封装，针对升级----结束
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
 
     }
     public static void showToast(String msg, int length) {

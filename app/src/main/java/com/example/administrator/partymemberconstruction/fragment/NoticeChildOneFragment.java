@@ -1,6 +1,7 @@
 package com.example.administrator.partymemberconstruction.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -18,6 +20,7 @@ import com.example.administrator.partymemberconstruction.Bean.NoticeItemJson;
 import com.example.administrator.partymemberconstruction.Bean.UploadJson;
 import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
+import com.example.administrator.partymemberconstruction.WebActivity;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 
@@ -70,6 +73,18 @@ public class NoticeChildOneFragment extends Fragment {
         list.setAdapter(noticeOneListAdapter);
         Log.e("w","onViewCreated");
         isFirst=false;
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //changeNotice(position);
+                String n_link = noticeInfoBeans.get(position).getN_Link();
+                Intent intent=new Intent(NoticeChildOneFragment.this.getContext(), WebActivity.class);
+                intent.putExtra("Url",n_link);
+                intent.putExtra("title","");
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void getListDate() {
