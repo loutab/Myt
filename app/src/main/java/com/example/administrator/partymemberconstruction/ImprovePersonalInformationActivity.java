@@ -97,6 +97,15 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_improve_personal_information);
         ButterKnife.bind(this);
+        rule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+Intent intent=new Intent(ImprovePersonalInformationActivity.this,OldWebActivity.class);
+startActivity(intent);
+            }
+        });
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
