@@ -66,12 +66,12 @@ public class OldWebActivity extends AppCompatActivity {
         loadingDialog = new LoadingDialog(this);
         loadingDialog.show();//加载动画
         //获取传过来的值
-        Intent intent = getIntent();
-        String url = intent.getStringExtra("Url");
-        String titleTxt = intent.getStringExtra("title");
-        user_id = MyApplication.user.getUser_ID() + "";
-        ui_nickName = MyApplication.user.getUi_NickName();
-        title.setText(titleTxt);
+//        Intent intent = getIntent();
+//        String url = intent.getStringExtra("Url");
+//        String titleTxt = intent.getStringExtra("title");
+//        user_id = MyApplication.user.getUser_ID() + "";
+//        ui_nickName = MyApplication.user.getUi_NickName();
+        title.setText("服务协议");
         link.setClickable(true);
         link.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,9 +103,9 @@ public class OldWebActivity extends AppCompatActivity {
 //            }
 //        });
 
-        web.loadUrl("http://v.qq.com/iframe/player.html?vid=o0318tp1ddw&tiny=0&auto=0");
+        web.loadUrl("file:///android_asset/fuwu.html");
        // my_web.loadUrl("http://v.qq.com/iframe/player.html?vid=o0318tp1ddw&tiny=0&auto=0");
-        web.addJavascriptInterface(new JsObject(this), "android");
+        //web.addJavascriptInterface(new JsObject(this), "android");
 
 
     }
@@ -152,48 +152,7 @@ public class OldWebActivity extends AppCompatActivity {
     public class xWebChromeClient extends WebChromeClient {
     }
 
-    /**
-     * 设置监听事件
-     * 处理各种通知、请求等事件
-     * @author
-     */
-    public class JsObject {
-        Context mContext;
 
-        JsObject(Context c) {
-            mContext = c;
-        }
-
-        @JavascriptInterface
-        public void log(){
-            //System.out.println("返回结果");
-            setFullScreen();
-        }
-
-        @JavascriptInterface
-        public String Id() {
-            return user_id;
-        }
-
-        @JavascriptInterface
-        public String Name() {
-            //MyApplication.showToast(ui_nickName,0);
-            return ui_nickName;
-        }
-    }
-    /**
-     * 设置全屏
-     */
-    private void setFullScreen() {
-        Log.i("视频全屏-->", "竖屏切换到横屏");
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-// 设置全屏的相关属性，获取当前的屏幕状态，然后设置全屏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-// 全屏下的状态码：1098974464
-// 窗口下的状态吗：1098973440
-    }
     public class xWebViewClientent extends WebViewClient {
 
         @Override
