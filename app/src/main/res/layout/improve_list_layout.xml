@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="50dp"
     android:id="@+id/txt"
     android:gravity="center_vertical"
     android:text="测试"
     android:textSize="14sp"
-    android:textColor="#333"
-    android:layout_marginLeft="15dp"
+    android:textColor="#A4A4A4"
+    android:layout_marginLeft="17dp"
     >
 
 </TextView>

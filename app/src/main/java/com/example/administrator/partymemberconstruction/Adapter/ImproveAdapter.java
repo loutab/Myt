@@ -1,7 +1,7 @@
 package com.example.administrator.partymemberconstruction.Adapter;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +11,10 @@ import android.widget.TextView;
 import com.example.administrator.partymemberconstruction.Bean.GroupJson;
 import com.example.administrator.partymemberconstruction.R;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/22/022.
@@ -49,11 +50,31 @@ public class ImproveAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView= LayoutInflater.from(context).inflate(R.layout.improve_list_layout, parent, false);
-        TextView txt = convertView.findViewById(R.id.txt);
+        View view;
+        ViewHolder viewHolder;
+//        if(convertView==null){
+        view = LayoutInflater.from(context).inflate(R.layout.improve_list_layout, parent, false);
+        viewHolder=new ViewHolder(view);
+        view.setTag(viewHolder);
+//        }else{
+//            view=convertView;
+//            viewHolder= (ViewHolder) view.getTag();
+//        }
+        TextView txt = viewHolder.txt;
         txt.setText(list.get(position).getOrganizationName());
-        return convertView;
+if(position==0){
+    txt.setTextColor(Color.parseColor("#585454"));
+}
+        return view;
     }
 
 
+    static class ViewHolder {
+        @BindView(R.id.txt)
+        TextView txt;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
 }

@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -77,6 +78,10 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
     TextView rule;
     @BindView(R.id.register)
     TextView register;
+    @BindView(R.id.firstGroup)
+    LinearLayout firstGroup;
+    @BindView(R.id.secondGroup)
+    LinearLayout secondGroup;
 
     private TimePickerView pvTime;
     private List<GroupJson.TissueTreeBean> tissue_tree;
@@ -100,8 +105,8 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         rule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-Intent intent=new Intent(ImprovePersonalInformationActivity.this,OldWebActivity.class);
-startActivity(intent);
+                Intent intent = new Intent(ImprovePersonalInformationActivity.this, OldWebActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -120,7 +125,7 @@ startActivity(intent);
         });
         //获得UserId
         userId = getIntent().getStringExtra("userId");
-       // userId=17+"";
+        // userId=17+"";
         //获得时间
         getTimeK();
 
@@ -141,71 +146,71 @@ startActivity(intent);
             }
         });
         //默认为男
-        sexDate=0;
+        sexDate = 0;
         sex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.man:
-                        sexDate=0;
+                        sexDate = 0;
                         break;
-                        case R.id.woman:
-                            sexDate=1;
-                            break;
+                    case R.id.woman:
+                        sexDate = 1;
+                        break;
                 }
             }
         });
         //默认管理者
-        orgDate=1;
+        orgDate = 1;
         organization.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.controller:
-                        sexDate=1;
+                        sexDate = 1;
                         break;
                     case R.id.member:
-                        sexDate=0;
+                        sexDate = 0;
                         break;
                 }
             }
         });
-         register.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 //获取所有信息
-                 String userName = name.getText() + "";
-                 String birthdayString = standerTime;
-                 String groupDate = group.getText() + "";
-                 String partDate = part.getText() + "";
-                 String emailDate = email.getText() + "";
-                 //非必填
-                 String addressDate = address.getText() + "";
-                 String briefDate = brief.getText() + "";
-                 //验证必填数据是否为空
-                 if(TextUtils.isEmpty(userName)||TextUtils.isEmpty(birthdayString)||TextUtils.isEmpty(groupDate)||TextUtils.isEmpty(partDate)||TextUtils.isEmpty(emailDate)){
-                 MyApplication.showToast("必填数据不能为空",0);
-                 }else{
-                     //调用完善接口
-                     completeDate(userName,birthdayString,groupDate,partDate,emailDate,addressDate,briefDate);
-                 }
-             }
-         });
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //获取所有信息
+                String userName = name.getText() + "";
+                String birthdayString = standerTime;
+                String groupDate = group.getText() + "";
+                String partDate = part.getText() + "";
+                String emailDate = email.getText() + "";
+                //非必填
+                String addressDate = address.getText() + "";
+                String briefDate = brief.getText() + "";
+                //验证必填数据是否为空
+                if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(birthdayString) || TextUtils.isEmpty(groupDate) || TextUtils.isEmpty(partDate) || TextUtils.isEmpty(emailDate)) {
+                    MyApplication.showToast("必填数据不能为空", 0);
+                } else {
+                    //调用完善接口
+                    completeDate(userName, birthdayString, groupDate, partDate, emailDate, addressDate, briefDate);
+                }
+            }
+        });
     }
 
     private void completeDate(String userName, String birthdayString, String groupDate, String partDate, String emailDate, String addressDate, String briefDate) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("User_ID",""+userId);
-        params.put("ui_Organization",""+id1);
-        params.put("ui_Department",""+id2);
-        params.put("NickName",""+userName);
-        params.put("Sex",""+sexDate);
-        params.put("ui_Introduction",""+briefDate);
-        params.put("Mail",""+emailDate);
-        params.put("Address",""+addressDate);
-        params.put("Birthday",""+birthdayString);
-        params.put("ui_Headimg"," ");
-        params.put("ui_Position",""+orgDate);
+        params.put("User_ID", "" + userId);
+        params.put("ui_Organization", "" + id1);
+        params.put("ui_Department", "" + id2);
+        params.put("NickName", "" + userName);
+        params.put("Sex", "" + sexDate);
+        params.put("ui_Introduction", "" + briefDate);
+        params.put("Mail", "" + emailDate);
+        params.put("Address", "" + addressDate);
+        params.put("Birthday", "" + birthdayString);
+        params.put("ui_Headimg", " ");
+        params.put("ui_Position", "" + orgDate);
         OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.CompleteDateUrl, params, CompleteJson.class,
                 new OkhttpJsonUtil.TextCallBack<CompleteJson>() {
                     @Override
@@ -214,17 +219,17 @@ startActivity(intent);
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
                                 //跳转页面
-                                Intent intent=new Intent(ImprovePersonalInformationActivity.this,ExamineActivity.class);
+                                Intent intent = new Intent(ImprovePersonalInformationActivity.this, ExamineActivity.class);
                                 startActivity(intent);
 
-                                MyApplication.showToast(result.getCode(),0);
-                            }else{
-                                Intent intent=new Intent(ImprovePersonalInformationActivity.this,ExamineActivity.class);
+                                MyApplication.showToast(result.getCode(), 0);
+                            } else {
+                                Intent intent = new Intent(ImprovePersonalInformationActivity.this, ExamineActivity.class);
                                 startActivity(intent);
-                                MyApplication.showToast(result.getException(),0);
+                                MyApplication.showToast(result.getException(), 0);
                             }
-                        }else{
-                            MyApplication.showToast("服务器处理失败",0);
+                        } else {
+                            MyApplication.showToast("服务器处理失败", 0);
                         }
 
                     }
@@ -241,7 +246,7 @@ startActivity(intent);
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
                                 departList = result.getDepartList();
-                                showPopupWindowPart(partDateView);
+                                showPopupWindowPart(secondGroup);
                             }
                         }
 
@@ -259,7 +264,7 @@ startActivity(intent);
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
                                 tissue_tree = result.getTissue_tree();
-                                showPopupWindowGroup(groupDateView);
+                                showPopupWindowGroup(firstGroup);
                             }
                         }
 
@@ -271,7 +276,7 @@ startActivity(intent);
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         int year = curDate.getYear() + 1900;
         int month = curDate.getMonth() + 1;
-        birthday.setHint(year+"      "+month+"      "+curDate.getDate());
+        birthday.setHint(year + "      " + month + "      " + curDate.getDate());
         timeCustom();
         //生日选择
         birthday.setOnClickListener(new View.OnClickListener() {
@@ -282,14 +287,15 @@ startActivity(intent);
         });
     }
 
-    public void showPopupWindowGroup(View v){
+    public void showPopupWindowGroup(View v) {
         View contentView = LayoutInflater.from(this).inflate(R.layout.popuwindow_layout, null);
         ListView listView = contentView.findViewById(R.id.list);
-        ImproveAdapter group=new ImproveAdapter(this,tissue_tree);
+        ImproveAdapter group = new ImproveAdapter(this, tissue_tree);
         listView.setAdapter(group);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("点鸡",position+"");
                 GroupJson.TissueTreeBean tissueTreeBean = tissue_tree.get(position);
                 String organizationName = tissueTreeBean.getOrganizationName();
                 ImprovePersonalInformationActivity.this.group.setText(organizationName);
@@ -298,7 +304,7 @@ startActivity(intent);
             }
         });
         popupWindowGroup = new PopupWindow(contentView,
-                v.getWidth(), LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                this.group.getWidth(), LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindowGroup.setTouchable(true);
 
 //        popupWindowGroup.setTouchInterceptor(new View.OnTouchListener() {
@@ -320,10 +326,11 @@ startActivity(intent);
         // 设置好参数之后再show
         popupWindowGroup.showAsDropDown(v);
     }
-    public void showPopupWindowPart(View v){
+
+    public void showPopupWindowPart(View v) {
         View contentView = LayoutInflater.from(this).inflate(R.layout.popuwindow_layout, null);
         ListView listView = contentView.findViewById(R.id.list);
-        Improve1Adapter group=new Improve1Adapter(this,departList);
+        Improve1Adapter group = new Improve1Adapter(this, departList);
         listView.setAdapter(group);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -336,7 +343,7 @@ startActivity(intent);
             }
         });
         popupWindowGroup = new PopupWindow(contentView,
-                v.getWidth(), LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                this.part.getWidth(), LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindowGroup.setTouchable(true);
 
 //        popupWindowGroup.setTouchInterceptor(new View.OnTouchListener() {

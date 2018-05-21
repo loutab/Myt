@@ -1,6 +1,7 @@
 package com.example.administrator.partymemberconstruction.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,9 @@ public class Improve1Adapter extends BaseAdapter {
         convertView= LayoutInflater.from(context).inflate(R.layout.improve_list_layout, parent, false);
         TextView txt = convertView.findViewById(R.id.txt);
         txt.setText(list.get(position).getDepartName());
+        if(position==0){
+            txt.setTextColor(Color.parseColor("#585454"));
+        }
         return convertView;
     }
 

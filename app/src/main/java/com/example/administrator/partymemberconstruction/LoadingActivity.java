@@ -216,6 +216,13 @@ public class LoadingActivity extends AppCompatActivity {
                                             MyApplication.user = result.getUserInfo();
                                             gotoActivity(FirstActivity.class);
                                             finish();
+
+
+                                            //测试完善信息页面
+//                                            Intent intentTest = new Intent(LoadingActivity.this, ImprovePersonalInformationActivity.class);
+//                                            intentTest.putExtra("userId",result.getUserInfo().getEntityId()+"");
+//                                            startActivity(intentTest);
+
                                             break;
                                         case 2:
                                             Intent intent1 = new Intent(LoadingActivity.this, ExamineActivity.class);

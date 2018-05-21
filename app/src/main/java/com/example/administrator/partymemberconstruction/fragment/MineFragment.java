@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -374,7 +375,13 @@ public class MineFragment extends Fragment {
                         // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
                         if (result != null) {
                             MyApplication.user = result.getUserInfo();
+                            String userName=MyApplication.user.getUi_NickName()==null?"":MyApplication.user.getUi_NickName();
+                            name.setText(userName);
                             String url=MyApplication.user.getUi_Headimg()==null|MyApplication.user.getUi_Headimg()==""?"wwww":MyApplication.user.getUi_Headimg();
+                            url=url.replace(" ","");
+                            if(TextUtils.isEmpty(url)){
+                                url="www";
+                            }
                             Picasso.with(MineFragment.this.getContext()).load(url).into(headImg, new Callback() {
                                 @Override
                                 public void onSuccess() {
