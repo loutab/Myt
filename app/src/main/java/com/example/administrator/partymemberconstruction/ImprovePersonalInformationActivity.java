@@ -276,7 +276,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         int year = curDate.getYear() + 1900;
         int month = curDate.getMonth() + 1;
-        birthday.setHint(year + "      " + month + "      " + curDate.getDate());
+        birthday.setText(year + "      " + month + "      " + curDate.getDate());
         timeCustom();
         //生日选择
         birthday.setOnClickListener(new View.OnClickListener() {
