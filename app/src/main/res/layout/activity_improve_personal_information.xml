@@ -43,6 +43,7 @@
             android:clickable="true"
             android:text="返回"
             android:textColor="#fff"
+            android:visibility="invisible"
             android:textSize="14sp" />
     </RelativeLayout>
 
