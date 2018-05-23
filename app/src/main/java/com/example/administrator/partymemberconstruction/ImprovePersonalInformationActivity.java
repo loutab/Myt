@@ -25,6 +25,7 @@ import com.example.administrator.partymemberconstruction.Bean.CompleteJson;
 import com.example.administrator.partymemberconstruction.Bean.GroupJson;
 import com.example.administrator.partymemberconstruction.Bean.PartJson;
 import com.example.administrator.partymemberconstruction.Bean.PartMJson;
+import com.example.administrator.partymemberconstruction.Bean.UserInfo;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 
@@ -196,6 +197,63 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                 }
             }
         });
+        String isRestart = getIntent().getStringExtra("isRestart");
+
+        //重新申请页面
+        if (!TextUtils.isEmpty(isRestart)) {
+getOldDate();
+        }
+
+    }
+
+    private void getOldDate() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.GetOldDateUrl, params, UserInfo.class,
+                new OkhttpJsonUtil.TextCallBack<UserInfo>() {
+                    @Override
+                    public void getResult(UserInfo result) {
+                        // MyApplication.showToast(result.getCode()+"",0);
+                        if (result != null) {
+                            if (result.getCode().equals("成功")) {
+                                if (result.getUserInfo() != null) {
+                                    name.setText(result.getUserInfo().getUi_NickName() == null ? "" : result.getUserInfo().getUi_NickName());
+                                    if (!TextUtils.isEmpty(result.getUserInfo().getUi_Birthday())) {
+                                        String[] split = result.getUserInfo().getUi_Birthday().split(" ");
+                                        String[] birth = split[0].split("-");
+                                        if (birth.length >= 2) {
+                                            birthday.setText(birth[0] + "      " + birth[1] + "      " + birth[2]);
+                                        }
+                                    }
+                                    if (result.getUserInfo().getSex() == 1)
+                                        sex.check(R.id.man);
+                                    else
+                                        sex.check(R.id.woman);
+//                                    if (tissue_tree != null) {
+//                                        if (tissue_tree.size() > 0 & result.getUserInfo().getUi_Organization() < tissue_tree.size()) {
+//                                            group.setText(tissue_tree.get(result.getUserInfo().getUi_Organization()).getOrganizationName());
+//                                        }
+//                                    }
+                                    if (result.getUserInfo().getUi_Position() == 1)
+                                        organization.check(R.id.controller);
+                                    else
+                                        organization.check(R.id.member);
+                                    if (result.getUserInfo().getUi_Mail() != null)
+                                        email.setText(result.getUserInfo().getUi_Mail());
+                                    if (result.getUserInfo().getUi_Address() != null)
+                                        address.setText(result.getUserInfo().getUi_Address());
+                                    if (result.getUserInfo().getUi_Introduction() != null)
+                                        brief.setText(result.getUserInfo().getUi_Introduction());
+                                }
+                            } else {
+                                MyApplication.showToast(result.getError() == null ? "" : result.getError(), 0);
+                            }
+                        } else {
+                            MyApplication.showToast("服务器连接失败", 0);
+                        }
+
+                    }
+                });
     }
 
     private void completeDate(String userName, String birthdayString, String groupDate, String partDate, String emailDate, String addressDate, String briefDate) {
@@ -295,7 +353,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("点鸡",position+"");
+                Log.e("点鸡", position + "");
                 GroupJson.TissueTreeBean tissueTreeBean = tissue_tree.get(position);
                 String organizationName = tissueTreeBean.getOrganizationName();
                 ImprovePersonalInformationActivity.this.group.setText(organizationName);

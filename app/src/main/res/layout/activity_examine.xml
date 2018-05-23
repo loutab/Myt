@@ -19,6 +19,18 @@
             android:text="审核结果"
             android:textColor="#fff"
             android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改申请"
+            android:textSize="13dp"
+            android:textColor="#fff"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:id="@+id/restartChange"
+            android:visibility="invisible"
+            />
 
         <ImageView
             android:id="@+id/link"
