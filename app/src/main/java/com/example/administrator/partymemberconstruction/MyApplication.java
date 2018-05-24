@@ -20,6 +20,7 @@ public class MyApplication extends Application {
     public static UserJson.UserInfoBean user;
     public static String psw;
     public static String phone;
+    public static String otherHead="";
 
     APIWebviewTBS mAPIWebviewTBS;
 

@@ -69,6 +69,8 @@ android:layout_marginLeft="5dp"
         android:id="@+id/imgList"
         android:layout_below="@id/content"
         android:numColumns="3"
+        android:dividerHeight="5dp"
+        android:divider="@android:color/transparent"
         />
     <RelativeLayout
         android:layout_width="match_parent"

@@ -97,7 +97,7 @@ public class WebActivity extends AppCompatActivity {
         String titleTxt = intent.getStringExtra("title");
         user_id = MyApplication.user.getUser_ID() + "";
         ui_nickName = MyApplication.user.getUi_NickName();
-        title.setText(titleTxt);
+        title.setText(titleTxt+"");
         //全部隐藏
         headtitle.setVisibility(View.GONE);
 
