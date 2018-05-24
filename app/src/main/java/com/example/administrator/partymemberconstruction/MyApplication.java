@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.administrator.partymemberconstruction.Bean.ContactsPersonBean;
 import com.example.administrator.partymemberconstruction.Bean.UserJson;
 import com.example.administrator.partymemberconstruction.utils.APIWebviewTBS;
 import com.example.administrator.partymemberconstruction.utils.CrashHandler;
@@ -21,6 +22,7 @@ public class MyApplication extends Application {
     public static String psw;
     public static String phone;
     public static String otherHead="";
+    public static ContactsPersonBean.UserinfoBean otherBean=null;
 
     APIWebviewTBS mAPIWebviewTBS;
 

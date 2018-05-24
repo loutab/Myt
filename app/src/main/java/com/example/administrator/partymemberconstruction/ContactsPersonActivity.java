@@ -66,6 +66,14 @@ public class ContactsPersonActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            headImg.setClickable(true);
+            headImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(ContactsPersonActivity.this,PersonDateActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
     }
 
@@ -80,6 +88,7 @@ public class ContactsPersonActivity extends AppCompatActivity {
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
                                 if (result.getUserinfo() != null) {
+                                    MyApplication.otherBean=result.getUserinfo();
                                     String nickName = result.getUserinfo().getNickName();
                                     name.setText(nickName == null ? "" : nickName);
                                     int sexInt = result.getUserinfo().getSex();
@@ -103,9 +112,11 @@ public class ContactsPersonActivity extends AppCompatActivity {
                                 }
                             } else {
                                 MyApplication.showToast("暂无数据", 0);
+                                finish();
                             }
                         } else {
                             MyApplication.showToast("连接服务器失败", 0);
+                            finish();
                         }
                     }
                 });
