@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -25,6 +26,8 @@ public class ExamineActivity extends AppCompatActivity {
     TextView newbtn;
     @BindView(R.id.restartChange)
     TextView restartChange;
+    @BindView(R.id.refuse)
+    LinearLayout refuse;
     private String userId;
     private int userIdtwo;
 
@@ -42,10 +45,12 @@ public class ExamineActivity extends AppCompatActivity {
             }
         });
         String state = getIntent().getStringExtra("state");
+        //测试
         if (TextUtils.isEmpty(state)) {
         } else {
             if (state.equals("2")) {
                 //需要传入用户ID
+                refuse.setVisibility(View.VISIBLE);
                 userIdtwo = getIntent().getIntExtra("userId", 0);
                 newbtn.setVisibility(View.VISIBLE);
                 newbtn.setClickable(true);
@@ -65,16 +70,16 @@ public class ExamineActivity extends AppCompatActivity {
                 Intent intent = new Intent(ExamineActivity.this, ImprovePersonalInformationActivity.class);
                 intent.putExtra("userId", userId);
                 startActivity(intent);
-            }else  if(state.equals("0")){
+            } else if (state.equals("0")) {
                 restartChange.setClickable(true);
                 restartChange.setVisibility(View.VISIBLE);
                 restartChange.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        userId = TextUtils.isEmpty(getIntent().getStringExtra("userId"))?"":getIntent().getStringExtra("userId");
+                        userId = TextUtils.isEmpty(getIntent().getStringExtra("userId")) ? "" : getIntent().getStringExtra("userId");
                         Intent intent = new Intent(ExamineActivity.this, ImprovePersonalInformationActivity.class);
                         intent.putExtra("userId", userId);
-                        intent.putExtra("isRestart","yes");
+                        intent.putExtra("isRestart", "yes");
                         startActivity(intent);
                     }
                 });

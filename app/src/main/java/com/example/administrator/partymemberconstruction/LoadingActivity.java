@@ -208,21 +208,22 @@ public class LoadingActivity extends AppCompatActivity {
                                         case 0:
                                             Intent intent = new Intent(LoadingActivity.this, ExamineActivity.class);
                                             intent.putExtra("state", "" + result.getStatus());
+                                            intent.putExtra("userId",result.getUserId()+"");
                                             startActivity(intent);
                                             break;
                                         //跳转到首页
                                         case 1:
                                             //全局化用户信息
-//                                            MyApplication.user = result.getUserInfo();
-//                                            gotoActivity(FirstActivity.class);
-//                                            finish();
+                                            MyApplication.user = result.getUserInfo();
+                                            gotoActivity(FirstActivity.class);
+                                            finish();
 
 
-                                            //测试完善信息页面
-                                            Intent intentTest = new Intent(LoadingActivity.this, ExamineActivity.class);
-                                            intentTest.putExtra("userId","1");
-                                            intentTest.putExtra("state","0");
-                                            startActivity(intentTest);
+//                                            //测试完善信息页面
+//                                            Intent intentTest = new Intent(LoadingActivity.this, ExamineActivity.class);
+//                                            intentTest.putExtra("userId","1");
+//                                            intentTest.putExtra("state","0");
+//                                            startActivity(intentTest);
 
                                             break;
                                         case 2:

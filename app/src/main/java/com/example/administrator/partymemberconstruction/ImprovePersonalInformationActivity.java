@@ -135,7 +135,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 groupDateView = v;
                 //获得组织与部门数据
-                getGroupDate();
+                getGroupDate(true);
             }
         });
         part.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +143,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 partDateView = v;
                 //获得组织与部门数据
-                getPartDate();
+                getPartDate(true);
             }
         });
         //默认为男
@@ -201,10 +201,13 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
 
         //重新申请页面
         if (!TextUtils.isEmpty(isRestart)) {
-getOldDate();
+            getOldDate();
         }
 
     }
+
+    int oldOrg;
+    int oldPart;
 
     private void getOldDate() {
         HashMap<String, String> params = new HashMap<>();
@@ -223,17 +226,18 @@ getOldDate();
                                         String[] birth = split[0].split("-");
                                         if (birth.length >= 2) {
                                             birthday.setText(birth[0] + "      " + birth[1] + "      " + birth[2]);
+                                            standerTime=birth[0]+"-"+birth[1]+"-"+birth[2];
                                         }
                                     }
                                     if (result.getUserInfo().getSex() == 1)
                                         sex.check(R.id.man);
                                     else
                                         sex.check(R.id.woman);
-//                                    if (tissue_tree != null) {
-//                                        if (tissue_tree.size() > 0 & result.getUserInfo().getUi_Organization() < tissue_tree.size()) {
-//                                            group.setText(tissue_tree.get(result.getUserInfo().getUi_Organization()).getOrganizationName());
-//                                        }
-//                                    }
+
+                                    oldOrg = result.getUserInfo().getUi_Organization();
+                                    oldPart=result.getUserInfo().getUi_Department();
+                                    getGroupDate(false);
+                                    getPartDate(false);
                                     if (result.getUserInfo().getUi_Position() == 1)
                                         organization.check(R.id.controller);
                                     else
@@ -294,8 +298,9 @@ getOldDate();
                 });
     }
 
-    private void getPartDate() {
+    private void getPartDate(boolean isShow) {
         HashMap<String, String> params = new HashMap<>();
+        isRealShowTwo = isShow;
         OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.PartDateUrl, params, PartMJson.class,
                 new OkhttpJsonUtil.TextCallBack<PartMJson>() {
                     @Override
@@ -304,7 +309,19 @@ getOldDate();
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
                                 departList = result.getDepartList();
-                                showPopupWindowPart(secondGroup);
+                                if (isRealShowTwo)
+                                    showPopupWindowPart(secondGroup);
+                                else{
+                                    if(departList!=null){
+                                        if(departList.size()>0){
+                                            for(PartMJson.DepartListBean bean:departList){
+                                                if(bean.getId()==oldPart){
+                                                    part.setText(bean.getDepartName());
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -312,8 +329,12 @@ getOldDate();
                 });
     }
 
-    private void getGroupDate() {
+    boolean isRealShowOne;
+    boolean isRealShowTwo;
+
+    private void getGroupDate(boolean isShow) {
         HashMap<String, String> params = new HashMap<>();
+        isRealShowOne = isShow;
         OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.GroupDateUrl, params, GroupJson.class,
                 new OkhttpJsonUtil.TextCallBack<GroupJson>() {
                     @Override
@@ -322,7 +343,17 @@ getOldDate();
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
                                 tissue_tree = result.getTissue_tree();
-                                showPopupWindowGroup(firstGroup);
+                                if (isRealShowOne)
+                                    showPopupWindowGroup(firstGroup);
+                                else {
+                                    if(tissue_tree!=null){
+                                        for (GroupJson.TissueTreeBean bean:tissue_tree) {
+                                            if(bean.getId()==oldOrg){
+                                                group.setText(bean.getOrganizationName());
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -353,7 +384,6 @@ getOldDate();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("点鸡", position + "");
                 GroupJson.TissueTreeBean tissueTreeBean = tissue_tree.get(position);
                 String organizationName = tissueTreeBean.getOrganizationName();
                 ImprovePersonalInformationActivity.this.group.setText(organizationName);

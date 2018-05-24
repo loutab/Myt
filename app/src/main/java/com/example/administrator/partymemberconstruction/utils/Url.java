@@ -53,4 +53,6 @@ public class Url {
     public static String ChangeNotice = "http://101.201.109.90:3333/Local/UpdateNotice_IsNew";
     //获得已编辑信息
     public static String GetOldDateUrl = "http://101.201.109.90:3333/Local/GetUsetInfo";
+    //获得联系人详细信息
+    public static String GetContactsDetail="http://101.201.109.90:3333/Local/GetAllUsetinfo";
 }

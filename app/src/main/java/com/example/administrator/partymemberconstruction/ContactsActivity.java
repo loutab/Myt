@@ -1,5 +1,6 @@
 package com.example.administrator.partymemberconstruction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -62,6 +64,14 @@ public class ContactsActivity extends AppCompatActivity {
         user_infoList = new ArrayList<>();
         contactsAdapter = new ContactsAdapter(contactsSorts, this);
         list.setAdapter(contactsAdapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent(ContactsActivity.this,ContactsPersonActivity.class);
+                intent.putExtra("userId",contactsSorts.get(i).getBean().getUserID()+"");
+                startActivity(intent);
+            }
+        });
         //testPin();
         edit.addTextChangedListener(new TextWatcher() {
             @Override

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    tools:context="com.example.administrator.partymemberconstruction.ContactsPersonActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="@color/red">
+
+        <com.example.administrator.partymemberconstruction.CustomView.CircleImageView
+            android:id="@+id/headImg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:src="#000"
+            app:civ_border_color="#ECB7B7"
+            app:civ_border_width="2dp"
+            android:clickable="true"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headImg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:text="Mike"
+            android:textColor="#fff"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/sex"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/headImg"
+            android:layout_toRightOf="@+id/name"
+            android:src="@mipmap/personMan"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="5dp"
+            />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/list"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@mipmap/Bbt"
+            android:textSize="22sp"
+            android:textColor="#fff"
+            android:text="发消息"
+            android:gravity="center"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:id="@+id/message"
+            android:clickable="true"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>
+
