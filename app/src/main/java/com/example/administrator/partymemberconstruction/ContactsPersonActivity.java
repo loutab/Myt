@@ -110,7 +110,28 @@ public class ContactsPersonActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                            } else {
+                            }else if(result.getCode().equals("失败")){
+                                if (result.getUserinfo() != null) {
+                                    MyApplication.otherBean=result.getUserinfo();
+                                    String nickName = result.getUserinfo().getNickName();
+                                    name.setText(nickName == null ? "" : nickName);
+                                    int sexInt = result.getUserinfo().getSex();
+                                    if (sexInt == 0) {
+                                        sex.setImageResource(R.mipmap.personman);
+                                    } else {
+                                        sex.setImageResource(R.mipmap.personwoman);
+                                    }
+                                    String ui_headimg = result.getUserinfo().getUi_Headimg();
+                                    if(ui_headimg!=null){
+                                        ui_headimg.replace(" ","");
+                                    }else{
+                                        ui_headimg="www";
+                                    }
+                                    Picasso.with(ContactsPersonActivity.this).load(ui_headimg == null ? "www" :
+                                            ui_headimg).error(R.mipmap.default_head).into(headImg);
+                                }
+                            }
+                            else {
                                 MyApplication.showToast("暂无数据", 0);
                                 finish();
                             }

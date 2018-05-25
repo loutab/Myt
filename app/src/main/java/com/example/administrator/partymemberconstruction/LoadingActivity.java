@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.partymemberconstruction.Bean.GroupJson;
+import com.example.administrator.partymemberconstruction.Bean.PartMJson;
 import com.example.administrator.partymemberconstruction.Bean.UserJson;
 import com.example.administrator.partymemberconstruction.utils.ComenUtils;
 import com.example.administrator.partymemberconstruction.utils.MobileInfoUtil;
@@ -28,6 +30,7 @@ import com.example.administrator.partymemberconstruction.utils.Url;
 import com.example.administrator.partymemberconstruction.utils.Validate;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,11 +72,15 @@ public class LoadingActivity extends AppCompatActivity {
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        JPushInterface.setAlias(this,101,MobileInfoUtil.getIMEI(this));
-        if((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0){
+        JPushInterface.setAlias(this, 101, MobileInfoUtil.getIMEI(this));
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
             return;
         }
+
+        //加载组织与部门数据
+        getGroupDate();
+        getPartDate();
 
         Log.d("w", ComenUtils.ChangeTime("2018-03-13 11:20:36"));
         sp = getPreferences(Context.MODE_PRIVATE);
@@ -173,18 +180,17 @@ public class LoadingActivity extends AppCompatActivity {
         final String passWord = passwordEdt.getText() + "";
         if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(passWord)) {
             MyApplication.showToast("用户名或密码不能为空", 0);
-        }else if(!Validate.isTrue(userName)){
+        } else if (!Validate.isTrue(userName)) {
             userEdt.setText("");
             MyApplication.showToast("请输入正确手机号码", 0);
-        }
-        else if (passWord.length() < 6 || passWord.length() > 12) {
+        } else if (passWord.length() < 6 || passWord.length() > 12) {
             //限制密码位数
             MyApplication.showToast("密码位数为6-12位", 0);
         } else {
             HashMap<String, String> params = new HashMap<>();
             params.put("UserName", userName);
             params.put("Password", passWord);
-            MyApplication.psw=passWord;
+            MyApplication.psw = passWord;
             OkhttpJsonUtil.getInstance().postByEnqueue(LoadingActivity.this, Url.LoadingUrl, params, UserJson.class,
                     new OkhttpJsonUtil.TextCallBack<UserJson>() {
                         @Override
@@ -194,12 +200,12 @@ public class LoadingActivity extends AppCompatActivity {
                                 Log.d("p", result.getCode());
                                 if (result.getCode().equals("成功")) {
 
-                                            String pwd=passwordEdt.getText() + "";    
+                                    String pwd = passwordEdt.getText() + "";
 
-                                    MyApplication.phone=userEdt.getText() + "";
+                                    MyApplication.phone = userEdt.getText() + "";
                                     //记住用户名
                                     SharedPreferences.Editor edit = sp.edit();
-                                    edit.putString("userName",trueName);
+                                    edit.putString("userName", trueName);
                                     edit.commit();
                                     //根据状态选择进入的页面
                                     //finish();
@@ -208,7 +214,7 @@ public class LoadingActivity extends AppCompatActivity {
                                         case 0:
                                             Intent intent = new Intent(LoadingActivity.this, ExamineActivity.class);
                                             intent.putExtra("state", "" + result.getStatus());
-                                            intent.putExtra("userId",result.getUserId()+"");
+                                            intent.putExtra("userId", result.getUserId() + "");
                                             startActivity(intent);
                                             break;
                                         //跳转到首页
@@ -229,23 +235,23 @@ public class LoadingActivity extends AppCompatActivity {
                                         case 2:
                                             Intent intent1 = new Intent(LoadingActivity.this, ExamineActivity.class);
                                             intent1.putExtra("state", "" + result.getStatus());
-                                            intent1.putExtra("userId",result.getUser_id());
+                                            intent1.putExtra("userId", result.getUser_id());
                                             startActivity(intent1);
                                             break;
                                         case 3:
                                             //跳转到完善信息页面
                                             Intent intent3 = new Intent(LoadingActivity.this, ImprovePersonalInformationActivity.class);
-                                            intent3.putExtra("userId",result.getUserInfo().getEntityId()+"");
+                                            intent3.putExtra("userId", result.getUserInfo().getEntityId() + "");
                                             startActivity(intent3);
                                             break;
                                     }
                                     //登录成功进入首页
-                                } else{
-                                    isOne=true;
+                                } else {
+                                    isOne = true;
                                     MyApplication.showToast(result.getException(), 0);
 
                                 }
-                            }else{
+                            } else {
                                 MyApplication.showToast("连接服务器失败", 0);
                             }
 
@@ -266,20 +272,58 @@ public class LoadingActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
-boolean isOne=true;
+
+    boolean isOne = true;
     View.OnKeyListener onKey = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             // TODO Auto-generated method stub
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 //这里写发送信息的方法
-                if(isOne){
-                gotoLoading();
-                isOne=false;
+                if (isOne) {
+                    gotoLoading();
+                    isOne = false;
                 }
             }
             return false;
         }
     };
 
+    private void getGroupDate() {
+        HashMap<String, String> params = new HashMap<>();
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.GroupDateUrl, params, GroupJson.class,
+                new OkhttpJsonUtil.TextCallBack<GroupJson>() {
+                    @Override
+                    public void getResult(GroupJson result) {
+                        // MyApplication.showToast(result.getCode()+"",0);
+                        if (result != null) {
+                            if (result.getCode().equals("成功")) {
+                                List<GroupJson.TissueTreeBean> tissue_tree = result.getTissue_tree();
+                                if (tissue_tree.size() > 0) {
+                                    MyApplication.GroupDate = tissue_tree;
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void getPartDate() {
+        HashMap<String, String> params = new HashMap<>();
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.PartDateUrl, params, PartMJson.class,
+                new OkhttpJsonUtil.TextCallBack<PartMJson>() {
+                    @Override
+                    public void getResult(PartMJson result) {
+                        // MyApplication.showToast(result.getCode()+"",0);
+                        if (result != null) {
+                            if (result.getCode().equals("成功")) {
+                                List<PartMJson.DepartListBean> departList = result.getDepartList();
+                                if (departList.size() > 0) {
+                                    MyApplication.PartDate = departList;
+                                }
+                            }
+                        }
+                    }
+                });
+    }
 }

@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.Bean.ContactsPersonBean;
+import com.example.administrator.partymemberconstruction.Bean.GroupJson;
+import com.example.administrator.partymemberconstruction.Bean.PartMJson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,8 +59,17 @@ public class PersonDateActivity extends AppCompatActivity {
         sex.setText(b.getSex()==0?"男":"女");
         date.setText((b.getBirthday()+"").split(" ")[0]);
         brief.setText(b.getUi_Introduction()+"");
-        org.setText(b.getUi_Organization()+"");
-        part.setText(""+b.getUi_Department());
+        org.setText("");
+        for(GroupJson.TissueTreeBean bean:MyApplication.GroupDate){
+            if(bean.getId()==b.getUi_Organization());
+                  org.setText(bean.getOrganizationName());
+        }
+        part.setText("");
+        for (PartMJson.DepartListBean bean:MyApplication.PartDate){
+            if (b.getUi_Department()==bean.getId())
+                part.setText(""+bean.getDepartName());
+        }
+        //part.setText(""+b.getUi_Department());
         email.setText(""+b.getMail());
         phone.setText(""+b.getPhoneNum());
         address.setText(""+b.getAddress());

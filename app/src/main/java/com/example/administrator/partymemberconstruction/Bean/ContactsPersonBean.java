@@ -15,6 +15,16 @@ public class ContactsPersonBean {
      */
 
     private String code;
+
+    public String getError() {
+        return Error;
+    }
+
+    public void setError(String error) {
+        Error = error;
+    }
+
+    private String Error;
     private UserinfoBean userinfo;
     private List<UserListBean> userList;
 
