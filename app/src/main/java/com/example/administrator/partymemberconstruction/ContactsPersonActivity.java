@@ -5,18 +5,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.administrator.partymemberconstruction.Adapter.ContactsAdapter;
 import com.example.administrator.partymemberconstruction.Adapter.ContactsPersonAdapter;
 import com.example.administrator.partymemberconstruction.Bean.ContactsPersonBean;
-import com.example.administrator.partymemberconstruction.Bean.GroupJson;
 import com.example.administrator.partymemberconstruction.CustomView.CircleImageView;
-import com.example.administrator.partymemberconstruction.fragment.MineFragment;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 import com.squareup.picasso.Picasso;
@@ -40,6 +37,8 @@ public class ContactsPersonActivity extends AppCompatActivity {
     ListView list;
     @BindView(R.id.message)
     TextView message;
+    @BindView(R.id.goRight)
+    Button goRight;
     private String userId;
     private List<ContactsPersonBean.UserListBean> userList;
     private ContactsPersonAdapter contactsPersonAdapter;
@@ -61,16 +60,15 @@ public class ContactsPersonActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     String ai_jumpLink = userList.get(i).getAi_JumpLink();
-                    Intent intent=new Intent(ContactsPersonActivity.this, WebActivity.class);
-                    intent.putExtra("Url",ai_jumpLink+"");
+                    Intent intent = new Intent(ContactsPersonActivity.this, WebActivity.class);
+                    intent.putExtra("Url", ai_jumpLink + "");
                     startActivity(intent);
                 }
             });
-            headImg.setClickable(true);
-            headImg.setOnClickListener(new View.OnClickListener() {
+            goRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(ContactsPersonActivity.this,PersonDateActivity.class);
+                    Intent intent = new Intent(ContactsPersonActivity.this, PersonDateActivity.class);
                     startActivity(intent);
                 }
             });
@@ -80,7 +78,7 @@ public class ContactsPersonActivity extends AppCompatActivity {
     private void getDate() {
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", userId);
-       // params.put("userId",1+"");
+        // params.put("userId",1+"");
         OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.GetContactsDetail, params, ContactsPersonBean.class,
                 new OkhttpJsonUtil.TextCallBack<ContactsPersonBean>() {
                     @Override
@@ -88,7 +86,7 @@ public class ContactsPersonActivity extends AppCompatActivity {
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
                                 if (result.getUserinfo() != null) {
-                                    MyApplication.otherBean=result.getUserinfo();
+                                    MyApplication.otherBean = result.getUserinfo();
                                     String nickName = result.getUserinfo().getNickName();
                                     name.setText(nickName == null ? "" : nickName);
                                     int sexInt = result.getUserinfo().getSex();
@@ -110,9 +108,9 @@ public class ContactsPersonActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                            }else if(result.getCode().equals("失败")){
+                            } else if (result.getCode().equals("失败")) {
                                 if (result.getUserinfo() != null) {
-                                    MyApplication.otherBean=result.getUserinfo();
+                                    MyApplication.otherBean = result.getUserinfo();
                                     String nickName = result.getUserinfo().getNickName();
                                     name.setText(nickName == null ? "" : nickName);
                                     int sexInt = result.getUserinfo().getSex();
@@ -122,16 +120,15 @@ public class ContactsPersonActivity extends AppCompatActivity {
                                         sex.setImageResource(R.mipmap.personwoman);
                                     }
                                     String ui_headimg = result.getUserinfo().getUi_Headimg();
-                                    if(ui_headimg!=null){
-                                        ui_headimg.replace(" ","");
-                                    }else{
-                                        ui_headimg="www";
+                                    if (ui_headimg != null) {
+                                        ui_headimg.replace(" ", "");
+                                    } else {
+                                        ui_headimg = "www";
                                     }
                                     Picasso.with(ContactsPersonActivity.this).load(ui_headimg == null ? "www" :
                                             ui_headimg).error(R.mipmap.default_head).into(headImg);
                                 }
-                            }
-                            else {
+                            } else {
                                 MyApplication.showToast("暂无数据", 0);
                                 finish();
                             }
