@@ -236,6 +236,7 @@ public class LoadingActivity extends AppCompatActivity {
                                             Intent intent1 = new Intent(LoadingActivity.this, ExamineActivity.class);
                                             intent1.putExtra("state", "" + result.getStatus());
                                             intent1.putExtra("userId", result.getUser_id());
+                                            intent1.putExtra("Error",result.getError());
                                             startActivity(intent1);
                                             break;
                                         case 3:

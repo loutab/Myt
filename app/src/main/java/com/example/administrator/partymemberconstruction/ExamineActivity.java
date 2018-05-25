@@ -28,6 +28,8 @@ public class ExamineActivity extends AppCompatActivity {
     TextView restartChange;
     @BindView(R.id.refuse)
     LinearLayout refuse;
+    @BindView(R.id.error)
+    TextView error;
     private String userId;
     private int userIdtwo;
 
@@ -59,9 +61,12 @@ public class ExamineActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(ExamineActivity.this, ImprovePersonalInformationActivity.class);
                         intent.putExtra("userId", userIdtwo + "");
+                        intent.putExtra("isRestart", "yes");
                         startActivity(intent);
                     }
                 });
+                String errorMsg = getIntent().getStringExtra("Error");
+                error.setText(errorMsg+"");
                 img.setImageDrawable(getResources().getDrawable(R.mipmap.cross));
                 txt.setText("审核失败");
                 txt.setTextColor(getResources().getColor(R.color.black));

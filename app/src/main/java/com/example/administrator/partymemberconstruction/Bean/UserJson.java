@@ -20,6 +20,16 @@ public class UserJson {
     private int status;
     private UserInfoBean userInfo;
 
+    public String getError() {
+        return Error;
+    }
+
+    public void setError(String error) {
+        Error = error;
+    }
+
+    private String Error;
+
     public int getUserId() {
         return userId;
     }
