@@ -53,7 +53,7 @@ public class ImgGrideAdapter extends BaseAdapter {
         ImageView viewById = convertView.findViewById(R.id.img);
         String s = list.get(position);
         String replace = s.replace(" ", "");
-        if(replace=="");
+        if(replace=="")
         replace="www";
         Picasso.with(context).load(replace).into(viewById);
         return convertView;

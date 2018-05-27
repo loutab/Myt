@@ -91,6 +91,7 @@
                 android:maxLength="20"
                 android:paddingLeft="13dp"
                 android:textColorHint="#ccc"
+                android:lines="1"
                 android:textSize="14sp" />
 
             <RelativeLayout
@@ -280,7 +281,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="*"
-                    android:textColor="#E6454A" />
+                    android:textColor="#E6454A"
+                    android:visibility="gone"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -339,7 +342,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="*"
-                    android:textColor="#E6454A" />
+                    android:textColor="#E6454A"
+                    android:visibility="gone"
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -362,6 +367,7 @@
                 android:maxLength="20"
                 android:paddingLeft="13dp"
                 android:textColorHint="#ccc"
+                android:lines="1"
                 android:textSize="14sp" />
 
             <RelativeLayout

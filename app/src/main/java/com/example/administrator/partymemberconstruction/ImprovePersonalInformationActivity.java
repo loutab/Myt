@@ -26,6 +26,7 @@ import com.example.administrator.partymemberconstruction.Bean.GroupJson;
 import com.example.administrator.partymemberconstruction.Bean.PartJson;
 import com.example.administrator.partymemberconstruction.Bean.PartMJson;
 import com.example.administrator.partymemberconstruction.Bean.UserInfo;
+import com.example.administrator.partymemberconstruction.utils.ComenUtils;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 
@@ -181,7 +182,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //获取所有信息
                 String userName = name.getText() + "";
-                String birthdayString = standerTime;
+                String birthdayString = standerTime + "";
                 String groupDate = group.getText() + "";
                 String partDate = part.getText() + "";
                 String emailDate = email.getText() + "";
@@ -189,11 +190,23 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                 String addressDate = address.getText() + "";
                 String briefDate = brief.getText() + "";
                 //验证必填数据是否为空
-                if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(birthdayString) || TextUtils.isEmpty(groupDate) || TextUtils.isEmpty(partDate) || TextUtils.isEmpty(emailDate)) {
-                    MyApplication.showToast("必填数据不能为空", 0);
+//                if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(birthdayString) || TextUtils.isEmpty(groupDate) || TextUtils.isEmpty(partDate) || TextUtils.isEmpty(emailDate)) {
+//                    MyApplication.showToast("必填数据不能为空", 0);
+                if (TextUtils.isEmpty(userName)) {
+                    MyApplication.showToast("名字不能为空", 0);
+                } else if (TextUtils.isEmpty(groupDate)) {
+                    MyApplication.showToast("所属组织不能为空", 0);
+                } else if (TextUtils.isEmpty(partDate)) {
+                    MyApplication.showToast("部门不能为空", 0);
                 } else {
                     //调用完善接口
-                    completeDate(userName, birthdayString, groupDate, partDate, emailDate, addressDate, briefDate);
+                    if (!TextUtils.isEmpty(emailDate)) {
+                        if (!ComenUtils.isEmail(emailDate))
+                            MyApplication.showToast("请输入正确邮箱", 0);
+                        else
+                            completeDate(userName, birthdayString, groupDate, partDate, emailDate, addressDate, briefDate);
+                    } else
+                        completeDate(userName, birthdayString, groupDate, partDate, emailDate, addressDate, briefDate);
                 }
             }
         });
@@ -226,7 +239,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                                         String[] birth = split[0].split("-");
                                         if (birth.length >= 2) {
                                             birthday.setText(birth[0] + "      " + birth[1] + "      " + birth[2]);
-                                            standerTime=birth[0]+"-"+birth[1]+"-"+birth[2];
+                                            standerTime = birth[0] + "-" + birth[1] + "-" + birth[2];
                                         }
                                     }
                                     if (result.getUserInfo().getSex() == 1)
@@ -235,7 +248,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                                         sex.check(R.id.woman);
 
                                     oldOrg = result.getUserInfo().getUi_Organization();
-                                    oldPart=result.getUserInfo().getUi_Department();
+                                    oldPart = result.getUserInfo().getUi_Department();
                                     getGroupDate(false);
                                     getPartDate(false);
                                     if (result.getUserInfo().getUi_Position() == 1)
@@ -283,11 +296,12 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                                 //跳转页面
                                 Intent intent = new Intent(ImprovePersonalInformationActivity.this, ExamineActivity.class);
                                 startActivity(intent);
-
-                                MyApplication.showToast(result.getCode(), 0);
+                                finish();
+                                MyApplication.showToast("成功", 0);
                             } else {
-                                Intent intent = new Intent(ImprovePersonalInformationActivity.this, ExamineActivity.class);
-                                startActivity(intent);
+//                                Intent intent = new Intent(ImprovePersonalInformationActivity.this, ExamineActivity.class);
+//                                startActivity(intent);
+                                //finish();
                                 MyApplication.showToast(result.getException(), 0);
                             }
                         } else {
@@ -311,12 +325,14 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                                 departList = result.getDepartList();
                                 if (isRealShowTwo)
                                     showPopupWindowPart(secondGroup);
-                                else{
-                                    if(departList!=null){
-                                        if(departList.size()>0){
-                                            for(PartMJson.DepartListBean bean:departList){
-                                                if(bean.getId()==oldPart){
+                                else {
+                                    if (departList != null) {
+                                        if (departList.size() > 0) {
+                                            for (PartMJson.DepartListBean bean : departList) {
+                                                if (bean.getId() == oldPart) {
                                                     part.setText(bean.getDepartName());
+                                                    id2=oldPart;
+                                                    break;
                                                 }
                                             }
                                         }
@@ -346,10 +362,12 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                                 if (isRealShowOne)
                                     showPopupWindowGroup(firstGroup);
                                 else {
-                                    if(tissue_tree!=null){
-                                        for (GroupJson.TissueTreeBean bean:tissue_tree) {
-                                            if(bean.getId()==oldOrg){
+                                    if (tissue_tree != null) {
+                                        for (GroupJson.TissueTreeBean bean : tissue_tree) {
+                                            if (bean.getId() == oldOrg) {
                                                 group.setText(bean.getOrganizationName());
+                                                id1=oldOrg;
+                                                break;
                                             }
                                         }
                                     }
@@ -366,6 +384,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         int year = curDate.getYear() + 1900;
         int month = curDate.getMonth() + 1;
         birthday.setText(year + "      " + month + "      " + curDate.getDate());
+        standerTime = year + "-" + month + "-" + curDate.getDate();
         timeCustom();
         //生日选择
         birthday.setOnClickListener(new View.OnClickListener() {

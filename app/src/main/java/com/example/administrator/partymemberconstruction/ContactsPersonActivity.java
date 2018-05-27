@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -48,13 +50,22 @@ public class ContactsPersonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts_person);
         ButterKnife.bind(this);
+        WindowManager manager = this.getWindowManager();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        manager.getDefaultDisplay().getMetrics(outMetrics);
+        int width = outMetrics.widthPixels;
+        int height = outMetrics.heightPixels;
+        float density = getResources().getDisplayMetrics().density;
+        int i = (int) (34 * density + 0.5f);
+        i=(int)(width-i);
+
         userId = getIntent().getStringExtra("userId");
         if (TextUtils.isEmpty(userId)) {
             MyApplication.showToast("用户ID不存在", 0);
         } else {
             userList = new ArrayList<>();
             getDate();
-            contactsPersonAdapter = new ContactsPersonAdapter(userList, this);
+            contactsPersonAdapter = new ContactsPersonAdapter(userList, this,i);
             list.setAdapter(contactsPersonAdapter);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -95,8 +106,8 @@ public class ContactsPersonActivity extends AppCompatActivity {
                                     } else {
                                         sex.setImageResource(R.mipmap.personwoman);
                                     }
-                                    Picasso.with(ContactsPersonActivity.this).load(result.getUserinfo().getUi_Headimg() == null ? "" :
-                                            result.getUserinfo().getUi_Headimg()).error(R.mipmap.default_head).into(headImg);
+                                    String s = result.getUserinfo().getUi_Headimg() == null ? "" : result.getUserinfo().getUi_Headimg();
+                                    Picasso.with(ContactsPersonActivity.this).load(s).error(R.mipmap.default_head).into(headImg);
                                     if (result.getUserinfo().getUi_Headimg() != null)
                                         MyApplication.otherHead = result.getUserinfo().getUi_Headimg();
                                     if (result.getUserList() != null) {
@@ -121,11 +132,11 @@ public class ContactsPersonActivity extends AppCompatActivity {
                                     }
                                     String ui_headimg = result.getUserinfo().getUi_Headimg();
                                     if (ui_headimg != null) {
-                                        ui_headimg.replace(" ", "");
+                                        ui_headimg= ui_headimg.replace(" ", "");
                                     } else {
                                         ui_headimg = "www";
                                     }
-                                    Picasso.with(ContactsPersonActivity.this).load(ui_headimg == null ? "www" :
+                                    Picasso.with(ContactsPersonActivity.this).load(TextUtils.isEmpty(ui_headimg) ? "www" :
                                             ui_headimg).error(R.mipmap.default_head).into(headImg);
                                 }
                             } else {

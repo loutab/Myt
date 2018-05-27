@@ -43,6 +43,7 @@ public class ExamineActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ExamineActivity.this, LoadingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                finish();
                 startActivity(intent);
             }
         });
@@ -62,6 +63,7 @@ public class ExamineActivity extends AppCompatActivity {
                         Intent intent = new Intent(ExamineActivity.this, ImprovePersonalInformationActivity.class);
                         intent.putExtra("userId", userIdtwo + "");
                         intent.putExtra("isRestart", "yes");
+                        finish();
                         startActivity(intent);
                     }
                 });
@@ -74,6 +76,7 @@ public class ExamineActivity extends AppCompatActivity {
                 userId = getIntent().getStringExtra("userId");
                 Intent intent = new Intent(ExamineActivity.this, ImprovePersonalInformationActivity.class);
                 intent.putExtra("userId", userId);
+                finish();
                 startActivity(intent);
             } else if (state.equals("0")) {
                 restartChange.setClickable(true);
@@ -86,6 +89,7 @@ public class ExamineActivity extends AppCompatActivity {
                         intent.putExtra("userId", userId);
                         intent.putExtra("isRestart", "yes");
                         startActivity(intent);
+                        finish();
                     }
                 });
             }

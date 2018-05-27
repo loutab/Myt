@@ -152,6 +152,7 @@ public class LoadingActivity extends AppCompatActivity {
 //                        });
                 //登录接口
                 //MyApplication.showToast("登录",0);
+                if(ComenUtils.isFastClick())
                 gotoLoading();
             }
         });
@@ -327,4 +328,6 @@ public class LoadingActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 }

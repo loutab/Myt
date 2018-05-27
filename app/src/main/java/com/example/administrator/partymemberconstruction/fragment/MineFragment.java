@@ -208,7 +208,7 @@ public class MineFragment extends Fragment {
             postImg("data:image/jpeg;base64,"+s);
         }
         else{
-            MyApplication.showToast("获取照片失败",0);
+            MyApplication.showToast("获取照片失败,图片未更改",0);
         }}
 
     private void postImg(String s) {
