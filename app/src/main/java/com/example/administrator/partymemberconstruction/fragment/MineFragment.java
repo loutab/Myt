@@ -374,7 +374,7 @@ public class MineFragment extends Fragment {
                     public void getResult(UserJson result) {
                         // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
                         if (result != null) {
-                            MyApplication.user = result.getUserInfo();
+                            MyApplication.user = result.getUserInfo()==null?new UserJson.UserInfoBean():result.getUserInfo();
                             String userName=MyApplication.user.getUi_NickName()==null?"":MyApplication.user.getUi_NickName();
                             name.setText(userName);
                             String url=MyApplication.user.getUi_Headimg()==null|MyApplication.user.getUi_Headimg()==""?"wwww":MyApplication.user.getUi_Headimg();

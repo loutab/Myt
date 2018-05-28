@@ -6,6 +6,8 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,6 +79,7 @@ public class ForgetPswActivity extends AppCompatActivity {
     private CountDownTimer timer;
     private int judge;
     private ForgetCodeDialog forgetCodeDialog;
+    Boolean isShow=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,13 +110,35 @@ public class ForgetPswActivity extends AppCompatActivity {
         see.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(psw.getInputType()!= (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)){//隐藏密码
-                    psw.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                }else{//显示密码
-                    psw.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                }
-            }
+//                if(isShow){
+//                psw.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+//                isShow=true;
+//                }
+//                else{
+//                psw.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//                isShow=false;
+//                }
+                pwdShow(psw);}
         });
+
+    }
+    public void pwdShow(EditText editText){
+        int type = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
+        if(isShow){
+            editText.setInputType(type);
+            editText.setSelection(editText.getText().length());
+            isShow=false;
+        }
+
+        if(editText.getInputType() == type){//密码可见
+            editText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            editText.setSelection(editText.getText().length());     //把光标设置到当前文本末尾
+
+        }else{
+            editText.setInputType(type);
+            editText.setSelection(editText.getText().length());
+        }
+
 
     }
 
@@ -140,6 +165,8 @@ public class ForgetPswActivity extends AppCompatActivity {
                             judge = result.getJudge();
                         } else {
                             MyApplication.showToast("获取验证码失败", 0);
+                            timer.onFinish();
+                            timer.cancel();
                         }
 
                     }
@@ -229,8 +256,11 @@ public class ForgetPswActivity extends AppCompatActivity {
                                 //进入第三步
                                 step = 3;
                                 thirdStep();
-                            } else
+                            } else{
                                 MyApplication.showToast(result.getException(), 0);
+                                timer.onFinish();
+                                timer.cancel();
+                            }
 
                             //测试
                             //进入第三步
@@ -244,6 +274,7 @@ public class ForgetPswActivity extends AppCompatActivity {
 
     //显示第三部页面
     private void thirdStep() {
+        register.setText("确定");
         second.setVisibility(View.GONE);
         third.setVisibility(View.VISIBLE);
         three.setTextColor(getResources().getColor(R.color.black));

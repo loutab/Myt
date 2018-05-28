@@ -83,7 +83,7 @@ public class ChangePhoneActivity extends AppCompatActivity {
 
     private void checkCode(String codeNum) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("PhoneNum", MyApplication.phone);
+        params.put("PhoneNum", ChangePhoneActivity.this.phone.getText() + "");
         params.put("code", codeNum);
         params.put("chkType", "0");
         OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.CheckCodeUrl, params, CheckCodeJson.class,
@@ -116,7 +116,8 @@ public class ChangePhoneActivity extends AppCompatActivity {
                         // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
-                                MyApplication.showToast(result.getSuccess(), 0);
+                                MyApplication.showToast("成功", 0);
+                                finish();
                             } else {
                                 MyApplication.showToast(result.getError(), 0);
                             }

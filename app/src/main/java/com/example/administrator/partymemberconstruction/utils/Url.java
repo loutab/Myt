@@ -55,4 +55,6 @@ public class Url {
     public static String GetOldDateUrl = "http://101.201.109.90:3333/Local/GetUsetInfo";
     //获得联系人详细信息
     public static String GetContactsDetail="http://101.201.109.90:3333/Local/GetAllUsetinfo";
+    //更换设备ＩＤ
+    public static String BindIMEI="http://101.201.109.90:3333/Local/UpdateEquitment";
 }

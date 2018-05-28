@@ -221,7 +221,17 @@ public class LoadingActivity extends AppCompatActivity {
                                         //跳转到首页
                                         case 1:
                                             //全局化用户信息
-                                            MyApplication.user = result.getUserInfo();
+                                            MyApplication.user = result.getUserInfo()==null?new UserJson.UserInfoBean():result.getUserInfo();
+                                            HashMap<String, String> params = new HashMap<>();
+                                            String imei = MobileInfoUtil.getIMEI(LoadingActivity.this);
+                                            params.put("userId", MyApplication.user.getUser_ID()+"");
+                                            params.put("equitmentId", imei+"");
+                                            OkhttpJsonUtil.getInstance().postByEnqueue(LoadingActivity.this, Url.BindIMEI, params, UserJson.class,
+                                                    new OkhttpJsonUtil.TextCallBack<UserJson>() {
+                                                        @Override
+                                                        public void getResult(UserJson result) {
+                                                            boolean b = result == null;
+                                                        }});
                                             gotoActivity(FirstActivity.class);
                                             finish();
 

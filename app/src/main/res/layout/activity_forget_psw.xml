@@ -279,7 +279,9 @@
                 android:textSize="14sp"
                 android:id="@+id/psw"
                 android:password="true"
-                />
+                >
+                <requestFocus />
+            </EditText>
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"

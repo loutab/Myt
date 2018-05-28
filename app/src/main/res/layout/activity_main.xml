@@ -46,7 +46,7 @@
             android:id="@+id/userEdt"
             android:layout_width="match_parent"
             android:layout_height="13dp"
-            android:hint="用户名/邮箱/手机"
+            android:hint="手机"
             android:textSize="11sp"
             android:textColor="#C7BDBD"
             android:layout_marginLeft="16dp"

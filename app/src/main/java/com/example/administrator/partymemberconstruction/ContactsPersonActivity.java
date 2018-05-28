@@ -84,6 +84,13 @@ public class ContactsPersonActivity extends AppCompatActivity {
                 }
             });
         }
+
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.showToast("功能待开通，敬请期待",0);
+            }
+        });
     }
 
     private void getDate() {
