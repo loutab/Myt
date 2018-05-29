@@ -69,6 +69,8 @@ public class ContactsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent=new Intent(ContactsActivity.this,ContactsPersonActivity.class);
                 intent.putExtra("userId",contactsSorts.get(i).getBean().getUserID()+"");
+                intent.putExtra("name",contactsSorts.get(i).getBean().getName()+"");
+                intent.putExtra("url",contactsSorts.get(i).getBean().getHeadImg()+"");
                 startActivity(intent);
             }
         });

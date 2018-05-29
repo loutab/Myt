@@ -213,6 +213,8 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d("p", result.getCode());
                             if (!result.getCode().equals("成功")) {
                                 MyApplication.showToast(result.getException(), 0);
+                                timer.onFinish();
+                                timer.cancel();
                             }
                         }else{
                             MyApplication.showToast("获取验证码失败", 0);

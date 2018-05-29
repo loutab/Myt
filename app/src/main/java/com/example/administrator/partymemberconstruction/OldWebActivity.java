@@ -76,7 +76,7 @@ public class OldWebActivity extends AppCompatActivity {
             }
         });
 
-        web.loadUrl("file:///android_asset/fuwu.html");
+        web.loadUrl("http://101.201.109.90:3335/H5Content/UserInfo1/UserText?type=2");
        // my_web.loadUrl("http://v.qq.com/iframe/player.html?vid=o0318tp1ddw&tiny=0&auto=0");
         //web.addJavascriptInterface(new JsObject(this), "android");
 

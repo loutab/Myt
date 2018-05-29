@@ -33,16 +33,18 @@ import butterknife.ButterKnife;
 public class ContactsPersonAdapter extends BaseAdapter {
     List<ContactsPersonBean.UserListBean> list;
     int screenWidth;
+    String path;
     public ContactsPersonAdapter() {
         super();
     }
 
     Context context;
 
-    public ContactsPersonAdapter(List<ContactsPersonBean.UserListBean> list, Context context,int width) {
+    public ContactsPersonAdapter(List<ContactsPersonBean.UserListBean> list, Context context,int width,String filePath) {
         this.list = list;
         this.context = context;
         screenWidth=width;
+        path=filePath;
     }
 
     @Override
@@ -115,7 +117,11 @@ public class ContactsPersonAdapter extends BaseAdapter {
             Log.e("line", "" + viewHolder1.title.getLineCount());
             viewHolder1.content.setText(ai_abstract + "");
         } else {
-            Picasso.with(context).load(MyApplication.otherHead.replace(" ", "")).error(R.mipmap.default_head).into(viewHolder2.headImg);
+           String url1= MyApplication.otherHead.replace(" ", "");
+            if(TextUtils.isEmpty(url1)){
+                url1="sss";
+            }
+            Picasso.with(context).load(url1).error(R.mipmap.default_head).into(viewHolder2.headImg);
             String ai_publish_person = userListBean.getAi_Publish_Person() + "";
             viewHolder2.name.setText(ai_publish_person);
             String ai_publish_date = userListBean.getAi_Publish_Date();
