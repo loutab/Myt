@@ -52,6 +52,10 @@ public class ContactsPersonActivity extends AppCompatActivity {
     TextView message;
     @BindView(R.id.goRight)
     Button goRight;
+    @BindView(R.id.imgRight)
+    ImageView imgRight;
+    @BindView(R.id.comeBack)
+    ImageView comeBack;
     private String userId;
     private List<ContactsPersonBean.UserListBean> userList;
     private ContactsPersonAdapter contactsPersonAdapter;
@@ -70,17 +74,24 @@ public class ContactsPersonActivity extends AppCompatActivity {
         int height = outMetrics.heightPixels;
         float density = getResources().getDisplayMetrics().density;
         int i = (int) (34 * density + 0.5f);
-        i=(int)(width-i);
+        i = (int) (width - i);
+
+        comeBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         userId = getIntent().getStringExtra("userId");
-        userName = getIntent().getStringExtra("name")+"";
+        userName = getIntent().getStringExtra("name") + "";
         String absolutePath = getDCIMFile().getAbsolutePath();
-        headUrl = getIntent().getStringExtra("url")+"";
-        if(!TextUtils.isEmpty(headUrl)){
+        headUrl = getIntent().getStringExtra("url") + "";
+        if (!TextUtils.isEmpty(headUrl)) {
             //t.start();
-            headUrl=headUrl.replace(" ","");
-            if(headUrl.isEmpty()){
-                headUrl="www";
+            headUrl = headUrl.replace(" ", "");
+            if (headUrl.isEmpty()) {
+                headUrl = "www";
             }
             Picasso.with(ContactsPersonActivity.this).load(headUrl).error(R.mipmap.default_head).into(headImg);
             download();
@@ -90,7 +101,7 @@ public class ContactsPersonActivity extends AppCompatActivity {
         } else {
             userList = new ArrayList<>();
             getDate();
-            contactsPersonAdapter = new ContactsPersonAdapter(userList, this,i,absolutePath);
+            contactsPersonAdapter = new ContactsPersonAdapter(userList, this, i, absolutePath);
             list.setAdapter(contactsPersonAdapter);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -113,16 +124,17 @@ public class ContactsPersonActivity extends AppCompatActivity {
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyApplication.showToast("功能待开通，敬请期待",0);
+                MyApplication.showToast("功能待开通，敬请期待", 0);
             }
         });
     }
+
     //下载头像到本地
     private void download() {
         //获得图片的地址
         String url = headUrl;
         //Target
-        Target target = new Target(){
+        Target target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 File dcimFile = getDCIMFile();
@@ -135,6 +147,7 @@ public class ContactsPersonActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
 
@@ -150,25 +163,26 @@ public class ContactsPersonActivity extends AppCompatActivity {
         Picasso.with(this).load(url).into(target);
 
     }
+
     //为了下载图片资源，开辟一个新的子线程
-    Thread t=new Thread(){
+    Thread t = new Thread() {
         public void run() {
             //下载图片的路径
-            String iPath=headUrl;
+            String iPath = headUrl;
             try {
                 //对资源链接
-                URL url=new URL(iPath);
+                URL url = new URL(iPath);
                 //打开输入流
-                InputStream inputStream=url.openStream();
+                InputStream inputStream = url.openStream();
                 //对网上资源进行下载转换位图图片
                 BitmapFactory.decodeStream(inputStream);
                 inputStream.close();
 
                 //再一次打开
-                inputStream=url.openStream();
-                FileOutputStream fileOutputStream=new FileOutputStream(getDCIMFile());
-                int hasRead=0;
-                while((hasRead=inputStream.read())!=-1){
+                inputStream = url.openStream();
+                FileOutputStream fileOutputStream = new FileOutputStream(getDCIMFile());
+                int hasRead = 0;
+                while ((hasRead = inputStream.read()) != -1) {
                     fileOutputStream.write(hasRead);
                 }
                 fileOutputStream.close();
@@ -178,8 +192,11 @@ public class ContactsPersonActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        };
+        }
+
+        ;
     };
+
     //保存路径
     public File getDCIMFile() {
         File pFile = new File(Environment.getExternalStorageDirectory() + "/MyHead");//图片位置
@@ -187,7 +204,7 @@ public class ContactsPersonActivity extends AppCompatActivity {
             pFile.mkdirs();
         }
         //拍照所存路径
-       File picturefile = new File(pFile + File.separator + "IvMG_" + userName+ ".jpg");
+        File picturefile = new File(pFile + File.separator + "IvMG_" + userName + ".jpg");
         return picturefile;
     }
 
@@ -237,7 +254,7 @@ public class ContactsPersonActivity extends AppCompatActivity {
                                     }
                                     String ui_headimg = result.getUserinfo().getUi_Headimg();
                                     if (ui_headimg != null) {
-                                        ui_headimg= ui_headimg.replace(" ", "");
+                                        ui_headimg = ui_headimg.replace(" ", "");
                                     } else {
                                         ui_headimg = "www";
                                     }
@@ -259,10 +276,11 @@ public class ContactsPersonActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        File dir =new File(Environment.getExternalStorageDirectory() + "/MyHead");
+        File dir = new File(Environment.getExternalStorageDirectory() + "/MyHead");
         deleteDirWihtFile(dir);
     }
-    public  void deleteDirWihtFile(File dir) {
+
+    public void deleteDirWihtFile(File dir) {
         if (dir == null || !dir.exists() || !dir.isDirectory())
             return;
         for (File file : dir.listFiles()) {
