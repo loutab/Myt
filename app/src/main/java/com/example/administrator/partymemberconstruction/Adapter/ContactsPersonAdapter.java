@@ -121,7 +121,7 @@ public class ContactsPersonAdapter extends BaseAdapter {
             if(TextUtils.isEmpty(url1)){
                 url1="sss";
             }
-            Picasso.with(context).load(url1).error(R.mipmap.default_head).into(viewHolder2.headImg);
+            Picasso.with(context).load(url1).error(R.mipmap.default_head).fit().centerCrop().into(viewHolder2.headImg);
             String ai_publish_person = userListBean.getAi_Publish_Person() + "";
             viewHolder2.name.setText(ai_publish_person);
             String ai_publish_date = userListBean.getAi_Publish_Date();

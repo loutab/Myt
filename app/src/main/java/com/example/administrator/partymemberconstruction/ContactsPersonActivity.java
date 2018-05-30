@@ -140,6 +140,7 @@ public class ContactsPersonActivity extends AppCompatActivity {
 
             }
 
+
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
 

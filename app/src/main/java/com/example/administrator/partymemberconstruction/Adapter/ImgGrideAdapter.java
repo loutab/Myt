@@ -55,7 +55,7 @@ public class ImgGrideAdapter extends BaseAdapter {
         String replace = s.replace(" ", "");
         if(replace=="")
         replace="www";
-        Picasso.with(context).load(replace).into(viewById);
+        Picasso.with(context).load(replace).fit().centerCrop().into(viewById);
         return convertView;
     }
 
