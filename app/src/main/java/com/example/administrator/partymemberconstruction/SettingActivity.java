@@ -98,7 +98,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         });
 
 //获得图片缓存
-        pFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyPictures");
+        pFile = new File(Environment.getExternalStorageDirectory(), "MyPictures");
         if (!pFile.exists()) {
             pFile.mkdirs();
         }

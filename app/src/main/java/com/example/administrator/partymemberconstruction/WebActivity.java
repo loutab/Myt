@@ -176,6 +176,7 @@ public class WebActivity extends AppCompatActivity {
             //不同版本系统打开本地资源
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {//5.0+
+                Log.e("wenjian","测试5");
                 showDialog();
                 mFilePathCallbacks = filePathCallback;
                 return true;
@@ -183,16 +184,19 @@ public class WebActivity extends AppCompatActivity {
 
             //openFileChooser 方法是隐藏方法
             public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {// android 系统版本>4.1.1
+                Log.e("wenjian","测试4");
                 showDialog();
                 mFilePathCallback = uploadMsg;
             }
 
             public void openFileChooser(ValueCallback<Uri> uploadMsg) {//android 系统版本<3.0
+                Log.e("wenjian","测试2");
                 showDialog();
                 mFilePathCallback = uploadMsg;
             }
 
             public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {//android 系统版本3.0+
+                Log.e("wenjian","测试3");
                 showDialog();
                 mFilePathCallback = uploadMsg;
 
@@ -336,7 +340,7 @@ public class WebActivity extends AppCompatActivity {
 //       Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);//手机图片的公共目录
         //String fileName = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
         //picture = new File(Environment.getExternalStorageDirectory()
-        File pFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyPictures");//图片位置
+        File pFile = new File(Environment.getExternalStorageDirectory(), "MyPictures");//图片位置
         if (!pFile.exists()) {
             pFile.mkdirs();
         }
@@ -490,7 +494,7 @@ public class WebActivity extends AppCompatActivity {
                 Log.e("sssss", s);
                 web.loadUrl("javascript:getimg('" + s + "')");
                 Uri uri = Uri.fromFile(new File(path));
-                if (Build.VERSION.SDK_INT > 19) {
+                if (Build.VERSION.SDK_INT > 18) {
                     mFilePathCallbacks.onReceiveValue(new Uri[]{uri});
                 } else {
                     mFilePathCallback.onReceiveValue(uri);
@@ -526,7 +530,7 @@ public class WebActivity extends AppCompatActivity {
         if (mFilePathCallback != null || mFilePathCallbacks != null) {
             if (resultCode == RESULT_OK) {
                 Uri uri = Uri.fromFile(picturefile);
-                if (Build.VERSION.SDK_INT > 19) {
+                if (Build.VERSION.SDK_INT > 18) {
                     mFilePathCallbacks.onReceiveValue(new Uri[]{uri});
                 } else {
                     mFilePathCallback.onReceiveValue(uri);

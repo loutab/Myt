@@ -187,7 +187,7 @@ public class MineFragment extends Fragment {
     }
 
     private void pickPhoto() {
-        File pFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyPictures");//图片位置
+        File pFile = new File(Environment.getExternalStorageDirectory(), "MyPictures");//图片位置
         if (!pFile.exists()) {
             pFile.mkdirs();
         }
@@ -263,7 +263,7 @@ public class MineFragment extends Fragment {
             String s = Bitmap2StrByBase64(bitmap);
             postImg("data:image/jpeg;base64,"+s);
         }else{
-            MyApplication.showToast("获取照片失败",0);
+            MyApplication.showToast("获取照片失败,图片未更改",0);
         }}
     public String Bitmap2StrByBase64(Bitmap bit){
         ByteArrayOutputStream bos=new ByteArrayOutputStream();

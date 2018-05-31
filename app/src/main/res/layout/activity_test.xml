@@ -6,20 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.administrator.partymemberconstruction.TestActivity">
-    <FrameLayout
-        android:id="@+id/realtabcontent"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
-    <com.example.administrator.partymemberconstruction.CustomView.MyTabHost
-        android:id="@android:id/tabhost"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#f7f3f7"
-        android:paddingTop="8dp"
-        android:paddingBottom="4dp"
-        >
-    </com.example.administrator.partymemberconstruction.CustomView.MyTabHost>
+<ImageView
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:id="@+id/img"
+    android:src="#000"
+    />
 </LinearLayout>
