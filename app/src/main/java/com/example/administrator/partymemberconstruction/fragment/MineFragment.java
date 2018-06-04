@@ -36,6 +36,7 @@ import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
 import com.example.administrator.partymemberconstruction.SettingActivity;
 import com.example.administrator.partymemberconstruction.WebActivity;
+import com.example.administrator.partymemberconstruction.utils.ComenUtils;
 import com.example.administrator.partymemberconstruction.utils.GetPathFromUri4kitkat;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
@@ -120,7 +121,8 @@ public class MineFragment extends Fragment {
         contacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               gotoActivity(ContactsActivity.class);
+                if(ComenUtils.isFastClick())
+                gotoActivity(ContactsActivity.class);
             }
         });
         //设置设置点击事件

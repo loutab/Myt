@@ -81,22 +81,6 @@
             ]
         },
         {
-            "outputFile": "D:\\beijin\\NewMyPart\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-v14_values-v14.arsc.flat",
-            "map": [
-                {
-                    "source": "D:\\beijin\\NewMyPart\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endLines": "4",
-                        "endColumns": "12",
-                        "endOffsets": "201"
-                    }
-                }
-            ]
-        },
-        {
             "outputFile": "C:\\Users\\Administrator\\Desktop\\testM\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-v11_values-v11.arsc.flat",
             "map": [
                 {
@@ -108,6 +92,22 @@
                         "endLines": "4",
                         "endColumns": "12",
                         "endOffsets": "187"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\beijin\\NewMyPart\\libzxing-master\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-v14_values-v14.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\beijin\\NewMyPart\\libzxing-master\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "201"
                     }
                 }
             ]
