@@ -84,8 +84,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         builder1.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                deleteFolderFile(pFile.getAbsolutePath(),true);
-                deleteFolderFile(SettingActivity.this.getCacheDir().getAbsolutePath(),true);
+                deleteFolderFile(pFile.getAbsolutePath(), true);
+                deleteFolderFile(SettingActivity.this.getCacheDir().getAbsolutePath(), true);
                 getCach();
                 dialog.dismiss();
             }
@@ -110,7 +110,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         File cacheDir = this.getCacheDir();
         long one = getAutoFileOrFilesSize(cacheDir.getAbsolutePath());
         long two = getAutoFileOrFilesSize(pFile.getAbsolutePath());
-        cach.setText("删除本地缓存（"+FormetFileSize(one+two)+"）");
+        cach.setText("删除本地缓存（" + FormetFileSize(one + two) + "）");
     }
 
     @Override
@@ -138,10 +138,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.delete:
                 //MyApplication.showToast("删除",0);
-builder1.show();
+                builder1.show();
                 break;
         }
     }
+
     public void deleteFolderFile(String filePath, boolean deleteThisPath) {
         if (!TextUtils.isEmpty(filePath)) {
             try {
@@ -167,6 +168,7 @@ builder1.show();
             }
         }
     }
+
     private void SignOut() {
         finish();
         Intent intent = new Intent(this, FirstActivity.class);

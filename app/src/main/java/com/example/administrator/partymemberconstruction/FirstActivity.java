@@ -61,7 +61,7 @@ public class FirstActivity extends AppCompatActivity {
     @BindView(R.id.down)
     ImageView down;
     private long mExitTime;
-
+    public static int YES = 0;
     private AlertDialog.Builder sureUpload;
     private Context mContext = this;
     private LayoutInflater mInflater;
@@ -79,9 +79,15 @@ public class FirstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_first);
         bind = ButterKnife.bind(this);
         //initTab();
+        if (getIntent() != null) {
+            boolean isExit = getIntent().getBooleanExtra(TAG_EXIT, false);
+            if (isExit) {
+                this.finish();
+                Intent intent1 = new Intent(this, LoadingActivity.class);
+                startActivity(intent1);
+            }
+        }
         initNewTab();
-
-
 //        int w = View.MeasureSpec.makeMeasureSpec(0,
 //                View.MeasureSpec.UNSPECIFIED);
 //        int h = View.MeasureSpec.makeMeasureSpec(0,
@@ -114,15 +120,15 @@ public class FirstActivity extends AppCompatActivity {
     }
 
     private void initNewTab() {
-        Log.d("aaa",th.getChildCount()+"数量");
+        Log.d("aaa", th.getChildCount() + "数量");
         //设置文字的位置,在addTab方法之前调用,否则无效
         th.setTextPosition(MTabHost.BOTTOM_TEXTPOSITION);
-        th.addTab(R.mipmap.study2, R.mipmap.study1, "学习", 3,1,1);
-        th.addTab(R.mipmap.partyconstruction2, R.mipmap.partyconstruction1, "党建", 3,1,2);
-        th.addTab(R.mipmap.partyconstruction2, R.mipmap.partyconstruction1, "党建", 3,0,3);
-        th.addTab(R.mipmap.notice2, R.mipmap.notice1, "通知", 3,1,4);
-        th.addTab(R.mipmap.mine2, R.mipmap.mine1, "个人中心", 3,1,5);
-        Log.d("aaa",th.getChildCount()+"数量");
+        th.addTab(R.mipmap.study2, R.mipmap.study1, "学习", 3, 1, 1);
+        th.addTab(R.mipmap.partyconstruction2, R.mipmap.partyconstruction1, "党建", 3, 1, 2);
+        th.addTab(R.mipmap.partyconstruction2, R.mipmap.partyconstruction1, "党建", 3, 0, 3);
+        th.addTab(R.mipmap.notice2, R.mipmap.notice1, "通知", 3, 1, 4);
+        th.addTab(R.mipmap.mine2, R.mipmap.mine1, "个人中心", 3, 1, 5);
+        Log.d("aaa", th.getChildCount() + "数量");
         FirstFragment fragment1 = new FirstFragment();
 
         NoticeFragment fragment3 = new NoticeFragment();
@@ -145,8 +151,8 @@ public class FirstActivity extends AppCompatActivity {
         th.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId>5){
-                    checkedId=checkedId-5;
+                if (checkedId > 5) {
+                    checkedId = checkedId - 5;
                 }
                 if (checkedId != 3) {
                     if (checkedId > 3) {
@@ -377,11 +383,13 @@ public class FirstActivity extends AppCompatActivity {
             return null;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         bind.unbind();
     }
+
     private static final String TAG_EXIT = "exit";
 
     @Override
@@ -391,11 +399,22 @@ public class FirstActivity extends AppCompatActivity {
             boolean isExit = intent.getBooleanExtra(TAG_EXIT, false);
             if (isExit) {
                 this.finish();
-                Intent intent1=new Intent(this,LoadingActivity.class);
+                Intent intent1 = new Intent(this, LoadingActivity.class);
                 startActivity(intent1);
             }
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (FirstFragment.F == 2) {
+            th.getRadioButton(3).performClick();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.realtabcontent, fragments.get(2));
+            fragmentTransaction.commit();
+            FirstFragment.F = 0;
+        }
+    }
 
 }

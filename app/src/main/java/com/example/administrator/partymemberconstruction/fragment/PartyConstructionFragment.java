@@ -120,7 +120,11 @@ public class PartyConstructionFragment extends Fragment {
             }
         });
 
-        connect();
+        try {
+            connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void gotoWeb(String title, String url) {
@@ -132,7 +136,7 @@ public class PartyConstructionFragment extends Fragment {
 
 
     //获得首页主要数据
-    private void connect() {
+    private void connect() throws Exception {
         HashMap<String, String> params = new HashMap<>();
         params.put("User_ID", MyApplication.user.getUser_ID()+"");
         params.put("Resol_Type",typeScreen+"");

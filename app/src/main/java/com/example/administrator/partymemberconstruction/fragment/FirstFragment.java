@@ -112,6 +112,7 @@ public class FirstFragment extends Fragment {
     @BindView(R.id.notice_click)
     RelativeLayout noticeClick;
 
+    public static int F=0;
     private List<String> images;
     private List<String[]> listTemp;
     private List<String[]> listTemp1;
@@ -184,8 +185,14 @@ public class FirstFragment extends Fragment {
         firstBigList3.setAdapter(firstBigList1Adapter3);
         firstBigListAdapter.notifyDataSetChanged();
         getScreenDensity_ByWindowManager();
-        connect();
-        connect2();
+        try {
+            connect();
+            connect2();
+        } catch (Exception e) {
+            e.printStackTrace();
+            loadingDialog.cancel();
+        }
+
         setFirstBigClick();
         setHeadClick();
         initDialog();
@@ -391,7 +398,7 @@ public class FirstFragment extends Fragment {
     }
 
     //获得首页主要数据
-    private void connect() {
+    private void connect() throws Exception {
         HashMap<String, String> params = new HashMap<>();
         params.put("User_ID", MyApplication.user.getUser_ID() + "");
         params.put("Resol_Type", typeScreen + "");

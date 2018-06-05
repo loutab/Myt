@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 
 import com.example.administrator.partymemberconstruction.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ import java.util.List;
  */
 
 public class MTabHost extends RadioGroup {
-    private int one=0;
+    private int one = 0;
 
     /**
      * 文字在图片的上面
@@ -69,14 +70,14 @@ public class MTabHost extends RadioGroup {
      * @param selectedImageRid
      * @param text
      */
-    public void addTab(int norImageRid, int selectedImageRid, String text,int weight,int type,int id) {
+    public void addTab(int norImageRid, int selectedImageRid, String text, int weight, int type, int id) {
 
         //创建单选按钮
         RadioButton rb = new RadioButton(getContext());
         rb.setId(id);
         //取消圆点
         rb.setButtonDrawable(android.R.color.transparent);
-       //rb.setButtonDrawable(null);
+        //rb.setButtonDrawable(null);
         //设置内容居中
         rb.setGravity(Gravity.CENTER);
         //声明布局参数对象
@@ -114,34 +115,40 @@ public class MTabHost extends RadioGroup {
                 rb.setCompoundDrawables(null, null, drawable, null);
             }
         }
-       rb.setCompoundDrawablePadding(j);
+        rb.setCompoundDrawablePadding(j);
         rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         //设置布局参数
         rb.setLayoutParams(lp);
         //设置文本
         rb.setText(text);
         setSelectorColor(rb);
-        if(type==0){
+        if (type == 0) {
             rb.setVisibility(INVISIBLE);
         }
         //添加到组中
         this.addView(rb);
         //请求重新布局
         requestLayout();
-        Log.d("p",rb.getId()+"" );
-        if(one==0)
+        Log.d("p", rb.getId() + "");
+        if (one == 0)
             check(rb.getId());
-        if(one==0)
-            one=1;
+        if (one == 0)
+            one = 1;
 
         //fragments.add(fragment);
-
+        radioButtons.add(rb);
     }
 
+    private List<RadioButton> radioButtons = new ArrayList<>();
+
+    public RadioButton getRadioButton(int i) {
+        RadioButton radioButton = radioButtons.get(i);
+        return radioButton;
+    }
 
     /**
      * 设置文字的方位
-     * 在方法{@link MTabHost#addTab(int, int, String,int,int)}之前调用
+     * 在方法{@link MTabHost#addTab(int, int, String, int, int)}之前调用
      * <p/>
      * {@link MTabHost#TOP_TEXTPOSITION}
      * {@link MTabHost#BOTTOM_TEXTPOSITION}
@@ -153,20 +160,21 @@ public class MTabHost extends RadioGroup {
     public void setTextPosition(int textPosition) {
         this.textPosition = textPosition;
     }
-    public void setSelectorColor(RadioButton radioButton){
 
- int[] colors =new int[] { Color.rgb(84, 82, 84) , Color.rgb(233, 74, 78) };
+    public void setSelectorColor(RadioButton radioButton) {
 
-int[][] states =new int[2][];
+        int[] colors = new int[]{Color.rgb(84, 82, 84), Color.rgb(233, 74, 78)};
 
-states[0] =new int[] { -android.R.attr.state_checked};
+        int[][] states = new int[2][];
 
- states[1] =new int[] { android.R.attr.state_checked};
+        states[0] = new int[]{-android.R.attr.state_checked};
+
+        states[1] = new int[]{android.R.attr.state_checked};
 
 
-ColorStateList colorStateList =new ColorStateList(states,colors);
+        ColorStateList colorStateList = new ColorStateList(states, colors);
 
-radioButton.setTextColor(colorStateList);
+        radioButton.setTextColor(colorStateList);
 
     }
 

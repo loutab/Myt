@@ -156,7 +156,11 @@ public class MineFragment extends Fragment {
                 gotoNewActivity(MineFragment.this.selfInfo.getMenu_Url(), MineFragment.this.selfInfo.getMenu_Name());
             }
         });
-        getSelf();
+        try {
+            getSelf();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //设置头像点击事件
         changeHeadImgDialog = new ChangeHeadImgDialog(this.getContext());
         headImg.setClickable(true);
@@ -290,7 +294,7 @@ public class MineFragment extends Fragment {
     }
 
 
-    private void getSelf() {
+    private void getSelf() throws Exception {
         HashMap<String, String> params = new HashMap<>();
         params.put("User_ID", MyApplication.user.getUser_ID() + "");
         params.put("Resol_Type", "1");
@@ -350,11 +354,12 @@ public class MineFragment extends Fragment {
         lists = new ArrayList<>();
         //lists.add(new String[]{"我发的消息",R.mipmap.mymessage+""});
         lists.add(new String[]{"我的收藏",R.mipmap.mycollect+""});
+        if(MyApplication.user!=null){
         String userName=MyApplication.user.getUi_NickName()==null?"":MyApplication.user.getUi_NickName();
         name.setText(userName);
 
         String introduce=MyApplication.user.getUi_Introduction()==null?"":MyApplication.user.getUi_Introduction();
-        introduction.setText(introduce);
+        introduction.setText(introduce);}
     }
 
 //    @Override

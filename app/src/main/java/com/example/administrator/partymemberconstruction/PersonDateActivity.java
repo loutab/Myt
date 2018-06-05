@@ -2,6 +2,7 @@ package com.example.administrator.partymemberconstruction;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,10 +56,10 @@ public class PersonDateActivity extends AppCompatActivity {
             }
         });
         ContactsPersonBean.UserinfoBean b = MyApplication.otherBean;
-        name.setText(b.getNickName()+"");
+        name.setText(TextUtils.isEmpty(b.getNickName())?"":b.getNickName()+"");
         sex.setText(b.getSex()==0?"男":"女");
-        date.setText((b.getBirthday()+"").split(" ")[0]);
-        brief.setText(b.getUi_Introduction()+"");
+        date.setText((TextUtils.isEmpty(b.getBirthday())?"":b.getBirthday()+"").split(" ")[0]);
+        brief.setText(TextUtils.isEmpty(b.getUi_Introduction())?"":b.getUi_Introduction()+"");
         org.setText("");
         for(GroupJson.TissueTreeBean bean:MyApplication.GroupDate){
             if(bean.getId()==b.getUi_Organization());
@@ -70,9 +71,9 @@ public class PersonDateActivity extends AppCompatActivity {
                 part.setText(""+bean.getDepartName());
         }
         //part.setText(""+b.getUi_Department());
-        email.setText(""+b.getMail());
-        phone.setText(""+b.getPhoneNum());
-        address.setText(""+b.getAddress());
+        email.setText(TextUtils.isEmpty(b.getMail())?"":b.getMail());
+        phone.setText(TextUtils.isEmpty(b.getPhoneNum())?"":b.getPhoneNum());
+        address.setText(TextUtils.isEmpty(b.getAddress())?"":b.getAddress());
         work.setText(b.getUi_Position()==0?"普通党员":"管理员");
 
     }
