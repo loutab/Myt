@@ -280,8 +280,11 @@ public class MineFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.e("vivo","返回码"+resultCode);
+        MyApplication.showToast("返回码"+resultCode+"测试码"+requestCode,0);
         switch (requestCode) {
             case REQUEST_CODE_TAKE_PICETURE:
+                Log.e("vivo","拿到拍照回调"+resultCode);
                 takePictureResult(resultCode);
                 changeHeadImgDialog.cancel();
                 break;

@@ -374,6 +374,9 @@ public class WebActivity extends AppCompatActivity {
         if (mFilePathCallback != null) {
             mFilePathCallback.onReceiveValue(null);
             mFilePathCallback = null;
+        }else if(mFilePathCallbacks!=null){
+            mFilePathCallbacks.onReceiveValue(null);
+            mFilePathCallback=null;
         }
     }
     @Override

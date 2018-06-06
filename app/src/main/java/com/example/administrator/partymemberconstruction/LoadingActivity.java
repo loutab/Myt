@@ -72,8 +72,8 @@ public class LoadingActivity extends AppCompatActivity {
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        //JPushInterface.setAlias(this, 101, MobileInfoUtil.getIMEI(this));
-        JPushInterface.setAlias(this, 101, "12345678");
+        JPushInterface.setAlias(this, 101, MobileInfoUtil.getIMEI(this));
+        //JPushInterface.setAlias(this, 101, "12345678");
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
             return;
