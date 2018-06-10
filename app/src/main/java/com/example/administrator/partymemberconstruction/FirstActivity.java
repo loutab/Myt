@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.administrator.partymemberconstruction.Bean.Tab;
 import com.example.administrator.partymemberconstruction.Bean.UploadJson;
+import com.example.administrator.partymemberconstruction.Bean.UserJson;
 import com.example.administrator.partymemberconstruction.CustomView.LoadingDialog;
 import com.example.administrator.partymemberconstruction.CustomView.MTabHost;
 import com.example.administrator.partymemberconstruction.CustomView.MyTabHost;
@@ -35,6 +37,7 @@ import com.example.administrator.partymemberconstruction.fragment.FirstFragment;
 import com.example.administrator.partymemberconstruction.fragment.MineFragment;
 import com.example.administrator.partymemberconstruction.fragment.NoticeFragment;
 import com.example.administrator.partymemberconstruction.fragment.PartyConstructionFragment;
+import com.example.administrator.partymemberconstruction.utils.MobileInfoUtil;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
 
@@ -87,6 +90,12 @@ public class FirstActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         }
+        try {
+            load();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         initNewTab();
 //        int w = View.MeasureSpec.makeMeasureSpec(0,
 //                View.MeasureSpec.UNSPECIFIED);
@@ -416,5 +425,58 @@ public class FirstActivity extends AppCompatActivity {
             FirstFragment.F = 0;
         }
     }
+private void load(){
+    HashMap<String, String> params = new HashMap<>();
+    params.put("UserName", MyApplication.phone);
+    params.put("Password", MyApplication.psw);
+    OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.LoadingUrl, params, UserJson.class,
+            new OkhttpJsonUtil.TextCallBack<UserJson>() {
+                @Override
+                public void getResult(UserJson result) {
+                    // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
+                    if (result != null) {
+                        Log.d("p", result.getCode());
+                        if (result.getCode().equals("成功")) {
+                            //根据状态选择进入的页面
+                            //finish();
+                            int status = result.getStatus();
+                            switch (status) {
+                                case 0:
+                                    Intent intent = new Intent(FirstActivity.this, ExamineActivity.class);
+                                    intent.putExtra("state", "" + result.getStatus());
+                                    intent.putExtra("userId", result.getUserId() + "");
+                                    startActivity(intent);
+                                    break;
+                                //跳转到首页
+                                case 1:
+                                    //全局化用户信息
+                                    MyApplication.user = result.getUserInfo()==null?new UserJson.UserInfoBean():result.getUserInfo();
+                                    break;
+                                case 2:
+                                    Intent intent1 = new Intent(FirstActivity.this, ExamineActivity.class);
+                                    intent1.putExtra("state", "" + result.getStatus());
+                                    intent1.putExtra("userId", result.getUser_id());
+                                    intent1.putExtra("Error",result.getError());
+                                    startActivity(intent1);
+                                    break;
+                                case 3:
+                                    //跳转到完善信息页面
+                                    Intent intent3 = new Intent(FirstActivity.this, ImprovePersonalInformationActivity.class);
+                                    intent3.putExtra("userId", result.getUserInfo().getEntityId() + "");
+                                    startActivity(intent3);
+                                    break;
+                            }
+                            //登录成功进入首页
+                        } else {
+                            MyApplication.showToast(result.getException(), 0);
+                        }
+                    } else {
+                        MyApplication.showToast("连接服务器失败", 0);
+                    }
+
+                }
+            });
+}
+
 
 }

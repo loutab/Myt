@@ -57,4 +57,6 @@ public class Url {
     public static String GetContactsDetail="http://101.201.109.90:3333/Local/GetAllUsetinfo";
     //更换设备ＩＤ
     public static String BindIMEI="http://101.201.109.90:3333/Local/UpdateEquitment";
+    //注销
+    public static String SignOut="http://101.201.109.90:3333/Local/CancellationUser";
 }

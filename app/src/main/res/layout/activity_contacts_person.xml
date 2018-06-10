@@ -105,6 +105,7 @@
             android:layout_marginRight="3dp"
             android:id="@+id/message"
             android:clickable="true"
+            android:visibility="gone"
             />
     </LinearLayout>
 

@@ -2,6 +2,8 @@ package com.example.administrator.partymemberconstruction;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.administrator.partymemberconstruction.Bean.ContactsPersonBean;

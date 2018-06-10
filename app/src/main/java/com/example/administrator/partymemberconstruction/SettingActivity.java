@@ -1,5 +1,6 @@
 package com.example.administrator.partymemberconstruction;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +13,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.partymemberconstruction.Bean.UserJson;
 import com.example.administrator.partymemberconstruction.CustomView.Switch;
+import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
+import com.example.administrator.partymemberconstruction.utils.Url;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +74,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                out();
+                getSharedPreferences("load", Context.MODE_PRIVATE).edit().remove("yes").commit();
                 SignOut();
                 dialog.dismiss();
             }
@@ -235,5 +242,19 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             fileSizeString = df.format((double) fileS / 1073741824) + "GB";
         }
         return fileSizeString;
+    }
+
+    private void out() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", MyApplication.user.getUser_ID() + "");
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.SignOut, params, UserJson.class,
+                new OkhttpJsonUtil.TextCallBack<UserJson>() {
+                    @Override
+                    public void getResult(UserJson result) {
+                        if (result != null) {
+                           // MyApplication.showToast("" + result.getSuccess() == null ? result.getException(): result.getSuccess(), 0);
+                        }
+                    }
+                });
     }
 }

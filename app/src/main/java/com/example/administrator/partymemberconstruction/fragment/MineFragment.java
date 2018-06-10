@@ -280,8 +280,8 @@ public class MineFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("vivo","返回码"+resultCode);
-        MyApplication.showToast("返回码"+resultCode+"测试码"+requestCode,0);
+       // Log.e("vivo","返回码"+resultCode);
+       // MyApplication.showToast("返回码"+resultCode+"测试码"+requestCode,0);
         switch (requestCode) {
             case REQUEST_CODE_TAKE_PICETURE:
                 Log.e("vivo","拿到拍照回调"+resultCode);
@@ -371,41 +371,47 @@ public class MineFragment extends Fragment {
 //        unbinder.unbind();
 //    }
 
+private void loadHead() throws Exception{
+    HashMap<String, String> params = new HashMap<>();
+    params.put("UserName", MyApplication.phone);
+    params.put("Password", MyApplication.psw);
+    OkhttpJsonUtil.getInstance().postByEnqueue(MineFragment.this.getActivity(), Url.LoadingUrl, params, UserJson.class,
+            new OkhttpJsonUtil.TextCallBack<UserJson>() {
+                @Override
+                public void getResult(UserJson result) {
+                    // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
+                    if (result != null) {
+                        MyApplication.user = result.getUserInfo()==null?new UserJson.UserInfoBean():result.getUserInfo();
+                        String userName=MyApplication.user.getUi_NickName()==null?"":MyApplication.user.getUi_NickName();
+                        name.setText(userName);
+                        String url=MyApplication.user.getUi_Headimg()==null|MyApplication.user.getUi_Headimg()==""?"wwww":MyApplication.user.getUi_Headimg();
+                        url=url.replace(" ","");
+                        if(TextUtils.isEmpty(url)){
+                            url="www";
+                        }
+                        Picasso.with(MineFragment.this.getContext()).load(url).fit().centerCrop().into(headImg, new Callback() {
+                            @Override
+                            public void onSuccess() {
 
+                            }
+                            @Override
+                            public void onError() {
+                                headImg.setImageResource(R.mipmap.default_head);
+//MyApplication.showToast("头像加载失败",0);
+                            }
+                        });
+                    }
+                }
+            }
+    );
+}
     @Override
     public void onStart() {
         super.onStart();
-        HashMap<String, String> params = new HashMap<>();
-        params.put("UserName", MyApplication.phone);
-        params.put("Password", MyApplication.psw);
-        OkhttpJsonUtil.getInstance().postByEnqueue(MineFragment.this.getActivity(), Url.LoadingUrl, params, UserJson.class,
-                new OkhttpJsonUtil.TextCallBack<UserJson>() {
-                    @Override
-                    public void getResult(UserJson result) {
-                        // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
-                        if (result != null) {
-                            MyApplication.user = result.getUserInfo()==null?new UserJson.UserInfoBean():result.getUserInfo();
-                            String userName=MyApplication.user.getUi_NickName()==null?"":MyApplication.user.getUi_NickName();
-                            name.setText(userName);
-                            String url=MyApplication.user.getUi_Headimg()==null|MyApplication.user.getUi_Headimg()==""?"wwww":MyApplication.user.getUi_Headimg();
-                            url=url.replace(" ","");
-                            if(TextUtils.isEmpty(url)){
-                                url="www";
-                            }
-                            Picasso.with(MineFragment.this.getContext()).load(url).into(headImg, new Callback() {
-                                @Override
-                                public void onSuccess() {
-
-                                }
-                                @Override
-                                public void onError() {
-                                    headImg.setImageResource(R.mipmap.default_head);
-//MyApplication.showToast("头像加载失败",0);
-                                }
-                            });
-                        }
-                    }
+        try {
+            loadHead();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        );
     }
 }

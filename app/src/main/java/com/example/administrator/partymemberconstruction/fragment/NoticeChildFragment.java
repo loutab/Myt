@@ -82,7 +82,11 @@ public class NoticeChildFragment extends Fragment {
         noticeInfo = new ArrayList<>();
         noticeOneListAdapter = new NoticeAllListAdapter(getContext(), noticeInfo, 2);
         if(isFirst){
-            getListDate();
+            try {
+                getListDate();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         isFirst=false;
         delet.setClickable(true);
@@ -159,7 +163,7 @@ public class NoticeChildFragment extends Fragment {
                     }
         });
     }
-    private void getListDate() {
+    private void getListDate() throws Exception {
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", "" + MyApplication.user.getUser_ID());
         OkhttpJsonUtil.getInstance().postByEnqueue(getActivity(), Url.GetAllNoticeUrl, params, NoticeItemJson.class,
@@ -243,7 +247,11 @@ public class NoticeChildFragment extends Fragment {
             if(isFirst){
 
             }else{
-                getListDate();
+                try {
+                    getListDate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             //可见时进行内容加载或逻辑操作等
         } else {

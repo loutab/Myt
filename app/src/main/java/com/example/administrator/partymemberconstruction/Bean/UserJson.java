@@ -14,6 +14,7 @@ public class UserJson {
      * userInfo : {"EntityId":1,"User_ID":1,"ui_NickName":"小红","ui_Introduction":"无简介","ui_Level":1,"ui_Integral":0,"ui_Headimg":"/Upload/20180321_556.jpg","ui_Organization":1,"ui_Department":1,"ui_Position":1,"Sex":0,"ui_Mail":"","ui_Address":"","ui_Birthday":"0001-01-01 00:00:00","ui_FirstLetter":"X"}
      */
 
+
     private String Code;
     private String Exception;
     private String Success;

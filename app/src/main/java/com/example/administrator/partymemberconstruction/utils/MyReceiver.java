@@ -32,7 +32,7 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class MyReceiver extends BroadcastReceiver {
     private static final String TAG = "JIGUANG-Example";
-    private static final String CONTENT = "您的账号存在异常，请重新登录。";
+    private static final String CONTENT = "您的账号存在异常，请重新登录";
 
     @Override
     public void onReceive(Context context, Intent intent) {

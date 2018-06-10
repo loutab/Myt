@@ -114,14 +114,14 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public void onScreenOn() {
                 web.loadUrl("javascript:start()");
-                // MyApplication.showToast("亮",0);
+                 MyApplication.showToast("亮",0);
                 Log.e("screen", "亮");
             }
 
             @Override
             public void onScreenOff() {
                 web.loadUrl("javascript:pause()");
-                // MyApplication.showToast("暗",0);
+                 MyApplication.showToast("暗",0);
                 Log.e("screen", "an");
             }
 
@@ -638,5 +638,17 @@ public class WebActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         screenListener.unregisterListener();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        web.loadUrl("javascript:pause()");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        web.loadUrl("javascript:start()");
     }
 }

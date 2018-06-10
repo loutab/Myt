@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.partymemberconstruction.Bean.GroupJson;
 import com.example.administrator.partymemberconstruction.Bean.PartMJson;
@@ -73,7 +74,19 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         JPushInterface.setAlias(this, 101, MobileInfoUtil.getIMEI(this));
-        //JPushInterface.setAlias(this, 101, "12345678");
+        //JPushInterface.setAlias(this, 101, "12345678a");
+        SharedPreferences load = getSharedPreferences("load", Context.MODE_PRIVATE);
+        sp = getPreferences(Context.MODE_PRIVATE);
+        boolean yes = load.getBoolean("yes", false);
+        if(yes){
+            MyApplication.phone=sp.getString("userPhone","");
+            MyApplication.psw=sp.getString("userPsw","");
+            MyApplication.user=new UserJson.UserInfoBean();
+            MyApplication.user.setUser_ID(sp.getInt("useId",0));
+            Intent intent=new Intent(this,FirstActivity.class);
+            startActivity(intent);
+            finish();
+        }
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
             return;
@@ -84,7 +97,7 @@ public class LoadingActivity extends AppCompatActivity {
         getPartDate();
 
         Log.d("w", ComenUtils.ChangeTime("2018-03-13 11:20:36"));
-        sp = getPreferences(Context.MODE_PRIVATE);
+
         String userName = sp.getString("userName", "");
         userEdt.setText(userName);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -207,6 +220,8 @@ public class LoadingActivity extends AppCompatActivity {
                                     MyApplication.phone = userEdt.getText() + "";
                                     //记住用户名
                                     SharedPreferences.Editor edit = sp.edit();
+                                    edit.putString("userPhone",MyApplication.phone);
+                                    edit.putString("userPsw",MyApplication.psw);
                                     edit.putString("userName", trueName);
                                     edit.commit();
                                     //根据状态选择进入的页面
@@ -221,9 +236,16 @@ public class LoadingActivity extends AppCompatActivity {
                                             break;
                                         //跳转到首页
                                         case 1:
+                                            //记住登录状态
+                                            SharedPreferences load = getSharedPreferences("load", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor edit1 = load.edit();
+                                            edit1.putBoolean("yes",true);
+                                            edit1.commit();
+
                                             FirstActivity.YES=1;
                                             //全局化用户信息
                                             MyApplication.user = result.getUserInfo()==null?new UserJson.UserInfoBean():result.getUserInfo();
+                                            sp.edit().putInt("userId",MyApplication.user.getUser_ID()).commit();
                                             HashMap<String, String> params = new HashMap<>();
                                             String imei = MobileInfoUtil.getIMEI(LoadingActivity.this);
                                             params.put("userId", MyApplication.user.getUser_ID()+"");
@@ -339,7 +361,28 @@ public class LoadingActivity extends AppCompatActivity {
                         }
                     }
                 });
+
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    private long mExitTime;
+    //返回键重写
+    public void exit() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            Toast.makeText(LoadingActivity.this, "再按一次退出应用", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
 }
