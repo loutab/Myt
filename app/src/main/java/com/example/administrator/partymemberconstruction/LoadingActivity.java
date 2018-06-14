@@ -84,6 +84,7 @@ public class LoadingActivity extends AppCompatActivity {
             MyApplication.user=new UserJson.UserInfoBean();
             MyApplication.user.setUser_ID(sp.getInt("useId",0));
             Intent intent=new Intent(this,FirstActivity.class);
+            FirstActivity.YES=1;
             startActivity(intent);
             finish();
         }

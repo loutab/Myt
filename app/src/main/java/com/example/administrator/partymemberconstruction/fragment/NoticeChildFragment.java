@@ -1,10 +1,13 @@
 package com.example.administrator.partymemberconstruction.fragment;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +60,7 @@ public class NoticeChildFragment extends Fragment {
     private NoticeAllListAdapter noticeOneListAdapter;
     private boolean isFirst=true;
     private List<Integer> delteAll;
+    private AlertDialog.Builder builder;
 
     public NoticeChildFragment() {
         // Required empty public constructor
@@ -89,12 +93,31 @@ public class NoticeChildFragment extends Fragment {
             }
         }
         isFirst=false;
+
+
+        builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("是否删除所有最新消息？");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                changeAllNotice();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
         delet.setClickable(true);
         delet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(delteAll.size()>0)
-                changeAllNotice();
+                    builder.show();
             }
         });
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

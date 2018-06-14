@@ -113,15 +113,15 @@ public class WebActivity extends AppCompatActivity {
         screenListener.begin(new ScreenListener.ScreenStateListener() {
             @Override
             public void onScreenOn() {
-                web.loadUrl("javascript:start()");
-                 MyApplication.showToast("亮",0);
+               // web.loadUrl("javascript:start()");
+                 //MyApplication.showToast("亮",0);
                 Log.e("screen", "亮");
             }
 
             @Override
             public void onScreenOff() {
-                web.loadUrl("javascript:pause()");
-                 MyApplication.showToast("暗",0);
+               // web.loadUrl("javascript:pause()");
+                // MyApplication.showToast("暗",0);
                 Log.e("screen", "an");
             }
 

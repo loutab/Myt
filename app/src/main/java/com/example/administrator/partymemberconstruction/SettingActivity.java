@@ -75,7 +75,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 out();
-                getSharedPreferences("load", Context.MODE_PRIVATE).edit().remove("yes").commit();
                 SignOut();
                 dialog.dismiss();
             }

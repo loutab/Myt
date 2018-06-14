@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.administrator.partymemberconstruction.Bean.GetHeadPage;
 import com.example.administrator.partymemberconstruction.Bean.Tab;
 import com.example.administrator.partymemberconstruction.Bean.UploadJson;
 import com.example.administrator.partymemberconstruction.Bean.UserJson;
@@ -40,6 +42,7 @@ import com.example.administrator.partymemberconstruction.fragment.PartyConstruct
 import com.example.administrator.partymemberconstruction.utils.MobileInfoUtil;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
 import com.example.administrator.partymemberconstruction.utils.Url;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -75,6 +78,11 @@ public class FirstActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Unbinder bind;
+    private int typeScreen;
+    private String menu_logo_url1;
+    private String loadurl;
+    private boolean isUpload = false;
+    private String packName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +100,8 @@ public class FirstActivity extends AppCompatActivity {
         }
         try {
             load();
-        }catch (Exception e){
+            getUpdate();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -120,10 +129,17 @@ public class FirstActivity extends AppCompatActivity {
         down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isAppInstalled(FirstActivity.this, "com.dangjian"))
-                    gotoApp();
-                else
-                    sureUpload.show();
+                if (isUpload) {
+                    if (isAppInstalled(FirstActivity.this, packName+""))
+                        gotoApp();
+                    else
+                        sureUpload.show();
+                } else {
+                    Intent intent = new Intent(FirstActivity.this, WebActivity.class);
+                    intent.putExtra("Url", loadurl);
+                    intent.putExtra("title", "");
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -181,7 +197,7 @@ public class FirstActivity extends AppCompatActivity {
     //获得链接下载地址
     private void getUploadUrl() {
         HashMap<String, String> params = new HashMap<>();
-        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.UploadUrl, params, UploadJson.class,
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, loadurl, params, UploadJson.class,
                 new OkhttpJsonUtil.TextCallBack<UploadJson>() {
                     @Override
                     public void getResult(UploadJson result) {
@@ -209,7 +225,9 @@ public class FirstActivity extends AppCompatActivity {
             sureUpload.setPositiveButton("是", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    getUploadUrl();
+                    //getUploadUrl();
+                    testUrl=loadurl;
+                    upload();
                 }
             });
             sureUpload.setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -407,6 +425,7 @@ public class FirstActivity extends AppCompatActivity {
         if (intent != null) {
             boolean isExit = intent.getBooleanExtra(TAG_EXIT, false);
             if (isExit) {
+                getSharedPreferences("load", Context.MODE_PRIVATE).edit().remove("yes").commit();
                 this.finish();
                 Intent intent1 = new Intent(this, LoadingActivity.class);
                 startActivity(intent1);
@@ -425,58 +444,115 @@ public class FirstActivity extends AppCompatActivity {
             FirstFragment.F = 0;
         }
     }
-private void load(){
-    HashMap<String, String> params = new HashMap<>();
-    params.put("UserName", MyApplication.phone);
-    params.put("Password", MyApplication.psw);
-    OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.LoadingUrl, params, UserJson.class,
-            new OkhttpJsonUtil.TextCallBack<UserJson>() {
-                @Override
-                public void getResult(UserJson result) {
-                    // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
-                    if (result != null) {
-                        Log.d("p", result.getCode());
-                        if (result.getCode().equals("成功")) {
-                            //根据状态选择进入的页面
-                            //finish();
-                            int status = result.getStatus();
-                            switch (status) {
-                                case 0:
-                                    Intent intent = new Intent(FirstActivity.this, ExamineActivity.class);
-                                    intent.putExtra("state", "" + result.getStatus());
-                                    intent.putExtra("userId", result.getUserId() + "");
-                                    startActivity(intent);
-                                    break;
-                                //跳转到首页
-                                case 1:
-                                    //全局化用户信息
-                                    MyApplication.user = result.getUserInfo()==null?new UserJson.UserInfoBean():result.getUserInfo();
-                                    break;
-                                case 2:
-                                    Intent intent1 = new Intent(FirstActivity.this, ExamineActivity.class);
-                                    intent1.putExtra("state", "" + result.getStatus());
-                                    intent1.putExtra("userId", result.getUser_id());
-                                    intent1.putExtra("Error",result.getError());
-                                    startActivity(intent1);
-                                    break;
-                                case 3:
-                                    //跳转到完善信息页面
-                                    Intent intent3 = new Intent(FirstActivity.this, ImprovePersonalInformationActivity.class);
-                                    intent3.putExtra("userId", result.getUserInfo().getEntityId() + "");
-                                    startActivity(intent3);
-                                    break;
+
+    private void load() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("UserName", MyApplication.phone);
+        params.put("Password", MyApplication.psw);
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.LoadingUrl, params, UserJson.class,
+                new OkhttpJsonUtil.TextCallBack<UserJson>() {
+                    @Override
+                    public void getResult(UserJson result) {
+                        // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
+                        if (result != null) {
+                            Log.d("p", result.getCode());
+                            if (result.getCode().equals("成功")) {
+                                //根据状态选择进入的页面
+                                //finish();
+                                int status = result.getStatus();
+                                switch (status) {
+                                    case 0:
+                                        Intent intent = new Intent(FirstActivity.this, ExamineActivity.class);
+                                        intent.putExtra("state", "" + result.getStatus());
+                                        intent.putExtra("userId", result.getUserId() + "");
+                                        startActivity(intent);
+                                        break;
+                                    //跳转到首页
+                                    case 1:
+                                        //全局化用户信息
+                                        MyApplication.user = result.getUserInfo() == null ? new UserJson.UserInfoBean() : result.getUserInfo();
+                                        break;
+                                    case 2:
+                                        Intent intent1 = new Intent(FirstActivity.this, ExamineActivity.class);
+                                        intent1.putExtra("state", "" + result.getStatus());
+                                        intent1.putExtra("userId", result.getUser_id());
+                                        intent1.putExtra("Error", result.getError());
+                                        startActivity(intent1);
+                                        break;
+                                    case 3:
+                                        //跳转到完善信息页面
+                                        Intent intent3 = new Intent(FirstActivity.this, ImprovePersonalInformationActivity.class);
+                                        intent3.putExtra("userId", result.getUserInfo().getEntityId() + "");
+                                        startActivity(intent3);
+                                        break;
+                                }
+                                //登录成功进入首页
+                            } else {
+                                MyApplication.showToast(result.getException(), 0);
                             }
-                            //登录成功进入首页
                         } else {
-                            MyApplication.showToast(result.getException(), 0);
+                            MyApplication.showToast("连接服务器失败", 0);
                         }
-                    } else {
-                        MyApplication.showToast("连接服务器失败", 0);
+
                     }
+                });
+    }
 
-                }
-            });
-}
+    private void getUpdate() throws Exception {
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.GetHeadPageAndroid, new HashMap<String, String>(), GetHeadPage.class,
+                new OkhttpJsonUtil.TextCallBack<GetHeadPage>() {
+                    @Override
+                    public void getResult(GetHeadPage result) {
+                        if (result != null) {
+                            boolean b = result.getCode().equals("成功");
+                            if (b) {
+                                getScreenDensity_ByWindowManager();
+                                switch (typeScreen) {
+                                    case 1:
+                                        menu_logo_url1 = result.getMenuInfo().getMenu_Logo_Url1();
+                                        break;
+                                    case 2:
+                                        menu_logo_url1 = result.getMenuInfo().getMenu_Logo_Url2();
+                                        break;
+                                    case 3:
+                                        menu_logo_url1 = result.getMenuInfo().getMenu_Logo_Url3();
+                                        break;
+                                }
+                                Picasso.with(FirstActivity.this).load(menu_logo_url1).centerCrop().fit().into(down);
+                                loadurl = result.getMenuInfo().getMenu_Url();
+                                int menuCategory = result.getMenuInfo().getMenu_Category();
+                                if (menuCategory == 4) {
+                                    isUpload = true;
+                                    packName = result.getApk_name();
+                                } else {
+                                    isUpload = false;
+                                }
+                            } else {
+                                MyApplication.showToast(result.getError(), 0);
+                            }
+                        } else {
+                            MyApplication.showToast("连接服务器失败", 0);
+                        }
+                    }
+                });
+    }
 
+    //获得屏幕分辨率
+    public void getScreenDensity_ByWindowManager() {
+        DisplayMetrics mDisplayMetrics = new DisplayMetrics();//屏幕分辨率容器
+        getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
+        int width = mDisplayMetrics.widthPixels;
+        int height = mDisplayMetrics.heightPixels;
+        float density = mDisplayMetrics.density;
+        int densityDpi = mDisplayMetrics.densityDpi;
+        Log.d("p", "" + width + "  " + height);
+        if (width <= 480) {
+            typeScreen = 1;
+        } else if (width <= 720) {
+            typeScreen = 2;
+        } else {
+            typeScreen = 3;
+        }
+    }
 
 }

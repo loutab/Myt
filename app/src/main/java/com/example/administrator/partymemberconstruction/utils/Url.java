@@ -59,4 +59,6 @@ public class Url {
     public static String BindIMEI="http://101.201.109.90:3333/Local/UpdateEquitment";
     //注销
     public static String SignOut="http://101.201.109.90:3333/Local/CancellationUser";
+    //获得首页下载地址
+    public static String GetHeadPageAndroid="http://101.201.109.90:3333/Local/GetHeadPageAndroid";
 }
