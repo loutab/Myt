@@ -53,6 +53,8 @@ public class RegisterActivity extends AppCompatActivity {
     TextView register;
     @BindView(R.id.line1)
     LinearLayout line1;
+    @BindView(R.id.prompt)
+    TextView prompt;
     private String phoneNum;
     private CountDownTimer timer;
     private String codeNum;
@@ -87,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //验证手机号码
                 phoneNum = phone.getText() + "";
-                if (phoneNum != null & phoneNum.length() == 11& Validate.isTrue(phoneNum)) {
+                if (phoneNum != null & phoneNum.length() == 11 & Validate.isTrue(phoneNum)) {
                     //调用验证码接口
                     getCode();
                 } else {
@@ -104,10 +106,9 @@ public class RegisterActivity extends AppCompatActivity {
                 if (isEmptyDate())
                     MyApplication.showToast("请完善信息", 0);
                 else {
-                    if(passWord.length()<6||passWord.length()>12){
-                        MyApplication.showToast("密码位数超限，请重输", 0);
-                    }
-                    else if(!isContainAll(passWord)){
+                    if (passWord.length() < 6 || passWord.length() > 12) {
+                        MyApplication.showToast("密码位数超限，请重输（6-12位）", 0);
+                    } else if (!isContainAll(passWord)) {
                         MyApplication.showToast("密码不符合规则，必须包含数字与字母", 0);
                     }
                     //判断两次密码是否正确
@@ -138,8 +139,12 @@ public class RegisterActivity extends AppCompatActivity {
                             if (result.getCode().equals("成功")) {
                                 //调用注册接口
                                 gotoRegister();
-                            } else
+                            } else {
                                 MyApplication.showToast(result.getException(), 0);
+                                //变红
+                                prompt.setVisibility(View.VISIBLE);
+                                edtCode.setBackgroundResource(R.drawable.shape_register_btn_red);
+                            }
                         }
 
                     }
@@ -161,7 +166,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if (result.getCode().equals("成功")) {
                                 //注册成功跳入完善页面
                                 Intent intent = new Intent(RegisterActivity.this, ImprovePersonalInformationActivity.class);
-                                intent.putExtra("userId",result.getUserId()+"");
+                                intent.putExtra("userId", result.getUserId() + "");
                                 startActivity(intent);
                                 finish();
                             } else
@@ -216,7 +221,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 timer.onFinish();
                                 timer.cancel();
                             }
-                        }else{
+                        } else {
                             MyApplication.showToast("获取验证码失败", 0);
                             timer.onFinish();
                             timer.cancel();
@@ -226,6 +231,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
     }
+
     public static boolean isContainAll(String str) {
         boolean isDigit = false;//定义一个boolean值，用来表示是否包含数字
         boolean isLowerCase = false;//定义一个boolean值，用来表示是否包含字母
@@ -239,9 +245,9 @@ public class RegisterActivity extends AppCompatActivity {
                 isUpperCase = true;
             }
         }
-        boolean isCase=isLowerCase|isUpperCase;
+        boolean isCase = isLowerCase | isUpperCase;
         String regex = "^[a-zA-Z0-9]+$";
-        boolean isRight = isDigit &&isCase && str.matches(regex);
+        boolean isRight = isDigit && isCase && str.matches(regex);
         return isRight;
     }
 }

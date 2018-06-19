@@ -130,7 +130,7 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isUpload) {
-                    if (isAppInstalled(FirstActivity.this, packName+""))
+                    if (isAppInstalled(FirstActivity.this, packName + ""))
                         gotoApp();
                     else
                         sureUpload.show();
@@ -226,7 +226,7 @@ public class FirstActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //getUploadUrl();
-                    testUrl=loadurl;
+                    testUrl = loadurl;
                     upload();
                 }
             });
@@ -488,7 +488,12 @@ public class FirstActivity extends AppCompatActivity {
                                 }
                                 //登录成功进入首页
                             } else {
+                                out();
                                 MyApplication.showToast(result.getException(), 0);
+                                getSharedPreferences("load", Context.MODE_PRIVATE).edit().remove("yes").commit();
+                                finish();
+                                Intent intent1 = new Intent(FirstActivity.this, LoadingActivity.class);
+                                startActivity(intent1);
                             }
                         } else {
                             MyApplication.showToast("连接服务器失败", 0);
@@ -555,4 +560,17 @@ public class FirstActivity extends AppCompatActivity {
         }
     }
 
+    private void out() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", MyApplication.user.getUser_ID() + "");
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.SignOut, params, UserJson.class,
+                new OkhttpJsonUtil.TextCallBack<UserJson>() {
+                    @Override
+                    public void getResult(UserJson result) {
+                        if (result != null) {
+                            // MyApplication.showToast("" + result.getSuccess() == null ? result.getException(): result.getSuccess(), 0);
+                        }
+                    }
+                });
+    }
 }

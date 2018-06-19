@@ -169,10 +169,10 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.controller:
-                        sexDate = 1;
+                        orgDate = 1;
                         break;
                     case R.id.member:
-                        sexDate = 0;
+                        orgDate = 0;
                         break;
                 }
             }

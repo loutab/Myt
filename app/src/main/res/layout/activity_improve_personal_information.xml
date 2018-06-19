@@ -352,6 +352,13 @@
                     android:text="邮箱"
                     android:textColor="#333"
                     android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="选填"
+                    android:textColor="#ccc"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <EditText

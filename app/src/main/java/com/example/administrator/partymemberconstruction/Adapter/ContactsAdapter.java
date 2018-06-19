@@ -86,7 +86,7 @@ public class ContactsAdapter extends BaseAdapter {
         if(TextUtils.isEmpty(ss)){
             ss="www";
         }
-        Picasso.with(context).load(ss).error(R.mipmap.search_p).into(viewHolder.head);
+        Picasso.with(context).load(ss).fit().centerCrop().error(R.mipmap.search_p).into(viewHolder.head);
 
         return view;
     }
