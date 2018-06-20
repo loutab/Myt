@@ -242,7 +242,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                                             standerTime = birth[0] + "-" + birth[1] + "-" + birth[2];
                                         }
                                     }
-                                    if (result.getUserInfo().getSex() == 1)
+                                    if (result.getUserInfo().getSex() == 0)
                                         sex.check(R.id.man);
                                     else
                                         sex.check(R.id.woman);
@@ -280,12 +280,15 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         params.put("ui_Department", "" + id2);
         params.put("NickName", "" + userName);
         params.put("Sex", "" + sexDate);
-        params.put("ui_Introduction", "" + briefDate);
-        params.put("Mail", "" + emailDate);
-        params.put("Address", "" + addressDate);
+        params.put("ui_Introduction", "" + (TextUtils.isEmpty(briefDate)?"":briefDate));
+        params.put("Mail", "" +(TextUtils.isEmpty(emailDate)?"":emailDate) );
+        params.put("Address", "" + (TextUtils.isEmpty(addressDate)?"":addressDate));
         params.put("Birthday", "" + birthdayString);
         params.put("ui_Headimg", " ");
         params.put("ui_Position", "" + orgDate);
+        for(String s:params.keySet()){
+            Log.e("params",s+"   "+params.get(s));
+        }
         OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.CompleteDateUrl, params, CompleteJson.class,
                 new OkhttpJsonUtil.TextCallBack<CompleteJson>() {
                     @Override

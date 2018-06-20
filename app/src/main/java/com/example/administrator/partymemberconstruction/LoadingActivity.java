@@ -232,7 +232,7 @@ public class LoadingActivity extends AppCompatActivity {
                                         case 0:
                                             Intent intent = new Intent(LoadingActivity.this, ExamineActivity.class);
                                             intent.putExtra("state", "" + result.getStatus());
-                                            intent.putExtra("userId", result.getUserId() + "");
+                                            intent.putExtra("userId", result.getUser_id() + "");
                                             startActivity(intent);
                                             break;
                                         //跳转到首页
