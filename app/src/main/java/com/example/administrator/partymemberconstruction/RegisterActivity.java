@@ -167,6 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 //注册成功跳入完善页面
                                 Intent intent = new Intent(RegisterActivity.this, ImprovePersonalInformationActivity.class);
                                 intent.putExtra("userId", result.getUserId() + "");
+                                intent.putExtra("isR",true);
                                 startActivity(intent);
                                 finish();
                             } else

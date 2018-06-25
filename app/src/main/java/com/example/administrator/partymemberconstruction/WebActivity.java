@@ -29,11 +29,14 @@ import android.webkit.JavascriptInterface;
 import com.example.administrator.partymemberconstruction.utils.APIWebviewTBS;
 import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
+
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -95,9 +98,15 @@ public class WebActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String url = intent.getStringExtra("Url");
         String titleTxt = intent.getStringExtra("title");
-        user_id = MyApplication.user.getUser_ID() + "";
-        ui_nickName = MyApplication.user.getUi_NickName();
-        title.setText(titleTxt+"");
+        titleTxt= TextUtils.isEmpty(titleTxt) ? "" : titleTxt;
+        if (!titleTxt.equals("服务协议")) {
+            user_id = MyApplication.user.getUser_ID() + "";
+            ui_nickName = MyApplication.user.getUi_NickName();
+        }else{
+            user_id="";
+            ui_nickName="";
+        }
+        title.setText(titleTxt + "");
         //全部隐藏
         headtitle.setVisibility(View.GONE);
 
@@ -113,14 +122,14 @@ public class WebActivity extends AppCompatActivity {
         screenListener.begin(new ScreenListener.ScreenStateListener() {
             @Override
             public void onScreenOn() {
-               // web.loadUrl("javascript:start()");
-                 //MyApplication.showToast("亮",0);
+                // web.loadUrl("javascript:start()");
+                //MyApplication.showToast("亮",0);
                 Log.e("screen", "亮");
             }
 
             @Override
             public void onScreenOff() {
-               // web.loadUrl("javascript:pause()");
+                // web.loadUrl("javascript:pause()");
                 // MyApplication.showToast("暗",0);
                 Log.e("screen", "an");
             }
@@ -165,6 +174,7 @@ public class WebActivity extends AppCompatActivity {
                 loadingDialog.cancel();
                 //set();
             }
+
             @Override
             public void onReceivedError(WebView var1, int var2, String var3, String var4) {
                 loadingDialog.cancel();
@@ -176,7 +186,7 @@ public class WebActivity extends AppCompatActivity {
             //不同版本系统打开本地资源
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {//5.0+
-                Log.e("wenjian","测试5");
+                Log.e("wenjian", "测试5");
                 showDialog();
                 mFilePathCallbacks = filePathCallback;
                 return true;
@@ -184,19 +194,19 @@ public class WebActivity extends AppCompatActivity {
 
             //openFileChooser 方法是隐藏方法
             public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {// android 系统版本>4.1.1
-                Log.e("wenjian","测试4");
+                Log.e("wenjian", "测试4");
                 showDialog();
                 mFilePathCallback = uploadMsg;
             }
 
             public void openFileChooser(ValueCallback<Uri> uploadMsg) {//android 系统版本<3.0
-                Log.e("wenjian","测试2");
+                Log.e("wenjian", "测试2");
                 showDialog();
                 mFilePathCallback = uploadMsg;
             }
 
             public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {//android 系统版本3.0+
-                Log.e("wenjian","测试3");
+                Log.e("wenjian", "测试3");
                 showDialog();
                 mFilePathCallback = uploadMsg;
 
@@ -229,7 +239,10 @@ public class WebActivity extends AppCompatActivity {
         //web.loadUrl("http://v.qq.com/iframe/player.html?vid=o0318tp1ddw&tiny=0&auto=0");
         web.addJavascriptInterface(new JsInteration(), "android");
     }
-    /** 视频全屏参数 */
+
+    /**
+     * 视频全屏参数
+     */
 //    protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 //    private View customView;
 //    private FrameLayout fullscreenContainer;
@@ -286,9 +299,6 @@ public class WebActivity extends AppCompatActivity {
 //        int flag = visible ? 0 : WindowManager.LayoutParams.FLAG_FULLSCREEN;
 //        getWindow().setFlags(flag, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //    }
-
-
-
     private void showDialog() {
         ActionSheetDialog dialog = new ActionSheetDialog(WebActivity.this).builder().addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
             @Override
@@ -320,15 +330,15 @@ public class WebActivity extends AppCompatActivity {
     private void takeForPhoto() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED)
-        {
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA},
                     REQUEST_CODE_PICK_PHOTO);
 
-        }else{
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, REQUEST_CODE_PICK_PHOTO);}
+        } else {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, REQUEST_CODE_PICK_PHOTO);
+        }
 
     }
 //权限处理
@@ -357,16 +367,16 @@ public class WebActivity extends AppCompatActivity {
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED)
-        {
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA},
                     REQUEST_CODE_TAKE_PICETURE);
 
-        }else{
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
-        //}
-        startActivityForResult(intent, REQUEST_CODE_TAKE_PICETURE);}
+        } else {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
+            //}
+            startActivityForResult(intent, REQUEST_CODE_TAKE_PICETURE);
+        }
 
     }
 
@@ -374,39 +384,33 @@ public class WebActivity extends AppCompatActivity {
         if (mFilePathCallback != null) {
             mFilePathCallback.onReceiveValue(null);
             mFilePathCallback = null;
-        }else if(mFilePathCallbacks!=null){
+        } else if (mFilePathCallbacks != null) {
             mFilePathCallbacks.onReceiveValue(null);
-            mFilePathCallback=null;
+            mFilePathCallback = null;
         }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
 
-        if (requestCode == REQUEST_CODE_TAKE_PICETURE)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        if (requestCode == REQUEST_CODE_TAKE_PICETURE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picturefile));
                 //}
                 startActivityForResult(intent, REQUEST_CODE_TAKE_PICETURE);
-            } else
-            {
+            } else {
                 // Permission Denied
-              //  Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
 
 
-        if (requestCode == REQUEST_CODE_PICK_PHOTO)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
+        if (requestCode == REQUEST_CODE_PICK_PHOTO) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, REQUEST_CODE_PICK_PHOTO);
-            } else
-            {
+            } else {
                 // Permission Denied
                 //Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
             }

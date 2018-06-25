@@ -21,6 +21,16 @@ public class UserJson {
     private int status;
     private UserInfoBean userInfo;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private User user;
+
     public String getError() {
         return Error;
     }
@@ -244,6 +254,123 @@ public class UserJson {
 
         public void setUi_FirstLetter(String ui_FirstLetter) {
             this.ui_FirstLetter = ui_FirstLetter;
+        }
+    }
+
+    public static class User {
+
+        /**
+         * EntityId : 1
+         * User_Name : 13261011499
+         * User_PWD : 25D55AD283AA400AF464C76D713C07AD
+         * User_RegDate : 2018-03-07 11:04:42
+         * User_Info_ID : 3
+         * u_Audit_Status : 1
+         * u_Auditor : null
+         * u_Audit_Date : 0001-01-01 00:00:00
+         * u_Audit_FailureReason :
+         * u_equipment : 866642027804063
+         * u_IsDelete : 0
+         */
+
+        private int EntityId;
+        private String User_Name;
+        private String User_PWD;
+        private String User_RegDate;
+        private int User_Info_ID;
+        private int u_Audit_Status;
+        private Object u_Auditor;
+        private String u_Audit_Date;
+        private String u_Audit_FailureReason;
+        private String u_equipment;
+        private int u_IsDelete;
+
+        public int getEntityId() {
+            return EntityId;
+        }
+
+        public void setEntityId(int EntityId) {
+            this.EntityId = EntityId;
+        }
+
+        public String getUser_Name() {
+            return User_Name;
+        }
+
+        public void setUser_Name(String User_Name) {
+            this.User_Name = User_Name;
+        }
+
+        public String getUser_PWD() {
+            return User_PWD;
+        }
+
+        public void setUser_PWD(String User_PWD) {
+            this.User_PWD = User_PWD;
+        }
+
+        public String getUser_RegDate() {
+            return User_RegDate;
+        }
+
+        public void setUser_RegDate(String User_RegDate) {
+            this.User_RegDate = User_RegDate;
+        }
+
+        public int getUser_Info_ID() {
+            return User_Info_ID;
+        }
+
+        public void setUser_Info_ID(int User_Info_ID) {
+            this.User_Info_ID = User_Info_ID;
+        }
+
+        public int getU_Audit_Status() {
+            return u_Audit_Status;
+        }
+
+        public void setU_Audit_Status(int u_Audit_Status) {
+            this.u_Audit_Status = u_Audit_Status;
+        }
+
+        public Object getU_Auditor() {
+            return u_Auditor;
+        }
+
+        public void setU_Auditor(Object u_Auditor) {
+            this.u_Auditor = u_Auditor;
+        }
+
+        public String getU_Audit_Date() {
+            return u_Audit_Date;
+        }
+
+        public void setU_Audit_Date(String u_Audit_Date) {
+            this.u_Audit_Date = u_Audit_Date;
+        }
+
+        public String getU_Audit_FailureReason() {
+            return u_Audit_FailureReason;
+        }
+
+        public void setU_Audit_FailureReason(String u_Audit_FailureReason) {
+            this.u_Audit_FailureReason = u_Audit_FailureReason;
+        }
+
+        public String getU_equipment() {
+            return u_equipment;
+        }
+
+        public void setU_equipment(String u_equipment) {
+            this.u_equipment = u_equipment;
+        }
+
+        public int getU_IsDelete() {
+            return u_IsDelete;
+        }
+
+        public void setU_IsDelete(int u_IsDelete) {
+            this.u_IsDelete = u_IsDelete;
         }
     }
 }

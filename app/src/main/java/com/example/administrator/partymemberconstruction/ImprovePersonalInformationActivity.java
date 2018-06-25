@@ -107,7 +107,9 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         rule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ImprovePersonalInformationActivity.this, OldWebActivity.class);
+                Intent intent = new Intent(ImprovePersonalInformationActivity.this, WebActivity.class);
+                intent.putExtra("title","服务协议");
+                intent.putExtra("Url","http://101.201.109.90:3335/H5Content/UserInfo1/UserText?type=2");
                 startActivity(intent);
             }
         });
@@ -127,6 +129,7 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
         });
         //获得UserId
         userId = getIntent().getStringExtra("userId");
+
         // userId=17+"";
         //获得时间
         getTimeK();
@@ -272,7 +275,6 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                     }
                 });
     }
-
     private void completeDate(String userName, String birthdayString, String groupDate, String partDate, String emailDate, String addressDate, String briefDate) {
         HashMap<String, String> params = new HashMap<>();
         params.put("User_ID", "" + userId);
@@ -298,6 +300,9 @@ public class ImprovePersonalInformationActivity extends AppCompatActivity {
                             if (result.getCode().equals("成功")) {
                                 //跳转页面
                                 Intent intent = new Intent(ImprovePersonalInformationActivity.this, ExamineActivity.class);
+                                if(getIntent().getBooleanExtra("isR",false)){
+                                    intent.putExtra("isR",true);
+                                }
                                 startActivity(intent);
                                 finish();
                                 MyApplication.showToast("成功", 0);

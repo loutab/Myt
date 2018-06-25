@@ -1,5 +1,8 @@
 package com.example.administrator.partymemberconstruction;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.partymemberconstruction.Bean.ChangePhoneBean;
 import com.example.administrator.partymemberconstruction.Bean.CheckCodeJson;
 import com.example.administrator.partymemberconstruction.Bean.CodeJson;
 import com.example.administrator.partymemberconstruction.Bean.PostImgJson;
@@ -43,12 +47,15 @@ public class ChangePhoneActivity extends AppCompatActivity {
     TextView sure;
     private CountDownTimer timer;
     private String newPhone;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_phone);
         ButterKnife.bind(this);
+        preferences = getPreferences(Context.MODE_PRIVATE);
+        Log.e("tsd",preferences.getString("userName","")+"555555");
         link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,18 +115,26 @@ public class ChangePhoneActivity extends AppCompatActivity {
         //绑定用户手机
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", MyApplication.user.getUser_ID() + "");
+        Log.e("ce",MyApplication.user.getUser_ID() + "");
         params.put("newPhone", s);
-        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.CodeUrl, params, PostImgJson.class,
-                new OkhttpJsonUtil.TextCallBack<PostImgJson>() {
+        Log.e("ce",s);
+        OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.ChangePhone, params, ChangePhoneBean.class,
+                new OkhttpJsonUtil.TextCallBack<ChangePhoneBean>() {
                     @Override
-                    public void getResult(PostImgJson result) {
+                    public void getResult(ChangePhoneBean result) {
                         // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
                         if (result != null) {
-                            if (result.getCode().equals("成功")) {
-                                MyApplication.showToast("成功", 0);
+                            if (result.getCode().equals("改绑成功")) {
+                                MyApplication.showToast(result.getSuccess(), 0);
+                                preferences.edit().remove("userName").commit();
+                                preferences.edit().putString("userName",newPhone).commit();
+                                MyApplication.phone=newPhone;
+                                Log.e("tsd",newPhone+"6666"+preferences.getString("userName","ces"));
+
+                                SignOut();
                                 finish();
                             } else {
-                                MyApplication.showToast(result.getError(), 0);
+                                MyApplication.showToast(result.getException(), 0);
                             }
                         } else {
                             MyApplication.showToast("改绑失败", 0);
@@ -127,7 +142,12 @@ public class ChangePhoneActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    private void SignOut() {
+        finish();
+        Intent intent = new Intent(this, FirstActivity.class);
+        intent.putExtra("exit", true);
+        startActivity(intent);
+    }
     private void getCodeTwo(String phoneNum) {
         code2.setEnabled(false);
         code2.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_code_gray));

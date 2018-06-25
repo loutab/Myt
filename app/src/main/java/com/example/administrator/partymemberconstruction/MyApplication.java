@@ -31,6 +31,7 @@ public class MyApplication extends Application {
     public static ContactsPersonBean.UserinfoBean otherBean=null;
     public static List<GroupJson.TissueTreeBean> GroupDate=null;
     public static List<PartMJson.DepartListBean> PartDate=null;
+    public static String outUserId="0";
 
     APIWebviewTBS mAPIWebviewTBS;
 

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -73,18 +74,22 @@ public class LoadingActivity extends AppCompatActivity {
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        if(!getScreenDensity_ByWindowManager()){
+            float scale=getResources().getDisplayMetrics().density;
+            party.setHeight((int)(80*scale+0.5f));
+        }
         JPushInterface.setAlias(this, 101, MobileInfoUtil.getIMEI(this));
         //JPushInterface.setAlias(this, 101, "12345678a");
         SharedPreferences load = getSharedPreferences("load", Context.MODE_PRIVATE);
         sp = getPreferences(Context.MODE_PRIVATE);
         boolean yes = load.getBoolean("yes", false);
-        if(yes){
-            MyApplication.phone=sp.getString("userPhone","");
-            MyApplication.psw=sp.getString("userPsw","");
-            MyApplication.user=new UserJson.UserInfoBean();
-            MyApplication.user.setUser_ID(sp.getInt("useId",0));
-            Intent intent=new Intent(this,FirstActivity.class);
-            FirstActivity.YES=1;
+        if (yes) {
+            MyApplication.phone = sp.getString("userPhone", "");
+            MyApplication.psw = sp.getString("userPsw", "");
+            MyApplication.user = new UserJson.UserInfoBean();
+            MyApplication.user.setUser_ID(sp.getInt("useId", 0));
+            Intent intent = new Intent(this, FirstActivity.class);
+            FirstActivity.YES = 1;
             startActivity(intent);
             finish();
         }
@@ -100,7 +105,11 @@ public class LoadingActivity extends AppCompatActivity {
         Log.d("w", ComenUtils.ChangeTime("2018-03-13 11:20:36"));
 
         String userName = sp.getString("userName", "");
-        userEdt.setText(userName);
+        Log.e("tsd", userName + "7777");
+        if (TextUtils.isEmpty(MyApplication.phone))
+            userEdt.setText(userName);
+        else
+            userEdt.setText(MyApplication.phone);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         line1.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -167,8 +176,8 @@ public class LoadingActivity extends AppCompatActivity {
 //                        });
                 //登录接口
                 //MyApplication.showToast("登录",0);
-                if(ComenUtils.isFastClick())
-                gotoLoading();
+                if (ComenUtils.isFastClick())
+                    gotoLoading();
             }
         });
 
@@ -187,6 +196,15 @@ public class LoadingActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //获得屏幕分辨率
+    public boolean getScreenDensity_ByWindowManager() {
+        DisplayMetrics mDisplayMetrics = new DisplayMetrics();//屏幕分辨率容器
+        getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
+        int width = mDisplayMetrics.widthPixels;
+        int height = mDisplayMetrics.heightPixels;
+        return ((float) width / (float) height) == ((float) (9.00 / 16.00));
     }
 
     private void gotoLoading() {
@@ -221,8 +239,8 @@ public class LoadingActivity extends AppCompatActivity {
                                     MyApplication.phone = userEdt.getText() + "";
                                     //记住用户名
                                     SharedPreferences.Editor edit = sp.edit();
-                                    edit.putString("userPhone",MyApplication.phone);
-                                    edit.putString("userPsw",MyApplication.psw);
+                                    edit.putString("userPhone", MyApplication.phone);
+                                    edit.putString("userPsw", MyApplication.psw);
                                     edit.putString("userName", trueName);
                                     edit.commit();
                                     //根据状态选择进入的页面
@@ -240,23 +258,25 @@ public class LoadingActivity extends AppCompatActivity {
                                             //记住登录状态
                                             SharedPreferences load = getSharedPreferences("load", Context.MODE_PRIVATE);
                                             SharedPreferences.Editor edit1 = load.edit();
-                                            edit1.putBoolean("yes",true);
+                                            edit1.putBoolean("yes", true);
                                             edit1.commit();
 
-                                            FirstActivity.YES=1;
+                                            FirstActivity.YES = 1;
                                             //全局化用户信息
-                                            MyApplication.user = result.getUserInfo()==null?new UserJson.UserInfoBean():result.getUserInfo();
-                                            sp.edit().putInt("userId",MyApplication.user.getUser_ID()).commit();
+                                            MyApplication.outUserId = result.getUserInfo().getUser_ID() + "";
+                                            MyApplication.user = result.getUserInfo() == null ? new UserJson.UserInfoBean() : result.getUserInfo();
+                                            sp.edit().putInt("userId", MyApplication.user.getUser_ID()).commit();
                                             HashMap<String, String> params = new HashMap<>();
                                             String imei = MobileInfoUtil.getIMEI(LoadingActivity.this);
-                                            params.put("userId", MyApplication.user.getUser_ID()+"");
-                                            params.put("equitmentId", imei+"");
+                                            params.put("userId", MyApplication.user.getUser_ID() + "");
+                                            params.put("equitmentId", imei + "");
                                             OkhttpJsonUtil.getInstance().postByEnqueue(LoadingActivity.this, Url.BindIMEI, params, UserJson.class,
                                                     new OkhttpJsonUtil.TextCallBack<UserJson>() {
                                                         @Override
                                                         public void getResult(UserJson result) {
                                                             boolean b = result == null;
-                                                        }});
+                                                        }
+                                                    });
                                             gotoActivity(FirstActivity.class);
                                             finish();
 
@@ -272,7 +292,7 @@ public class LoadingActivity extends AppCompatActivity {
                                             Intent intent1 = new Intent(LoadingActivity.this, ExamineActivity.class);
                                             intent1.putExtra("state", "" + result.getStatus());
                                             intent1.putExtra("userId", result.getUser_id());
-                                            intent1.putExtra("Error",result.getError());
+                                            intent1.putExtra("Error", result.getError());
                                             startActivity(intent1);
                                             break;
                                         case 3:
@@ -375,7 +395,9 @@ public class LoadingActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
     private long mExitTime;
+
     //返回键重写
     public void exit() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {

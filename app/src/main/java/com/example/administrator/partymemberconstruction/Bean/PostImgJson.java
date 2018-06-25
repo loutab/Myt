@@ -15,6 +15,17 @@ public class PostImgJson {
     private String success;
     private String Error;
 
+
+    public String getException() {
+        return Exception;
+    }
+
+    public void setException(String exception) {
+        Exception = exception;
+    }
+
+    private String Exception;
+
     public String getCode() {
         return Code;
     }

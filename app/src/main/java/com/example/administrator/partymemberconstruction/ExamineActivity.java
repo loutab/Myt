@@ -80,6 +80,7 @@ public class ExamineActivity extends AppCompatActivity {
                 startActivity(intent);
             } else if (state.equals("0")) {
                 restartChange.setClickable(true);
+                if(getIntent().getBooleanExtra("isR",false))
                 restartChange.setVisibility(View.VISIBLE);
                 restartChange.setOnClickListener(new View.OnClickListener() {
                     @Override

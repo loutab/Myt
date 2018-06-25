@@ -455,8 +455,17 @@ public class FirstActivity extends AppCompatActivity {
                     public void getResult(UserJson result) {
                         // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
                         if (result != null) {
-                            Log.d("p", result.getCode());
+                            Log.e("p", result.getCode());
                             if (result.getCode().equals("成功")) {
+                                int u_isDelete = result.getUser().getU_IsDelete();
+                                if (u_isDelete == 1) {
+                                    out();
+                                    MyApplication.showToast(result.getException(), 0);
+                                    getSharedPreferences("load", Context.MODE_PRIVATE).edit().remove("yes").commit();
+                                    finish();
+                                    Intent intent1 = new Intent(FirstActivity.this, LoadingActivity.class);
+                                    startActivity(intent1);
+                                }
                                 //根据状态选择进入的页面
                                 //finish();
                                 int status = result.getStatus();
@@ -470,6 +479,7 @@ public class FirstActivity extends AppCompatActivity {
                                     //跳转到首页
                                     case 1:
                                         //全局化用户信息
+                                        MyApplication.outUserId=result.getUserInfo().getUser_ID()+"";
                                         MyApplication.user = result.getUserInfo() == null ? new UserJson.UserInfoBean() : result.getUserInfo();
                                         break;
                                     case 2:
@@ -550,7 +560,7 @@ public class FirstActivity extends AppCompatActivity {
         int height = mDisplayMetrics.heightPixels;
         float density = mDisplayMetrics.density;
         int densityDpi = mDisplayMetrics.densityDpi;
-        Log.d("p", "" + width + "  " + height);
+        Log.e("p", "" + width + "  " + height);
         if (width <= 480) {
             typeScreen = 1;
         } else if (width <= 720) {
@@ -562,7 +572,7 @@ public class FirstActivity extends AppCompatActivity {
 
     private void out() {
         HashMap<String, String> params = new HashMap<>();
-        params.put("userId", MyApplication.user.getUser_ID() + "");
+        params.put("userId", MyApplication.outUserId);
         OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.SignOut, params, UserJson.class,
                 new OkhttpJsonUtil.TextCallBack<UserJson>() {
                     @Override
@@ -572,5 +582,46 @@ public class FirstActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    boolean isFirst = true;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!isFirst) {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("UserName", MyApplication.phone);
+            params.put("Password", MyApplication.psw);
+            OkhttpJsonUtil.getInstance().postByEnqueue(this, Url.LoadingUrl, params, UserJson.class,
+                    new OkhttpJsonUtil.TextCallBack<UserJson>() {
+                        @Override
+                        public void getResult(UserJson result) {
+                            // MyApplication.showToast(result.getCode()+"",0);/PhoneNum=13764929873
+                            if (result != null) {
+                                Log.e("p", result.getCode());
+                                if (result.getCode().equals("成功")) {
+                                    int u_isDelete = result.getUser().getU_IsDelete();
+                                    if (u_isDelete == 1) {
+                                        out();
+                                        MyApplication.showToast(result.getException(), 0);
+                                        getSharedPreferences("load", Context.MODE_PRIVATE).edit().remove("yes").commit();
+                                        finish();
+                                        Intent intent1 = new Intent(FirstActivity.this, LoadingActivity.class);
+                                        startActivity(intent1);
+                                    }
+                                }else{
+                                    out();
+                                    MyApplication.showToast(result.getException(), 0);
+                                    getSharedPreferences("load", Context.MODE_PRIVATE).edit().remove("yes").commit();
+                                    finish();
+                                    Intent intent1 = new Intent(FirstActivity.this, LoadingActivity.class);
+                                    startActivity(intent1);
+                                }
+                            }
+                        }
+                    });
+        }
+        isFirst = false;
     }
 }
