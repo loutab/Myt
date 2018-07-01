@@ -536,7 +536,7 @@ public class FirstActivity extends AppCompatActivity {
                                 Picasso.with(FirstActivity.this).load(menu_logo_url1).centerCrop().fit().into(down);
                                 loadurl = result.getMenuInfo().getMenu_Url();
                                 int menuCategory = result.getMenuInfo().getMenu_Category();
-                                if (menuCategory == 4) {
+                                if (menuCategory == 5) {
                                     isUpload = true;
                                     packName = result.getApk_name();
                                 } else {
