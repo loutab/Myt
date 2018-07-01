@@ -38,6 +38,8 @@ public class ExamineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_examine);
         ButterKnife.bind(this);
+        restartChange.setClickable(true);
+        restartChange.setVisibility(View.VISIBLE);
         link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +54,7 @@ public class ExamineActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(state)) {
         } else {
             if (state.equals("2")) {
+                restartChange.setVisibility(View.GONE);
                 //需要传入用户ID
                 refuse.setVisibility(View.VISIBLE);
                 userIdtwo = getIntent().getIntExtra("userId", 0);

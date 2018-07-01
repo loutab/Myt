@@ -1,53 +1,53 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
+ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
 	package
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:11-37
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:11-37
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
 	android:versionCode
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:2:1-15:12
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:3:11-69
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:3:11-69
 uses-permission#android.permission.CAMERA
-ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:5:5-64
+ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:5:5-64
 	android:name
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:5:22-62
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:5:22-62
 uses-permission#android.permission.VIBRATE
-ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:6:5-65
+ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:6:5-65
 	android:name
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:6:22-63
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:6:22-63
 application
-ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:8:5-13:19
+ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:8:5-13:19
 	android:allowBackup
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:9:9-35
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:9:9-35
 activity#com.xys.libzxing.zxing.activity.CaptureActivity
-ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:11:9-67
+ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:11:9-67
 	android:name
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml:11:19-65
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml:11:19-65
 uses-sdk
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-		ADDED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
-		INJECTED from D:\beijin\NewMyPart\libzxing-master\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\testM\libzxing-master\src\main\AndroidManifest.xml
