@@ -27,6 +27,7 @@ import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 
 import com.example.administrator.partymemberconstruction.utils.APIWebviewTBS;
+import com.tencent.smtt.sdk.DownloadListener;
 import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
 
@@ -235,9 +236,26 @@ public class WebActivity extends AppCompatActivity {
 //            }
 
         });
+        web.setDownloadListener(new MyDownloadStart());
         web.loadUrl(url);
         //web.loadUrl("http://v.qq.com/iframe/player.html?vid=o0318tp1ddw&tiny=0&auto=0");
         web.addJavascriptInterface(new JsInteration(), "android");
+    }
+
+    class MyDownloadStart implements DownloadListener{
+
+        @Override
+        public void onDownloadStart(String url, String userAgent,
+                                    String contentDisposition, String mimetype, long contentLength) {
+            // TODO Auto-generated method stub
+            //调用自己的下载方式
+//			new HttpThread(url).start();
+            //调用系统浏览器下载
+            Uri uri = Uri.parse(url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
+
     }
 
     /**

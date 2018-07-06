@@ -134,7 +134,7 @@ public class MTabHost extends RadioGroup {
             check(rb.getId());
         if (one == 0)
             one = 1;
-
+        rb.setButtonDrawable(null);
         //fragments.add(fragment);
         radioButtons.add(rb);
     }
