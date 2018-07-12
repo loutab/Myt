@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
 import com.example.administrator.partymemberconstruction.WebActivity;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
+import com.example.administrator.partymemberconstruction.utils.RefreshLayout;
 import com.example.administrator.partymemberconstruction.utils.Url;
 
 import java.util.ArrayList;
@@ -46,8 +48,11 @@ public class NoticeChildTwoFragment extends Fragment {
     @BindView(R.id.list)
     ListView list;
     Unbinder unbinder;
+    @BindView(R.id.refresh)
+    RefreshLayout refresh;
     private List<NoticeItemJson.NoticeInfoBean> noticeInfo;
     private NoticeOneListAdapter noticeOneListAdapter;
+
     public NoticeChildTwoFragment() {
         // Required empty public constructor
     }
@@ -61,22 +66,24 @@ public class NoticeChildTwoFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
+
     private void getDate() {
         HashMap<String, String> params = new HashMap<>();
-        params.put("userId",""+ MyApplication.user.getUser_ID());
-        params.put("type",""+1);
+        params.put("userId", "" + MyApplication.user.getUser_ID());
+        params.put("type", "" + 1);
         OkhttpJsonUtil.getInstance().postByEnqueue(getActivity(), Url.GetNoticeUrl, params, NoticeItemJson.class,
                 new OkhttpJsonUtil.TextCallBack<NoticeItemJson>() {
                     @Override
                     public void getResult(NoticeItemJson result) {
                         // MyApplication.showToast(result.getCode()+"",0);
+                        refresh.setRefreshing(false);
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
                                 noNotice.setVisibility(View.GONE);
                                 list.setVisibility(View.VISIBLE);
                                 noticeInfo.clear();
                                 noticeInfo.addAll(result.getNoticeInfo());
-                                noticeOneListAdapter = new NoticeOneListAdapter(getContext(), noticeInfo,2);
+                                noticeOneListAdapter = new NoticeOneListAdapter(getContext(), noticeInfo, 2);
                                 list.setAdapter(noticeOneListAdapter);
                                 //noticeOneListAdapter.notifyDataSetChanged();
                             } else {
@@ -98,20 +105,25 @@ public class NoticeChildTwoFragment extends Fragment {
         list.setVisibility(View.GONE);
         noNotice.setVisibility(View.VISIBLE);
         noticeInfo = new ArrayList<>();
-        noticeOneListAdapter = new NoticeOneListAdapter(getContext(), noticeInfo,2);
-        isFirst=false;
+        noticeOneListAdapter = new NoticeOneListAdapter(getContext(), noticeInfo, 2);
+        isFirst = false;
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //changeNotice(position);
                 String n_link = noticeInfo.get(position).getN_Link();
-                Intent intent=new Intent(NoticeChildTwoFragment.this.getContext(), WebActivity.class);
-                intent.putExtra("Url",n_link);
-                intent.putExtra("title","");
+                Intent intent = new Intent(NoticeChildTwoFragment.this.getContext(), WebActivity.class);
+                intent.putExtra("Url", n_link);
+                intent.putExtra("title", "");
                 startActivity(intent);
             }
         });
-
+refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    @Override
+    public void onRefresh() {
+        getDate();
+    }
+});
     }
 
     @Override
@@ -119,21 +131,24 @@ public class NoticeChildTwoFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     @Override
     public void onStart() {
         super.onStart();
 
     }
-    private boolean isFirst=true;
+
+    private boolean isFirst = true;
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.e("w","setUserVisibleHint1");
+        Log.e("w", "setUserVisibleHint1");
         if (getUserVisibleHint()) {
             //可见时进行内容加载或逻辑操作等
-            if(isFirst){
+            if (isFirst) {
 
-            }else{
+            } else {
                 getDate();
             }
         } else {

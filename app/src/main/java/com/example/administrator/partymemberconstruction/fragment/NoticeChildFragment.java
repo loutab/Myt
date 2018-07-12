@@ -1,12 +1,12 @@
 package com.example.administrator.partymemberconstruction.fragment;
 
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.partymemberconstruction.Adapter.NoticeAllListAdapter;
-import com.example.administrator.partymemberconstruction.Adapter.NoticeOneListAdapter;
 import com.example.administrator.partymemberconstruction.Bean.NoticeItemJson;
 import com.example.administrator.partymemberconstruction.MyApplication;
 import com.example.administrator.partymemberconstruction.R;
 import com.example.administrator.partymemberconstruction.WebActivity;
 import com.example.administrator.partymemberconstruction.utils.OkhttpJsonUtil;
+import com.example.administrator.partymemberconstruction.utils.RefreshLayout;
 import com.example.administrator.partymemberconstruction.utils.Url;
 
 import java.util.ArrayList;
@@ -56,9 +56,11 @@ public class NoticeChildFragment extends Fragment {
     TextView delet;
     @BindView(R.id.action)
     RelativeLayout action;
+    @BindView(R.id.refresh)
+    RefreshLayout refresh;
     private List<NoticeItemJson.NoticeInfoBean> noticeInfo;
     private NoticeAllListAdapter noticeOneListAdapter;
-    private boolean isFirst=true;
+    private boolean isFirst = true;
     private List<Integer> delteAll;
     private AlertDialog.Builder builder;
 
@@ -73,26 +75,29 @@ public class NoticeChildFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notice_child_all, container, false);
         unbinder = ButterKnife.bind(this, view);
-        Log.e("w","oncreateview");
+        Log.e("w", "oncreateview");
         return view;
     }
-
+//    @Override
+//    public RefreshLayout getRefresh() {
+//        return refresh;
+//    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e("w","onViewCreated");
+        Log.e("w", "onViewCreated");
         noNotice.setVisibility(View.VISIBLE);
         action.setVisibility(View.GONE);
         noticeInfo = new ArrayList<>();
         noticeOneListAdapter = new NoticeAllListAdapter(getContext(), noticeInfo, 2);
-        if(isFirst){
+        if (isFirst) {
             try {
                 getListDate();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        isFirst=false;
+        isFirst = false;
 
 
         builder = new AlertDialog.Builder(this.getContext());
@@ -116,7 +121,7 @@ public class NoticeChildFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(delteAll.size()>0)
+                if (delteAll.size() > 0)
                     builder.show();
             }
         });
@@ -125,31 +130,44 @@ public class NoticeChildFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //changeNotice(position);
                 String n_link = noticeInfo.get(position).getN_Link();
-                Intent intent=new Intent(NoticeChildFragment.this.getContext(), WebActivity.class);
-                intent.putExtra("Url",n_link);
-                intent.putExtra("title","");
+                Intent intent = new Intent(NoticeChildFragment.this.getContext(), WebActivity.class);
+                intent.putExtra("Url", n_link);
+                intent.putExtra("title", "");
                 startActivity(intent);
             }
         });
+
+        //下拉刷新功能
+refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    @Override
+    public void onRefresh() {
+        //listView刷新接口
+        try {
+            getListDate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+});
     }
 
     private void changeNotice(int position) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("ids", noticeInfo.get(position).getEntityId()+"");
+        params.put("ids", noticeInfo.get(position).getEntityId() + "");
         OkhttpJsonUtil.getInstance().postByEnqueue(getActivity(), Url.ChangeNotice, params, NoticeItemJson.class,
                 new OkhttpJsonUtil.TextCallBack<NoticeItemJson>() {
                     @Override
                     public void getResult(NoticeItemJson result) {
-                        if(result!=null){
-                            if(result.getCode().equals("成功")){
-                               // MyApplication.showToast("删除成功",0);
+                        if (result != null) {
+                            if (result.getCode().equals("成功")) {
+                                // MyApplication.showToast("删除成功",0);
 
-                            }else{
-                                MyApplication.showToast("查看失败",0);
+                            } else {
+                                MyApplication.showToast("查看失败", 0);
                             }
 
-                        }else{
-                            MyApplication.showToast("连接服务器失败",0);
+                        } else {
+                            MyApplication.showToast("连接服务器失败", 0);
                         }
                     }
                 });
@@ -157,61 +175,68 @@ public class NoticeChildFragment extends Fragment {
 
     //更改所有通知状态
     private void changeAllNotice() {
-        StringBuffer param=new StringBuffer("");
-        for(int i=0;i<delteAll.size();i++){
-            if (i==delteAll.size()-1){
+        StringBuffer param = new StringBuffer("");
+        for (int i = 0; i < delteAll.size(); i++) {
+            if (i == delteAll.size() - 1) {
                 param.append(delteAll.get(i));
-            }else{
-                param.append(delteAll.get(i)+",");
+            } else {
+                param.append(delteAll.get(i) + ",");
             }
         }
         HashMap<String, String> params = new HashMap<>();
-        params.put("ids", param+"");
+        params.put("ids", param + "");
         OkhttpJsonUtil.getInstance().postByEnqueue(getActivity(), Url.ChangeNotice, params, NoticeItemJson.class,
                 new OkhttpJsonUtil.TextCallBack<NoticeItemJson>() {
                     @Override
                     public void getResult(NoticeItemJson result) {
-                                   if(result!=null){
-                                   if(result.getCode().equals("成功")){
-                                       MyApplication.showToast("删除成功",0);
-                                       noNotice.setVisibility(View.VISIBLE);
-                                       action.setVisibility(View.GONE);
-                                   }else{
-                                       MyApplication.showToast("删除失败",0);
-                                   }
+                        if (result != null) {
+                            if (result.getCode().equals("成功")) {
+                                MyApplication.showToast("删除成功", 0);
+                                noNotice.setVisibility(View.VISIBLE);
+                                action.setVisibility(View.GONE);
+                            } else {
+                                MyApplication.showToast("删除失败", 0);
+                            }
 
-                                   }else{
-                                       MyApplication.showToast("连接服务器失败",0);
-                                   }
+                        } else {
+                            MyApplication.showToast("连接服务器失败", 0);
+                        }
                     }
-        });
+                });
     }
-    private void getListDate() throws Exception {
+
+    public void getListDate() throws Exception {
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", "" + MyApplication.user.getUser_ID());
         OkhttpJsonUtil.getInstance().postByEnqueue(getActivity(), Url.GetAllNoticeUrl, params, NoticeItemJson.class,
                 new OkhttpJsonUtil.TextCallBack<NoticeItemJson>() {
                     @Override
                     public void getResult(NoticeItemJson result) {
+                        if(refresh!=null)
+                        refresh.setRefreshing(false);
                         // MyApplication.showToast(result.getCode()+"",0);
                         if (result != null) {
                             if (result.getCode().equals("成功")) {
-                                List<NoticeItemJson.NoticeInfoBean> trueList=new ArrayList<>();
-                                for(NoticeItemJson.NoticeInfoBean a:result.getNoticeInfo()){
-                                    if(a.getN_IsNew()==1){
+                                List<NoticeItemJson.NoticeInfoBean> trueList = new ArrayList<>();
+                                for (NoticeItemJson.NoticeInfoBean a : result.getNoticeInfo()) {
+                                    if (a.getN_IsNew() == 1) {
                                         trueList.add(a);
                                     }
                                 }
-                                if(trueList.size()>0) {
+                                if (trueList.size() > 0) {
+                                    if(noNotice!=null)
                                     noNotice.setVisibility(View.GONE);
+                                    if(action!=null)
                                     action.setVisibility(View.VISIBLE);
                                     noticeInfo.clear();
                                     noticeInfo.addAll(trueList);
                                     noticeOneListAdapter.notifyDataSetChanged();
+                                    if(num!=null)
                                     num.setText("全部（" + trueList.size() + "）");
                                     // MyApplication.showToast("宽度" + list.getHeight(), 0);
                                     // clearList(noticeInfo);
                                     noticeOneListAdapter = new NoticeAllListAdapter(getContext(), noticeInfo, 2);
+                                    if(list!=null)
                                     list.setAdapter(noticeOneListAdapter);
                                     delteAll = new ArrayList<>();
                                     for (NoticeItemJson.NoticeInfoBean a : noticeInfo) {
@@ -219,7 +244,7 @@ public class NoticeChildFragment extends Fragment {
                                             delteAll.add(a.getEntityId());
                                         }
                                     }
-                                }else{
+                                } else {
                                     noNotice.setVisibility(View.VISIBLE);
                                     action.setVisibility(View.GONE);
                                 }
@@ -238,12 +263,12 @@ public class NoticeChildFragment extends Fragment {
 
 
     private void clearList(List<NoticeItemJson.NoticeInfoBean> noticeInfo) {
-        List<NoticeItemJson.NoticeInfoBean> list=new ArrayList<>();
-        for (int i=0;i<noticeInfo.size();i++) {
+        List<NoticeItemJson.NoticeInfoBean> list = new ArrayList<>();
+        for (int i = 0; i < noticeInfo.size(); i++) {
             NoticeItemJson.NoticeInfoBean bean = noticeInfo.get(i);
-            if(bean.getN_Type()==0||bean.getN_Type()==2){
-                      list.add(bean);
-                  }
+            if (bean.getN_Type() == 0 || bean.getN_Type() == 2) {
+                list.add(bean);
+            }
         }
         noticeInfo.clear();
         noticeInfo.addAll(list);
@@ -259,19 +284,19 @@ public class NoticeChildFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //getListDate();
-        Log.e("w","onStart");
+        Log.e("w", "onStart");
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.e("w","setUserVisibleHint");
+        Log.e("w", "setUserVisibleHint");
         if (getUserVisibleHint()) {
-            if(isFirst){
+            if (isFirst) {
 
-            }else{
+            } else {
                 try {
-                    getListDate();
+                   // getListDate();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -281,4 +306,5 @@ public class NoticeChildFragment extends Fragment {
             //不可见
         }
     }
+
 }
